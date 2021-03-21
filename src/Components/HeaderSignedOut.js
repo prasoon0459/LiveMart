@@ -39,7 +39,7 @@ const Header = () => {
                     <Grid item xs={8} >
                         <Grid container justify='flex-end' alignItems='center' direction='row' className={classes.container} >
                             <Button component={NavLink} to="/about">About</Button>
-                            <Button component={NavLink} to="/login">Log In</Button>
+                            <Button component={NavLink} to="/login">Sign In</Button>
                             <Button component={NavLink} to="/signup">Sign Up</Button>
                         </Grid>
                     </Grid>
