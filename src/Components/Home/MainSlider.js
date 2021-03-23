@@ -28,7 +28,7 @@ const MainSlider = (props) =>{
     const settings =  {
         arrows:false,
         autoplay: true,
-        // dots: true
+        dots: true
     };
     const {width, height, screen} = UseWindowDimensions();
     // console.log(width,height,screen);

@@ -13,19 +13,21 @@ import {
   const useStyles = makeStyles({
     root: {
       backgroundColor:theme.palette.background.paper,
-      margin: theme.spacing(1, 0, 1),
-      padding: (props) => props ?theme.spacing(1, 1, 1): theme.spacing(3,3,3),
+      padding: (props) => props.mobile ?theme.spacing(1, 1, 1): theme.spacing(3,3,3),
+    },
+    itemsContainer:{
+      padding:(props)=>props.sm||props.mobile?theme.spacing(0,0,0): theme.spacing(0,8,0),
     },
     title:{
-        fontWeight:800,
-        margin:(props) => props ?theme.spacing(2,0,2): theme.spacing(0,0,0),
-        padding: (props) => props ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
+      fontWeight:800,
+      margin:(props) => props.mobile ?theme.spacing(2,0,2): theme.spacing(2,0,3),
+      padding: (props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
     },
     categoryItem:{
-        padding: (props) => props ?theme.spacing(1,1,1): theme.spacing(1,1,1),
+        padding: (props) => props.mobile ?theme.spacing(1,1,1): theme.spacing(1,1,1),
     },
     categoryName:{
-        margin: (props) => props ?theme.spacing(1,1,1): theme.spacing(1,1,1),
+        margin: (props) => props.mobile ?theme.spacing(1,1,1): theme.spacing(1,1,1),
     }
   });
   
@@ -34,15 +36,16 @@ import {
     const {width, height, screen} = UseWindowDimensions();
     console.log(width,height,screen)
     const mobile= screen==='xs'
-    const categories=props.categories
-    const classes = useStyles(mobile);
+    const sm= screen==='sm'
+    const categories= props.categories
+    const classes= useStyles({mobile:mobile, sm:sm} );
     return (
       <div>
         <Grid container direction="column" className={classes.root}>
-          <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
-            Top Categories
+          <Typography variant={mobile?'h6':'h5'} align="center" className={classes.title}>
+            SHOP BY TOP CATEGORIES
           </Typography>
-          <Grid container  >
+          <Grid container className={classes.itemsContainer} >
                 {categories.map((card) => (
                 <Grid item key={card} xs={6} sm={4} md={3} xl={6}>
                     <CardActionArea>

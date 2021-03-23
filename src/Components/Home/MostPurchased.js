@@ -22,7 +22,7 @@ import {
     },
     title:{
       fontWeight:800,
-      margin:(props) => props ?theme.spacing(2,0,2): theme.spacing(0,0,0),
+      margin:(props) => props ?theme.spacing(2,0,2): theme.spacing(2,0,3),
       padding: (props) => props ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
     },
     price:{
@@ -67,8 +67,8 @@ import {
     return (
       <div>
         <Grid container direction="column" className={classes.root}>
-          <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
-            Most Purchased today
+          <Typography variant={mobile?'h6':'h5'} align="center" className={classes.title}>
+            MOST PURCHASED TODAY
           </Typography>
           <Slider {...itemSettings} className={classes.slider}>
             {items.map((item) => (
