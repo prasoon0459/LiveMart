@@ -42,7 +42,7 @@ class App extends Component {
               <Home></Home>
             </Route>
           </Switch>
-          <Box mt={8} marginBottom="20px">
+          <Box pt={3} pb={3} style={{backgroundColor:'#f5f5f5'}}>
             <Copyright />
           </Box>
         </div>

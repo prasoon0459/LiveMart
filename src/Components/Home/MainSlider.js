@@ -2,15 +2,16 @@ import { makeStyles } from "@material-ui/core";
 import Imgix from "react-imgix";
 import theme from "../../theme";
 import Slider from 'infinite-react-carousel'
+import UseWindowDimensions from "../../utils/UseWindowDimensions";
 
 
 const useStyles=makeStyles({
     root:{
-        marginTop:'20px'
+        padding:theme.spacing(2,4,2),
+        // backgroundColor:theme.palette.background.paper
     },
     image:{
-        width:'100vw',
-        height:'40vh',
+        height:(props)=> props?'20vh':'40vh',
     },
     featureContainer:{
         paddingLeft:theme.spacing(5),
@@ -27,13 +28,12 @@ const MainSlider = (props) =>{
     const settings =  {
         arrows:false,
         autoplay: true,
-        centerMode: true,
-        centerPadding: 30,
-        dots: true,
-        initialSlide: true,
-        //   wheel: true
+        // dots: true
     };
-    const classes=useStyles()
+    const {width, height, screen} = UseWindowDimensions();
+    // console.log(width,height,screen);
+    const mobile= screen==='xs'
+    const classes=useStyles(mobile)
     return (
         <div className={classes.root}>
           <Slider { ...settings }>
@@ -47,7 +47,7 @@ const MainSlider = (props) =>{
                               fm: "jpg"
                           }}
                           height='100%'
-                          width='80%'/>
+                          width='100%'/>
                  </div> 
               ))}
           </Slider>

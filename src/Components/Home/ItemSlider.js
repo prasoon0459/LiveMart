@@ -51,7 +51,7 @@ const ItemSlider = (props) =>{
           <Slider { ...settings } className={classes.slider}>
               {items.map((item)=>(
                     <Grid item key={item} className={classes.item} >
-                        <Card className={classes.card}>
+                    <Card variant="outlined" className={classes.card}>
                     <Badge badgeContent='40%' color='secondary' > 
                         <Grid container justify='center'>
                             <Imgix
