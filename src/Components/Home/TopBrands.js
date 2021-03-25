@@ -19,7 +19,11 @@ import Imgix from "react-imgix";
       padding:(props)=>props.sm||props.mobile?theme.spacing(0,0,0): theme.spacing(0,8,0),
     },
     brandImage_cover:{
-        padding: theme.spacing(1,1,1)
+        padding: theme.spacing(1, 1, 1),
+        '&:hover':{
+          transform: `scale(1.1)`,
+          transition: '200ms linear'
+        }
     },
     title:{
         fontWeight:800,
@@ -38,7 +42,6 @@ import Imgix from "react-imgix";
   const TopBrand = (props) => {
     
     const {width, height, screen} = UseWindowDimensions();
-    console.log(width,height,screen)
     const mobile= screen==='xs'
     const sm= screen==='sm'
     const categories= props.categories

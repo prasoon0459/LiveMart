@@ -7,7 +7,7 @@ import {
     makeStyles,
     Typography,
   } from "@material-ui/core";
-  import { AddShoppingCartOutlined } from "@material-ui/icons";
+  import { AddShoppingCartOutlined, LinearScale } from "@material-ui/icons";
   import { Slider } from "infinite-react-carousel/lib";
   import Imgix from "react-imgix";
   import Item from "../../Data/Item";
@@ -32,7 +32,11 @@ import {
         fontWeight: 700,
     },
     item: {
-      padding: theme.spacing(0, 1, 0),
+      padding: theme.spacing(2, 2, 2),
+      '&:hover':{
+        transform: `scale(1.1)`,
+        transition: '200ms linear'
+      }
     },
     shoppingCartIcon:{
         flexGrow:1
@@ -54,7 +58,6 @@ import {
     //     defaultMatches: true
     // });
     const {width, height, screen} = UseWindowDimensions();
-    console.log(width,height,screen)
     let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
     const items = [a, a, a, a, a, a, a, a, a, a];
     const mobile= screen==='xs'

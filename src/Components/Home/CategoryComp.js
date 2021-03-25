@@ -34,7 +34,6 @@ import {
   const MostPurchased = (props) => {
     
     const {width, height, screen} = UseWindowDimensions();
-    console.log(width,height,screen)
     const mobile= screen==='xs'
     const sm= screen==='sm'
     const categories= props.categories

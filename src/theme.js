@@ -4,10 +4,12 @@ const theme = createMuiTheme({
   palette: {
     background: {
       paper: "#ffffff",
-      default: "#fafafa"
+      default: "#fafafa",
+      search: "#f0f0f0"
     },
     primary: {
-      main: "#2b303a"
+      main: "#2b303a",
+      light: '#bfc0c3'
     },
     secondary: {
       main: "#d64933"

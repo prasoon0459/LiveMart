@@ -1,17 +1,25 @@
 import './App.css';
 import {BrowserRouter, Link, Route, Switch} from 'react-router-dom'
-import { Component } from 'react';
 import Header from './Components/HeaderSignedIn'
 import Home from './Components/Home/Home';
 import SignIn from './Components/Auth/SignIn';
 import SignUp from './Components/Auth/SignUp';
 import ForgotPassword from './Components/Auth/ForgotPwd';
 import { Box, Typography } from '@material-ui/core';
-import theme from './theme';
+import HeaderMobile from './Components/HeaderMobile';
+import UseWindowDimensions from './utils/UseWindowDimensions';
 
-class App extends Component {
-  
-  render(){
+
+const App =() =>{
+    const {width, height, screen} = UseWindowDimensions();
+    const mobileHeader= screen==='sm'||screen==='xs'
+
+
+    function getHeader() {
+      return mobileHeader?<HeaderMobile/>:<Header/> 
+    }
+
+
     function Copyright() {
       return (
         <Typography variant="body2" color="textSecondary" align="center">
@@ -23,12 +31,15 @@ class App extends Component {
           {'.'}
         </Typography>
       );
-    }    
+    } 
+
     return (
       <BrowserRouter>  
         <div className="App">
+
+          {getHeader()}
           <Switch>
-            <Route path='/login'>
+            <Route path='/login'>   
               <SignIn></SignIn>
             </Route>
             <Route path='/signup'>
@@ -38,7 +49,6 @@ class App extends Component {
               <ForgotPassword></ForgotPassword>
             </Route>
             <Route path='/'>
-              <Header/>
               <Home></Home>
             </Route>
           </Switch>
@@ -48,7 +58,5 @@ class App extends Component {
         </div>
       </BrowserRouter>
   );
-  }
 }
-
 export default App;
