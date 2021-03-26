@@ -12,7 +12,7 @@ import {
   Button,
   Typography,
 } from "@material-ui/core";
-import logo from "../img/logo.png";
+import logo from "../../img/logo.png";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
@@ -22,24 +22,25 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
-import theme from "../theme";
+import theme from "../../theme";
 
 const useStyles = makeStyles({
   headerLogo: {
     width: "80px",
   },
+  toolbar:{
+    padding:theme.spacing(0,0,0)
+  },
   container: {
     height: "100%",
-  },
-  bar: {
-    marginTop: theme.spacing(1),
   },
   headerLinks: {
     padding:theme.spacing(1,1,1)
   },
   root: {
     flexGrow: 1,
-    margin: theme.spacing(1, 0, 2),
+    padding: theme.spacing(1, 2, 1),
+    backgroundColor: theme.palette.background.paper
   },
   search: {
     padding:theme.spacing(1,1,1),
@@ -99,16 +100,8 @@ const useStyles = makeStyles({
   },
   inputInputLocation: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
+    width: "12ch"
   },
 
   menuButton: {
@@ -129,7 +122,7 @@ const useStyles = makeStyles({
 const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -146,9 +139,6 @@ const Header = () => {
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
 
   const menuId = "primary-search-account-menu";
 
@@ -170,8 +160,8 @@ const Header = () => {
 
   return (
     <div>
-      <AppBar position="static" elevation={0} color="transparent">
-        <Toolbar>
+      <AppBar  elevation={0} color="transparent" position='fixed'>
+        <Toolbar className={classes.toolbar}>
           <Grid container className={classes.root} direction="row">
             <Box>
               <Grid container justify="flex-start" alignItems="center">

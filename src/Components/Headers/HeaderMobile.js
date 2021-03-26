@@ -8,7 +8,7 @@ import {
     IconButton,
     Badge,
   } from "@material-ui/core";
-  import logo from "../img/logo.png";
+  import logo from "../../img/logo.png";
   import React from "react";
   import { NavLink } from "react-router-dom";
   import {
@@ -18,7 +18,7 @@ import {
     SearchOutlined,
     ShoppingCartOutlined,
   } from "@material-ui/icons";
-  import theme from "../theme";
+  import theme from "../../theme";
   
   const useStyles = makeStyles({
     headerLogo: {
@@ -34,6 +34,7 @@ import {
     root: {
       flexGrow: 1,
       margin: theme.spacing(1, 0, 2),
+      backgroundColor: theme.palette.background.paper
     },
     search: {
       padding:theme.spacing(1,1,1),
@@ -47,7 +48,7 @@ import {
       
       position: "relative",
       height: "100%",
-      width:'100%',
+      width:'auto',
     },
     searchIcon: {
       padding: theme.spacing(0, 1),
@@ -77,28 +78,13 @@ import {
     inputInput: {
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create("width"),
       width: "100%",
       height: '100%',
-      [theme.breakpoints.up("sm")]: {
-        width: "12ch",
-        "&:focus": {
-          width: "20ch",
-        },
-      },
     },
     inputLocation: {
         // vertical padding + font size from searchIcon
-        transition: theme.transitions.create("width"),
         paddingLeft: `calc(1em + ${theme.spacing(2)}px)`,
-        width: "100%",
-        height: '100%',
-        [theme.breakpoints.up("sm")]: {
-          width: "12ch",
-          "&:focus": {
-            width: "20ch",
-          },
-        },
+        height:'100%',
       },
     inputField:{
         fontSize:'20',

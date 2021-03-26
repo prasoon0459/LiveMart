@@ -30,7 +30,7 @@ const MainSlider = (props) =>{
         autoplay: true,
         dots: true
     };
-    const {width, height, screen} = UseWindowDimensions();
+    const {screen} = UseWindowDimensions().screen;
     // console.log(width,height,screen);
     const mobile= screen==='xs'
     const classes=useStyles(mobile)

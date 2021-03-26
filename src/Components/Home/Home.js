@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles, Typography, useMediaQuery } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import original from "../../img/original.svg";
 import delivery from "../../img/delivery.svg";
 import payment from "../../img/payment.svg";
@@ -15,6 +15,9 @@ const useStyles = makeStyles({
     paddingTop: "1vh",
     backgroundColor: "#f5f5f5",
     paddingBottom: "1vh",
+    [theme.breakpoints.up("md")]: {
+      marginTop: theme.spacing(10),
+    },
   },
   image: {
     width: "100vw",

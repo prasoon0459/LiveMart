@@ -1,17 +1,17 @@
 import './App.css';
 import {BrowserRouter, Link, Route, Switch} from 'react-router-dom'
-import Header from './Components/HeaderSignedIn'
+import Header from './Components/Headers/HeaderSignedIn'
 import Home from './Components/Home/Home';
 import SignIn from './Components/Auth/SignIn';
 import SignUp from './Components/Auth/SignUp';
 import ForgotPassword from './Components/Auth/ForgotPwd';
 import { Box, Typography } from '@material-ui/core';
-import HeaderMobile from './Components/HeaderMobile';
+import HeaderMobile from './Components/Headers/HeaderMobile';
 import UseWindowDimensions from './utils/UseWindowDimensions';
 
 
 const App =() =>{
-    const {width, height, screen} = UseWindowDimensions();
+    const screen = UseWindowDimensions().screen;
     const mobileHeader= screen==='sm'||screen==='xs'
 
 
