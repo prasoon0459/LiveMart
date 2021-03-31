@@ -8,6 +8,10 @@ import ForgotPassword from './Components/Auth/ForgotPwd';
 import { Box, Typography } from '@material-ui/core';
 import HeaderMobile from './Components/Headers/HeaderMobile';
 import UseWindowDimensions from './utils/UseWindowDimensions';
+import Filter from './Components/Search/Filter'
+import Test from './Components/Search/Test';
+import Search from './Components/Search/Search';
+import Product from './Components/Product/Product';
 
 
 const App =() =>{
@@ -37,8 +41,20 @@ const App =() =>{
       <BrowserRouter>  
         <div className="App">
 
-          {getHeader()}
+          
           <Switch>
+          <Route path='/filter'>
+          {getHeader()}   
+              <Filter></Filter>
+            </Route>
+            <Route path='/search'>   
+            {getHeader()}
+              <Search></Search>
+            </Route>
+            <Route path='/product'>   
+            {getHeader()}
+              <Product></Product>
+            </Route>
             <Route path='/login'>   
               <SignIn></SignIn>
             </Route>
@@ -49,10 +65,11 @@ const App =() =>{
               <ForgotPassword></ForgotPassword>
             </Route>
             <Route path='/'>
+            {getHeader()}
               <Home></Home>
             </Route>
           </Switch>
-          <Box pt={3} pb={3} style={{backgroundColor:'#f5f5f5'}}>
+          <Box pt={3} pb={3}>
             <Copyright />
           </Box>
         </div>

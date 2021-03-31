@@ -33,9 +33,10 @@ import {
   
   const MostPurchased = (props) => {
     
-    const { screen} = UseWindowDimensions().screen;
+    const screen = UseWindowDimensions().screen;
     const mobile= screen==='xs'
     const sm= screen==='sm'
+    console.log(mobile)
     const categories= props.categories
     const classes= useStyles({mobile:mobile, sm:sm} );
     return (
@@ -52,8 +53,8 @@ import {
                             <Grid item>
                                 <ReactRoundedImage
                                     image={fruits}
-                                    imageWidth='180'
-                                    imageHeight='180'
+                                    imageWidth='160'
+                                    imageHeight='160'
                                     roundedColor={theme.palette.primary.main}
                                     hoverColor={theme.palette.secondary.main}
                                     roundedSize={5}

@@ -48,6 +48,7 @@ const useStyles = makeStyles({
     height: "100%",
     backgroundColor: theme.palette.background.search,
     width: "100%",
+    borderRadius:10
   },
 
   location: {
@@ -160,7 +161,7 @@ const Header = () => {
 
   return (
     <div>
-      <AppBar  elevation={0} color="transparent" position='fixed'>
+      <AppBar  elevation={0} color="transparent" position='relative'>
         <Toolbar className={classes.toolbar}>
           <Grid container className={classes.root} direction="row">
             <Box>

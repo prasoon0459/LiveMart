@@ -15,8 +15,8 @@ const useStyles = makeStyles({
     paddingTop: "1vh",
     backgroundColor: "#f5f5f5",
     paddingBottom: "1vh",
-    [theme.breakpoints.up("md")]: {
-      marginTop: theme.spacing(10),
+    [theme.breakpoints.down("md")]: {
+      // marginTop: theme.spacing(10),
     },
   },
   image: {

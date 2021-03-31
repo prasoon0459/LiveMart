@@ -41,6 +41,7 @@ import {
       position: "relative",
       height: "100%",
       width: "100%",
+      borderRadius:10,
       backgroundColor: theme.palette.background.search,
     },
   
@@ -59,7 +60,7 @@ import {
       justifyContent: "center",
     },
     locationIcon: {
-        padding:theme.spacing(0,1,0),
+      padding:theme.spacing(0,1,0),
       height: "100%",
       position: "absolute",
       pointerEvents: "none",

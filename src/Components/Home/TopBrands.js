@@ -1,4 +1,4 @@
-import {
+  import {
     Box,
     Grid,
     makeStyles,
@@ -7,7 +7,7 @@ import {
   import theme from "../../theme";
   import UseWindowDimensions from '../../utils/UseWindowDimensions'
   import amul from '../../img/amul.jpg';
-import Imgix from "react-imgix";
+  import Imgix from "react-imgix";
 
   const useStyles = makeStyles({
     root: {
@@ -19,11 +19,11 @@ import Imgix from "react-imgix";
       padding:(props)=>props.sm||props.mobile?theme.spacing(0,0,0): theme.spacing(0,8,0),
     },
     brandImage_cover:{
-        padding: theme.spacing(1, 1, 1),
-        '&:hover':{
-          transform: `scale(1.1)`,
-          transition: '200ms linear'
-        }
+      padding: theme.spacing(1, 1, 1),
+      '&:hover':{
+        transform: `scale(1.1)`,
+        transition: '200ms linear'
+      }
     },
     title:{
         fontWeight:800,
@@ -41,7 +41,7 @@ import Imgix from "react-imgix";
   
   const TopBrand = (props) => {
     
-    const {width, height, screen} = UseWindowDimensions();
+    const screen = UseWindowDimensions().screen;
     const mobile= screen==='xs'
     const sm= screen==='sm'
     const categories= props.categories
@@ -58,16 +58,16 @@ import Imgix from "react-imgix";
                         <Grid container direction='column' justify='center' alignItems='center' className={classes.categoryItem}>
                             <Box border={mobile?0:1} className={classes.brandImage_cover}>
                                 <Grid item xs={12}>
-                                    <Imgix
-                                        src={amul}
-                                        width='180'
-                                        height='150'
-                                        imgixParams={{
-                                            fit: "fit",
-                                            fm: "jpg",
-                                        }}
-                                    >
-                                    </Imgix>
+                                  <Imgix
+                                      src={amul}
+                                      width='150'
+                                      height='150'
+                                      imgixParams={{
+                                          fit: "fit",
+                                          fm: "jpg",
+                                      }}
+                                  >
+                                  </Imgix>
                                 </Grid>
                             </Box>
                         </Grid>
