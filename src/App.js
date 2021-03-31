@@ -12,6 +12,7 @@ import Filter from './Components/Search/Filter'
 import Test from './Components/Search/Test';
 import Search from './Components/Search/Search';
 import Product from './Components/Product/Product';
+import ChangePwd from './Components/Auth/ChangePwd';
 
 
 const App =() =>{
@@ -46,6 +47,9 @@ const App =() =>{
           <Route path='/filter'>
           {getHeader()}   
               <Filter></Filter>
+            </Route>
+            <Route path='/change_pwd'>
+              <ChangePwd></ChangePwd>
             </Route>
             <Route path='/search'>   
             {getHeader()}
