@@ -31,7 +31,7 @@ import {
     }
   });
   
-  const MostPurchased = (props) => {
+  const CategoryComp = (props) => {
     
     const screen = UseWindowDimensions().screen;
     const mobile= screen==='xs'
@@ -78,5 +78,5 @@ import {
     );
   };
   
-  export default MostPurchased;
+  export default CategoryComp;
   

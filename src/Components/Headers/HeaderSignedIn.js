@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import logo from "../../img/logo.png";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink , useHistory,} from "react-router-dom";
 import {
   AccountCircle,
   LocationOnOutlined,
@@ -121,6 +121,7 @@ const useStyles = makeStyles({
 });
 
 const Header = () => {
+  const history=useHistory()
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
@@ -140,6 +141,16 @@ const Header = () => {
     handleMobileMenuClose();
   };
 
+  const handleSearchSubmit = (event) => {
+    if(event.key ==='Enter'){
+      const params=new URLSearchParams()
+      console.log(event.target.value)
+      if(event.target.value){
+        params.append('q',event.target.value)
+        history.push({pathname:  '/search',search:params.toString()})
+      }
+    }
+  }
 
   const menuId = "primary-search-account-menu";
 
@@ -222,6 +233,7 @@ const Header = () => {
                         input: classes.inputInput,
                       }}
                       inputProps={{ "aria-label": "search" }}
+                      onKeyPress={handleSearchSubmit}
                     />
                   </Grid>
                 </Grid>

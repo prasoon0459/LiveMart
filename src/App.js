@@ -13,6 +13,7 @@ import Test from './Components/Search/Test';
 import Search from './Components/Search/Search';
 import Product from './Components/Product/Product';
 import ChangePwd from './Components/Auth/ChangePwd';
+import Categories from './Components/Categories/Categories';
 
 
 const App =() =>{
@@ -54,6 +55,10 @@ const App =() =>{
             <Route path='/search'>   
             {getHeader()}
               <Search></Search>
+            </Route>
+            <Route path='/categories'>   
+            {getHeader()}
+              <Categories></Categories>
             </Route>
             <Route path='/product'>   
             {getHeader()}

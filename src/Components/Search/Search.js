@@ -10,7 +10,7 @@
     import Imgix from "react-imgix";
     import Item from "../../Data/Item";
     import theme from "../../theme";
-    import {NavLink, useHistory} from 'react-router-dom'
+    import {NavLink, useHistory, useLocation} from 'react-router-dom'
     
     const {
         makeStyles,
@@ -79,8 +79,12 @@
     });
     
     const Search = () => {
+        const location = useLocation();
+        const search_query=new URLSearchParams(location.search)
+        console.log(search_query)
         const classes = useStyles();
-        const history = useHistory();
+        // const history = useHistory();    
+
         let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
         const items = [a, a, a, a, a, a, a, a, a, a,a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
 
