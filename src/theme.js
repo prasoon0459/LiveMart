@@ -18,7 +18,8 @@ const theme = createMuiTheme({
     text:{
       primary: "#2b303a",
       secondary: "#d64933",
-      blueText: '#0000ff'
+      blueText: '#0000ff',
+      white:'#ffffff'
     }
   },
   typography:{
