@@ -128,15 +128,15 @@ const Header = () => {
   const [locData,setLocData]=React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
-  React.useEffect(() => {
-    try{
-    fetch('http://api.ipstack.com/check?access_key=bcfa1bf099d004351030d32ab043f865')
-    .then(res=>res.json()).then(json=>setLocData(json));
-    }catch(error){
-      console.log(error);
-    }
-  },[]);
-    console.log(locData);
+  // React.useEffect(() => {
+  //   try{
+  //   fetch('http://api.ipstack.com/check?access_key=bcfa1bf099d004351030d32ab043f865')
+  //   .then(res=>res.json()).then(json=>setLocData(json));
+  //   }catch(error){
+  //     console.log(error);
+  //   }
+  // },[]);
+  //   console.log(locData);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -175,7 +175,7 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to="/myProfile">My Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
