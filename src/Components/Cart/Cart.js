@@ -25,7 +25,7 @@ import Quantity from "../../utils/Quantity";
 
 const useStyles = makeStyles({
     root: {
-        padding: (props) => props.mobile ?theme.spacing(0, 0, 0): theme.spacing(3,8,3),
+        padding: (props) => props.mobile || props.sm?theme.spacing(0, 0, 0): theme.spacing(3,8,3),
       },
       itemsContainer:{
         padding:(props)=>props.sm||props.mobile?theme.spacing(2,0,0): theme.spacing(4,5,0),
@@ -34,8 +34,8 @@ const useStyles = makeStyles({
         margin:theme.spacing(0,0,2)
       },
       cartItem:{
-          width:'100%',
-        margin:theme.spacing(0,1,0)
+        width:'100%',
+        padding:theme.spacing(0,1,0)
       },
       icon:{
         width:'40px',
@@ -49,13 +49,13 @@ const useStyles = makeStyles({
       },
       cartItemsContainer:{
         width:'100%',
-        margin:theme.spacing(2,2,2),
+        margin:(props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(2,2,2),
         padding:theme.spacing(2,2,2),
       },
       title:{
         fontWeight:500,
         letterSpacing:2,
-        margin:(props) => props.mobile ?theme.spacing(2,1,2): theme.spacing(2,2,1),
+        margin:(props) => props.mobile ?theme.spacing(1,1,1): theme.spacing(2,2,1),
         padding: (props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
       },
       categoryItem:{
@@ -72,17 +72,20 @@ const useStyles = makeStyles({
           fontSize: '16'
       },
       cartItemRemoveButton:{
-        margin:theme.spacing(1,1,1)
+        margin:(props) => props.mobile ?theme.spacing(1,1,0):theme.spacing(1,1,1)
       },
       cartItemSellerName:{
           fontSize: '16',
-          margin:theme.spacing(1,0,1),
+          margin:(props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(1,0,1),
           color:theme.palette.text.hint
       },
       cartItemPrice:{
           fontWeight:600,
           margin:theme.spacing(2,0,2), 
           fontSize:'16',
+      },
+      cartitemQty:{
+          margin:(props) => props.mobile ?theme.spacing(1,1,0):theme.spacing(1,1,1)
       },
       cartItemQtyInfo:{
           color:theme.palette.text.hint,
@@ -111,6 +114,12 @@ const useStyles = makeStyles({
       },
       checkoutBtn:{
         margin:theme.spacing(2,0,2)
+      },
+      itemDetails:{
+          margin:(props) => props.mobile ?theme.spacing(2,0,0):theme.spacing(0,0,0)
+      },
+      itemCard:{
+          padding:theme.spacing(0,2,0)
       }
 
 })
@@ -120,6 +129,7 @@ const Cart = () =>{
     const items = [1,2,3]
     const [couponExpanded, setCouponExpanded]=React.useState(false);
     const screen = UseWindowDimensions().screen;
+    console.log(screen)
     const mobile= screen==='xs'
     const sm= screen==='sm'
 
@@ -141,8 +151,8 @@ const Cart = () =>{
 
                 <Divider></Divider>
 
-                <Grid container direction='row'>
-                    <Grid item xs={8}>
+                <Grid container direction='row' justify='center'>
+                    <Grid item xs={12} md={8}>
                         <Grid container>
                             <Box className={classes.cartItemsContainer} >
                                 <Typography variant='subtitle1' align='left' className={classes.cartInfoText}>Your Cart contains 3 item(s) </Typography>
@@ -150,8 +160,8 @@ const Cart = () =>{
                                     {items.map((item)=>(
                                         <Grid item className={classes.cartItem}>
                                             
-                                            <Grid container direction='row' alignItems='flex-start'spacing={3}>
-                                                <Grid item xs={3}>
+                                            <Grid container direction='row' alignItems='flex-start'>
+                                                <Grid item xs={12} sm={4} className={classes.itemCard}>
                                                 <Card >
                                                     <CardActionArea>
                                                         <CardContent>
@@ -163,20 +173,20 @@ const Cart = () =>{
                                                     </CardActionArea>
                                                 </Card>
                                                 </Grid>
-                                                <Grid item xs={9}>
-                                                    <Grid container direction='column' alignItems='flex-start'>
+                                                <Grid item xs={12} sm={8}>
+                                                    <Grid container direction='column' alignItems='flex-start' className={classes.itemDetails}>
                                                         
-                                                        <Typography variant='h5' className={classes.cartItemTitle}>Kurkure Masala Munch</Typography>
+                                                        <Typography variant='h5' align='left' className={classes.cartItemTitle}>Kurkure Masala Munch</Typography>
                                                         <Typography variant='subtitle1' className={classes.cartItemVariant}>100g</Typography>
                                                         <Typography variant='subtitle1' className={classes.cartItemSellerName}>by Agarwal General Store</Typography>
                                                         <Grid container direction='row' width='100%' alignItems='flex-start'>
-                                                            <Button variant='outlined' 
+                                                            <Button variant='outlined'  
                                                                 className={classes.cartItemRemoveButton} 
                                                                 startIcon={<DeleteOutlined  />}>
                                                                     Remove Item
                                                             </Button>
-                                                            <Grid item>
-                                                                <Grid container direction='column' alignItems='flex-start'>
+                                                            <Grid item >
+                                                                <Grid container direction='column' alignItems='flex-start' className={classes.cartitemQty}>
                                                                     <Grid item xs={12}>
                                                                         <Quantity></Quantity>
                                                                     </Grid>
@@ -195,7 +205,7 @@ const Cart = () =>{
                             </Box>
                         </Grid>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} md ={4}>
                         <Grid container direction='column'>
                         <Paper className={classes.billPaper}>
                             <Grid container direction='column'>

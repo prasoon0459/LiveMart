@@ -4,7 +4,6 @@ import theme from "../theme"
 
 const useStyles=makeStyles({
     root:{
-        margin:theme.spacing(1,1,1)
     },
     btn:{
         paddingLeft:theme.spacing(0),
