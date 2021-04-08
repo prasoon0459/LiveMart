@@ -16,6 +16,7 @@ import ChangePwd from './Components/Auth/ChangePwd';
 import Categories from './Components/Categories/Categories';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
+import Reviews from './Components/Product/Reviews';
 
 
 const App =() =>{
@@ -59,9 +60,9 @@ const App =() =>{
               <Cart></Cart>
             </Route>
 
-            <Route path='/qty'>
+            <Route path='/rvw'>
               
-            <Quantity></Quantity>
+            <Reviews></Reviews>
             </Route>
 
             <Route path='/search'>   
