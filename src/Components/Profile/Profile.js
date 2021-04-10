@@ -13,10 +13,14 @@ import ReactRoundedImage from 'react-rounded-image'
 import Avat from '../../img/avatar.jpg';
 const useStyles = makeStyles((theme) => ({
   roots :{
-    margin:theme.spacing(5)
+      margin:`calc(1em + ${theme.spacing(1)}px)`,
   },
   paper:{
-      height:'80vh',
+    height:'100vh',
+    flex:'0',
+  //   [theme.breakpoints.down("sm")]: {
+  //     width: "12vh",
+  //  },
   },
   floatingLabelFocusStyle: {
     color: theme.palette.text.hint,
@@ -26,15 +30,28 @@ const useStyles = makeStyles((theme) => ({
     width: theme.spacing(15),
     height: theme.spacing(15),
     backgroundColor: theme.palette.secondary.main,
+    [theme.breakpoints.down("xs")]: {
+      marginLeft: theme.spacing(1),
+      width: "auto",
+      height:"auto"
   },
+},
   text:{
       padding:theme.spacing(2),
-      margin:theme.spacing(0,0,3,0),
+      margin:theme.spacing(0,0,3,3),
       backgroundImage: `url(${Coin})`,
-      height:'20vh'
+      height:'20vh',
+      // [theme.breakpoints.down("sm")]: {
+      //   marginLeft: theme.spacing(1),
+      //   height:"auto"
+      // },
   },
-  name:{
-    margin: theme.spacing(0,0,0,0),
+  roundedImage:{
+    margin:theme.spacing(2)
+  },
+  left:{
+    padding:theme.spacing(1),
+    textAlign:'left'
   }
 }));
 
@@ -45,30 +62,30 @@ export default function Profile() {
       <CssBaseline />
       <div className={classes.roots}>
         <Grid container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
                 <Paper className={classes.paper}>
-                  <Grid container spacing={2} direction="column" alignItems='baseline'>
+                  <Grid container spacing={2} direction="column" justify='flex-start' alignItems='baseline' className={classes.left}>
                     <Grid item xs={12}>
                       <Avatar alt="Harsh Heda" src={Avat} className={classes.avatar} />
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography className={classes.name}>Name: John Doe</Typography>
+                      <Typography>Name: John Doe</Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography className={classes.name}>Contact No: 0123456789</Typography>
+                      <Typography>Contact No: 0123456789</Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <Typography className={classes.name}>Address: BITS PILANI HYDERABAD CAMPUS</Typography>
+                      <Typography>Address: BITS PILANI HYDERABAD CAMPUS</Typography>
                     </Grid>
                   </Grid>
                 </Paper>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={8}>
                 <Grid item container className={classes.text} xs={12} spacing={3} justify='center' alignItems='center'>
-                    <Typography component='h1' variant='h6'>Wallet Balance:</Typography>
+                    <Typography component='h1' variant='h6'>Wallet Balance: $10</Typography>
                 </Grid>
-                <Grid container spacing={3} justify='space-evenly'>
-                <Grid item container direction="column" alignItems='center' xs={3}>
+                <Grid container spacing={3} justify='space-evenly' >
+                <Grid item container direction="column" alignItems='center' xs={6} sm={3} className={classes.roundedImage}>
                 <ReactRoundedImage
                                     image={Wallet}
                                     imageWidth='100'
@@ -80,7 +97,7 @@ export default function Profile() {
                 />
                 <Typography>Wallet History</Typography>
                 </Grid>
-                <Grid item container direction="column" alignItems='center' xs={3}>
+                <Grid item container direction="column" alignItems='center' xs={6} sm={3} className={classes.roundedImage}>
                 <ReactRoundedImage
                                     image={Order}
                                     imageWidth='100'
@@ -93,7 +110,7 @@ export default function Profile() {
                 />
                 <Typography>Your Orders</Typography>
                 </Grid>
-                <Grid item container direction="column" alignItems='center' xs={3}>
+                <Grid item container direction="column" alignItems='center' xs={6} sm={3} className={classes.roundedImage}>
                 <ReactRoundedImage
                                     image={Review}
                                     imageWidth='100'
