@@ -14,7 +14,9 @@ import Search from './Components/Search/Search';
 import Product from './Components/Product/Product';
 import ChangePwd from './Components/Auth/ChangePwd';
 import Categories from './Components/Categories/Categories';
-import Profile from './Components/Profile/Profile'
+import Cart from './Components/Cart/Cart';
+import Quantity from './utils/Quantity'
+import Reviews from './Components/Product/Reviews';
 
 
 const App =() =>{
@@ -57,6 +59,16 @@ const App =() =>{
             {getHeader()} 
               <Profile/>
             </Route>
+            <Route path='/mycart'>   
+            {getHeader()}
+              <Cart></Cart>
+            </Route>
+
+            <Route path='/rvw'>
+              
+            <Reviews></Reviews>
+            </Route>
+
             <Route path='/search'>   
             {getHeader()}
               <Search/>
