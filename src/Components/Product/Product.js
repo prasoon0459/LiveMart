@@ -1,9 +1,12 @@
 import { Box, Button, Divider, Grid, IconButton, makeStyles, MenuItem, Paper, TextField, Typography } from "@material-ui/core"
-import { AddOutlined, AddShoppingCartOutlined, Remove, RemoveOutlined, ShoppingCartOutlined } from "@material-ui/icons"
+import { AddOutlined, AddShoppingCartOutlined, Image, Remove, RemoveOutlined, ShoppingCartOutlined } from "@material-ui/icons"
 import Rating from '@material-ui/lab/Rating'
 import theme from "../../theme"
 import React from 'react'
 import UseWindowDimensions from '../../utils/UseWindowDimensions'
+import kurkure from '../../img/kurkure.jpeg'
+import Imgix from "react-imgix"
+import Reviews from "./Reviews"
 
 const useStyles= makeStyles({
     root:{
@@ -32,17 +35,17 @@ const useStyles= makeStyles({
         padding:theme.spacing(1,1,1),
         margin:theme.spacing(1,1,1)
     },
-    mainImage:{
+    mainImagePaper:{
         width:'350px',
         height:'350px',
         margin:theme.spacing(1,1,1),
+        padding:theme.spacing(3,3,3)
     },
     productInfo:{
         padding:theme.spacing(2,2,2)
     },
     itemName:{
         fontWeight:800,
-        color:theme.palette.text.blueText
     },
     brandName:{
         color:theme.palette.text.hint,
@@ -59,7 +62,7 @@ const useStyles= makeStyles({
         marginBottom:theme.spacing(2)
     },
     detailsBox:{
-        margin:theme.spacing(4,2,2)
+        margin:theme.spacing(4,2,0)
     },
     buttonAddtoCart:{
         padding:theme.spacing(1,2,1),
@@ -75,13 +78,15 @@ const useStyles= makeStyles({
     },
     Divider:{
         margin:theme.spacing(2,0,2)
-    }
+    },
 })
 
 const Product = () => {
-    const classes = useStyles()
     const [variant, setVariant]=React.useState('200mg');
     const screen= UseWindowDimensions().screen;
+    const mobile=screen==='xs'
+
+    const classes = useStyles(mobile)
     const variants=['100mg','200mg','300mg','400mg']
     const handleProductVariantChange = (event) => {
         setVariant(event.target.value)
@@ -122,7 +127,17 @@ const Product = () => {
                                 </Grid>
                             </Grid>
                             <Grid item >
-                                <Paper elevation={2} className={classes.mainImage} style={{backgroundColor: '   #ffc3a0'}}></Paper>
+                                <Paper elevation={2} className={classes.mainImagePaper} >
+                                  <Imgix
+                                    className={classes.mainImage}
+                                    src={kurkure}
+                                    imgixParams={{
+                                        fit: "fit",
+                                        fm: "svg"
+                                    }}
+                                    height='100%'
+                                  ></Imgix>
+                                </Paper>
                             </Grid>
                     </Grid>
                 </Grid>
@@ -177,6 +192,7 @@ const Product = () => {
                 </Grid>
                 
             </Grid>
+            <Reviews></Reviews>
         </div>
     )
 

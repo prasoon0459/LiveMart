@@ -9,16 +9,19 @@ const theme = createMuiTheme({
     },
     primary: {
       main: "#2b303a",
-      light: '#bfc0c3'
+      light: '#bfc0c3',
+      star: '#ffb400'
     },
     secondary: {
       main: "#d64933",
       light: '#df6f5d'
     },
     text:{
-      primary: "#2b303a",
+      primary: "#050505",
       secondary: "#d64933",
-      blueText: '#0000ff'
+      blueText: '#0000ff',
+      white:'#ffffff',
+      seen:'#65676b'
     }
   },
   typography:{
