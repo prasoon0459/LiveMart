@@ -17,6 +17,8 @@ import Categories from './Components/Categories/Categories';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
 import Reviews from './Components/Product/Reviews';
+import Notifs from './Components/Notifs/Notifs';
+import Orders from './Components/Order/Orders';
 
 
 const App =() =>{
@@ -60,11 +62,13 @@ const App =() =>{
               <Cart></Cart>
             </Route>
 
-            <Route path='/rvw'>
-              
-            <Reviews></Reviews>
+            <Route path='/test'>
+              <Notifs></Notifs>
             </Route>
-
+            <Route path='/orders'>
+              {getHeader()}
+              <Orders></Orders>
+            </Route>
             <Route path='/search'>   
             {getHeader()}
               <Search></Search>
