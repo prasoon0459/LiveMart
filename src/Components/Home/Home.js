@@ -9,6 +9,7 @@ import MainSlider from "./MainSlider";
 import CategoryComp from "./CategoryComp";
 import MostPurchased from "./MostPurchased";
 import TopBrand from "./TopBrands";
+import ActiveOrders from "./ActiveOrders";
 
 const useStyles = makeStyles({
   root: {
@@ -62,7 +63,8 @@ const classes = useStyles();
   return (
     <div className={classes.root}>
       <MainSlider images={images} settings={settings}></MainSlider>
-      <MostPurchased ></MostPurchased>
+      <ActiveOrders></ActiveOrders>
+      {/* <MostPurchased ></MostPurchased> */}
       <CategoryComp categories={categories}></CategoryComp>
       <TopBrand categories={categories}></TopBrand>
       <Grid container className={classes.featureContainer}>
