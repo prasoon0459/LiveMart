@@ -1,5 +1,5 @@
 import { Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core"
-import { AccountCircle, ChevronRight } from "@material-ui/icons";
+import { AccountCircle, ChevronRight, LocationOn } from "@material-ui/icons";
 import ReactRoundedImage from 'react-rounded-image'
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
@@ -83,7 +83,7 @@ const ActiveOrders= () =>{
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Button variant='outlined' color='secondary' fullWidth endIcon={<ChevronRight></ChevronRight>}>View Order</Button>
+                                <Button variant='outlined' color='secondary' fullWidth endIcon={<LocationOn></LocationOn>}>Track Order</Button>
                             </Grid>
                         </Paper>
                     </Grid>

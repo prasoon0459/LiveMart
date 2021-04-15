@@ -7,6 +7,7 @@ import UseWindowDimensions from '../../utils/UseWindowDimensions'
 import kurkure from '../../img/kurkure.jpeg'
 import Imgix from "react-imgix"
 import Reviews from "./Reviews"
+import DialogShop from "../Home/DialogShop"
 
 const useStyles= makeStyles({
     root:{
@@ -85,9 +86,14 @@ const Product = () => {
     const [variant, setVariant]=React.useState('200mg');
     const screen= UseWindowDimensions().screen;
     const mobile=screen==='xs'
-
+    const [showDialog, setShowDialog] = React.useState(false)
     const classes = useStyles(mobile)
     const variants=['100mg','200mg','300mg','400mg']
+
+    const handleDialog = () => {
+        setShowDialog(!showDialog)
+    }
+
     const handleProductVariantChange = (event) => {
         setVariant(event.target.value)
     }
@@ -179,6 +185,7 @@ const Product = () => {
                                 <Button color='secondary' variant="contained" 
                                 className={classes.buttonAddtoCart}
                                 fullWidth
+                                onClick={handleDialog}
                                 endIcon={<ShoppingCartOutlined></ShoppingCartOutlined>}>
                                     <Typography className={classes.textAddtoCart}>Add to Cart</Typography>
                                 </Button>
@@ -190,9 +197,10 @@ const Product = () => {
                         </Box>
                     </Grid>                                        
                 </Grid>
-                
             </Grid>
             <Reviews></Reviews>
+
+        {showDialog?<DialogShop handleDialog={handleDialog}/>:null}
         </div>
     )
 
