@@ -7,12 +7,14 @@ import {
     makeStyles,
     Typography,
   } from "@material-ui/core";
+  import React from 'react'
   import { AddShoppingCartOutlined, LinearScale } from "@material-ui/icons";
   import { Slider } from "infinite-react-carousel/lib";
   import Imgix from "react-imgix";
   import Item from "../../Data/Item";
   import theme from "../../theme";
-  import UseWindowDimensions from '../../utils/UseWindowDimensions'
+  import UseWindowDimensions from '../../utils/UseWindowDimensions';
+  import DialogShop from './DialogShop';
 
   const useStyles = makeStyles({
     root: {
@@ -57,9 +59,11 @@ import {
     // const isMobile = useMediaQuery(theme.breakpoints.down('xs'), {
     //     defaultMatches: true
     // });
+
     const {width, height, screen} = UseWindowDimensions();
     let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
     const items = [a, a, a, a, a, a, a, a, a, a];
+    const [showDialog,setShowDialog]=React.useState(false);
     const mobile= screen==='xs'
     const itemSettings = {
       arrows: true,
@@ -67,6 +71,9 @@ import {
       arrowsBlock: false,
     };
     const classes = useStyles(mobile);
+    const handleDialog =()=>{
+      setShowDialog(!showDialog);
+    }
     return (
       <div>
         <Grid container direction="column" className={classes.root}>
@@ -112,8 +119,7 @@ import {
                                 </Grid>
                             </Box>
                             <Box >
-                                <IconButton><AddShoppingCartOutlined  color='secondary'></AddShoppingCartOutlined></IconButton>
-                                
+                                <IconButton onClick={handleDialog}><AddShoppingCartOutlined  color='secondary'></AddShoppingCartOutlined></IconButton>
                             </Box>
                         </Box>
                       </Grid>
@@ -123,6 +129,8 @@ import {
             ))}
           </Slider>
         </Grid>
+        {console.log(showDialog)}
+        {showDialog?<DialogShop handleDialog={handleDialog}/>:null}
       </div>
     );
   };

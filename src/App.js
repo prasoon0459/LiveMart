@@ -14,12 +14,12 @@ import Search from './Components/Search/Search';
 import Product from './Components/Product/Product';
 import ChangePwd from './Components/Auth/ChangePwd';
 import Categories from './Components/Categories/Categories';
+import Profile from './Components/Profile/Profile;
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
 import Reviews from './Components/Product/Reviews';
 import Notifs from './Components/Notifs/Notifs';
 import Orders from './Components/Order/Orders';
-
 
 const App =() =>{
     const screen = UseWindowDimensions().screen;
@@ -52,10 +52,14 @@ const App =() =>{
           <Switch>
           <Route path='/filter'>
           {getHeader()}   
-              <Filter></Filter>
+              <Filter/>
             </Route>
             <Route path='/change_pwd'>
-              <ChangePwd></ChangePwd>
+              <ChangePwd/>
+            </Route>
+            <Route path='/myProfile'>
+            {getHeader()} 
+              <Profile/>
             </Route>
             <Route path='/mycart'>   
             {getHeader()}
@@ -71,28 +75,28 @@ const App =() =>{
             </Route>
             <Route path='/search'>   
             {getHeader()}
-              <Search></Search>
+              <Search/>
             </Route>
             <Route path='/categories'>   
             {getHeader()}
-              <Categories></Categories>
+              <Categories/>
             </Route>
             <Route path='/product'>   
             {getHeader()}
-              <Product></Product>
+              <Product/>
             </Route>
             <Route path='/login'>   
-              <SignIn></SignIn>
+              <SignIn/>
             </Route>
             <Route path='/signup'>
-              <SignUp></SignUp>
+              <SignUp/>
             </Route>
             <Route path='/forgot_pwd'>
-              <ForgotPassword></ForgotPassword>
+              <ForgotPassword/>
             </Route>
             <Route path='/'>
             {getHeader()}
-              <Home></Home>
+              <Home/>
             </Route>
           </Switch>
           <Box pt={3} pb={3}>

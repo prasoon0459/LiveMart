@@ -125,8 +125,18 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [locData,setLocData]=React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+
+  // React.useEffect(() => {
+  //   try{
+  //   fetch('http://api.ipstack.com/check?access_key=bcfa1bf099d004351030d32ab043f865')
+  //   .then(res=>res.json()).then(json=>setLocData(json));
+  //   }catch(error){
+  //     console.log(error);
+  //   }
+  // },[]);
+  //   console.log(locData);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -165,6 +175,7 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      <MenuItem onClick={handleMenuClose} component={NavLink} to="/myProfile">My Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
       <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
@@ -192,6 +203,7 @@ const Header = () => {
                     </div>
                     <InputBase
                       placeholder="Select City"
+                      defaultValue={locData!=null?locData.city:""}
                       classes={{
                         root: classes.inputRootLocation,
                         input: classes.inputInputLocation,
