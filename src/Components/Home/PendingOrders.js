@@ -43,24 +43,21 @@ const useStyles=makeStyles({
     },
     deliveryPersonContact:{
         margin:theme.spacing(0,1,0)
-    },
-    shopName:{
-        margin:theme.spacing(0,1,0)
     }
 
 })
 
-const ActiveOrders= () =>{
+const PendingOrders= () =>{
     const screen = UseWindowDimensions().screen;
     const mobile= screen==='xs'
     const sm= screen==='sm'
     const classes= useStyles({mobile:mobile, sm:sm});
-    const orders = [1,2,];
+    const orders = [1,2,3,4];
 
     return (
         <div className={classes.root}>
             <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
-                YOUR RECENT PURCHASES
+                PENDING ORDERS
             </Typography>
             <Grid  container direction='row'>
                 {orders.map(()=>(
@@ -68,7 +65,6 @@ const ActiveOrders= () =>{
                         <Paper elevation={3} className={classes.itemRoot}>
                             <Grid container direction='column' >
                                 <Typography variant='h6' align='left' className={classes.itemTitle}>Lifeboy Soap + 3 more items</Typography>
-                                <Typography align='left' className={classes.shopName}>M/s AGARWAL GENERAL STORE</Typography>
                                 <Typography align='left' className={classes.itemOrderedDate}>Ordered on : 23rd April, 2021</Typography>
                                 <Typography align='left' className={classes.itemOrderedStatus}>Order Status : In Transit</Typography>
                                 <Typography align='left' className={classes.itemExpectedDelivery}>Expected Delivery: 24th April, 2021</Typography>
@@ -98,4 +94,4 @@ const ActiveOrders= () =>{
     )
     
 }
-export default ActiveOrders;
+export default PendingOrders;
