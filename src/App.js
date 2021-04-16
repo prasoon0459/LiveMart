@@ -31,7 +31,6 @@ const App =() =>{
     const [token, setToken] = React.useState("");
 
     const handleToken = (props) => {
-      // console.log(props):
       setToken(props);
     }
 
@@ -100,11 +99,8 @@ const App =() =>{
               <Product/>
             </Route>
             <Route path='/login'>   
-<<<<<<< HEAD
               <SignIn handleToken={handleToken}></SignIn>
-=======
               <SignIn/>
->>>>>>> f6672c77b45b5d8bc7486cc46b5b7eb69d1142c8
             </Route>
             <Route path='/signup'>
               <SignUp/>
