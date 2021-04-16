@@ -17,17 +17,22 @@ import Categories from './Components/Categories/Categories';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
 import Reviews from './Components/Product/Reviews';
+import React from "react";
 
 
 const App =() =>{
     const screen = UseWindowDimensions().screen;
     const mobileHeader= screen==='sm'||screen==='xs'
+    const [token, setToken] = React.useState("");
 
+    const handleToken = (props) => {
+      // console.log(props):
+      setToken(props);
+    }
 
     function getHeader() {
       return mobileHeader?<HeaderMobile/>:<Header/> 
     }
-
 
     function Copyright() {
       return (
@@ -45,8 +50,6 @@ const App =() =>{
     return (
       <BrowserRouter>  
         <div className="App">
-
-          
           <Switch>
           <Route path='/filter'>
           {getHeader()}   
@@ -78,7 +81,7 @@ const App =() =>{
               <Product></Product>
             </Route>
             <Route path='/login'>   
-              <SignIn></SignIn>
+              <SignIn handleToken={handleToken}></SignIn>
             </Route>
             <Route path='/signup'>
               <SignUp></SignUp>

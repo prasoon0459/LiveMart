@@ -14,6 +14,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { NavLink } from "react-router-dom";
 import { Hidden } from "@material-ui/core";
+import axios from "axios";
+import { useHistory } from "react-router-dom";
+import serverUrl from "../../serverURL";
+var FormData = require('form-data');
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,14 +45,76 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
   const classes = useStyles();
 
   const [pwdVerified, setPwdVerified] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState(0);
+  const [recOtp, setRecOtp] = useState(0);
+  const [token, setToken] = useState("");
+
+  // const handleToken = () => {
+  //   props.handleToken(token);
+  // }
 
   const handleSendOTP = () => {
+    var data = new FormData();
+    data.append('email', email);
+    var config = {
+      method: 'post',
+      url: serverUrl+'/otp/',
+      data : data
+    };
+    axios(config)
+    .then(function (response) {
+      // console.log(JSON.stringify(response.data));
+      setRecOtp(response.data.otp);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     setPwdVerified(true);
   };
+
+  const history = useHistory();
+
+  const handleSignIn = () => {
+    if (otp == recOtp) {
+      var data2 = new FormData();
+      data2.append('email', email);
+      data2.append('password', password);
+
+      var config2 = {
+        method: 'post',
+        url: serverUrl+'/account/login/',
+        data : data2
+      };
+
+      axios(config2)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        // setToken(response.data.token);
+        props.handleToken(response.data.token);
+        history.push("/");
+      }).catch(function (error) {
+        console.log(error);
+      });
+    } else {
+      console.log("OTP Mismatch!")
+    }
+  }
+
+  const handleOtp = (e) => {
+    setOtp(parseInt(e.target.value));
+  }
+  const handleMail = (e) => {
+    setEmail(e.target.value);
+  }
+  const handlePassword = (e) => {
+    setPassword(e.target.value);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -75,6 +141,7 @@ export default function SignIn() {
             }}
             autoComplete="email"
             autoFocus
+            onChange={handleMail}
           />
           <TextField
             variant="outlined"
@@ -90,6 +157,7 @@ export default function SignIn() {
             InputLabelProps={{
               className: classes.floatingLabelFocusStyle,
             }}
+            onChange={handlePassword}
           />
           <Button
             fullWidth
@@ -134,13 +202,15 @@ export default function SignIn() {
                 InputLabelProps={{
                   className: classes.floatingLabelFocusStyle,
                 }}
+                onChange={handleOtp}
               />
               <Button
-                type="submit"
+                // type="submit"
                 fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={handleSignIn}
               >
                 Sign In
               </Button>
@@ -152,4 +222,4 @@ export default function SignIn() {
       </div>
     </Container>
   );
-}
+};
