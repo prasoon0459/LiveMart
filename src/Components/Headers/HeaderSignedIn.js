@@ -17,8 +17,11 @@ import React from "react";
 import { NavLink , useHistory,} from "react-router-dom";
 import {
   AccountCircle,
+  ExitToApp,
+  Folder,
   LocationOnOutlined,
   Notifications,
+  Person,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
@@ -104,7 +107,9 @@ const useStyles = makeStyles({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     width: "12ch"
   },
-
+  menuIcon:{
+    margin:theme.spacing(0,1,0)
+  },
   menuButton: {
     marginRight: theme.spacing(10),
   },
@@ -175,9 +180,12 @@ const Header = () => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose} component={NavLink} to="/myProfile">My Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to="/myProfile">
+        <Person className={classes.menuIcon}/><Typography>My Profile</Typography></MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
+        <Folder className={classes.menuIcon}></Folder><Typography>My Orders</Typography></MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <ExitToApp className={classes.menuIcon}></ExitToApp><Typography>Logout</Typography></MenuItem>
     </Menu>
   );
 

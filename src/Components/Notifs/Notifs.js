@@ -4,9 +4,13 @@ import theme from "../../theme"
 import UseWindowDimensions from '../../utils/UseWindowDimensions'
 
 const useStyles=makeStyles({
+    root:{
+        padding:(props) => props.mobile ?theme.spacing(0,1,0):theme.spacing(0,2,0)
+    },
     notifPaper:{
+        width:'100%',
         maxWidth:'992px',
-        margin:theme.spacing(2,2,2)
+        margin:(props) => props.mobile ?theme.spacing(1,0,1):theme.spacing(2,0,2)
     },
     title:{
         margin:theme.spacing(1,2,1)
@@ -35,13 +39,14 @@ const useStyles=makeStyles({
 
 const Notifs = () =>{
 
-    const classes = useStyles()
 
     const notifs = [1,2,3,4,5,6,7,8]
     const mobile= UseWindowDimensions().mobile
 
+    const classes = useStyles({mobile:mobile})
+
     return (
-        <Grid container direction='column' alignItems='center' >
+        <Grid container direction='column' className={classes.root} alignItems='center' >
             <Grid container direction='row' justify='center' alignItems='center'>
                 <NotificationsActiveSharp></NotificationsActiveSharp>
                 <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
