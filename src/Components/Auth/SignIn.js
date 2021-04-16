@@ -17,6 +17,13 @@ import { Hidden } from "@material-ui/core";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import serverUrl from "../../serverURL";
+import {
+  minMaxLength,
+  validEmail,
+  passwordStrength,
+  userExists,
+} from './validation';
+
 var FormData = require('form-data');
 
 const useStyles = makeStyles((theme) => ({
@@ -69,7 +76,7 @@ export default function SignIn(props) {
     };
     axios(config)
     .then(function (response) {
-      // console.log(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data));
       setRecOtp(response.data.otp);
     })
     .catch(function (error) {
@@ -85,7 +92,7 @@ export default function SignIn(props) {
       var data2 = new FormData();
       data2.append('email', email);
       data2.append('password', password);
-
+      // console.log(data2);
       var config2 = {
         method: 'post',
         url: serverUrl+'/account/login/',
@@ -94,12 +101,14 @@ export default function SignIn(props) {
 
       axios(config2)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
-        // setToken(response.data.token);
-        props.handleToken(response.data.token);
-        history.push("/");
+          delete formErrors['password'];
+          // console.log(JSON.stringify(response.data));
+          // setToken(response.data.token);
+          props.handleToken(response.data.token);
+          history.push("/");
       }).catch(function (error) {
         console.log(error);
+        formErrors.password = "Incorrect Credentials";
       });
     } else {
       console.log("OTP Mismatch!")
@@ -110,11 +119,105 @@ export default function SignIn(props) {
     setOtp(parseInt(e.target.value));
   }
   const handleMail = (e) => {
-    setEmail(e.target.value);
+    setEmail(e.target.value); 
   }
   const handlePassword = (e) => {
     setPassword(e.target.value);
   }
+
+  const [role, setRole] = useState('customer');
+
+  const  [user, setUser] = useState({});
+  const  [formErrors, setFormErrors] = useState({});
+  
+  const handleChanges= (e)=>{
+    const { name, value } = e.target;
+    let currentFormErrors = formErrors;
+    switch (name) {
+      // case 'name':
+      //   console.log(value);
+      //   if (minMaxLength(value, 3)) {
+      //     currentFormErrors[
+      //       name
+      //     ] = `Name should have minimum 3 characters`;
+      //   } else {
+      //     delete currentFormErrors[name];
+      //     setUser({ ...user, firstName: value });
+      //   }
+                  
+      //   break;
+      case 'email':
+        if (!value || validEmail(value)) {
+          currentFormErrors[name] = `Email address is invalid`;
+        } else {
+          userExists(value).then((result) => {
+            if (result) {
+              currentFormErrors[name] =
+                'The email is already registered. Please use a different email.';
+            } else {
+              delete currentFormErrors[name];
+              setUser({ ...user, email: value });
+            }
+          });
+      }
+                  
+        break;
+      // case 'password':if (minMaxLength(value, 6)) {
+      //   currentFormErrors[name] = 'Password should have minimum 6 characters';
+      // } else if (passwordStrength(value)) {
+      //   currentFormErrors[name] =
+      //     'Password is not strong enough. Include an upper case letter, a number or a special character to make it strong';
+      // } else {
+      //   delete currentFormErrors[name];
+      //   setUser({
+      //     ...user,
+      //     password: value,
+      //   });
+      //   if (user.confirmpassword) {
+      //     validateConfirmPassword(
+      //       value,
+      //       user.confirmpassword,
+      //       currentFormErrors
+      //     );
+      //   }
+      // }         
+      //   break;
+      // case 'confirmpassword':
+      //   let valid = validateConfirmPassword(
+      //     user.password,
+      //     value,
+      //     currentFormErrors
+      //   );
+      //   if (valid) {
+      //     setUser({ ...user, confirmpassword: value });
+      //   }    
+      //   break;
+      default:
+        break;
+    }
+    setFormErrors(currentFormErrors);
+  }
+  function validateConfirmPassword(
+    password,
+    confirmpassword,
+    formErrors
+  ) {
+    formErrors = formErrors || {};
+    if (password !== confirmpassword) {
+      formErrors.confirmpassword =
+        ' Password is not matching';
+      return false;
+    }
+    else if(formErrors.password){
+      formErrors.confirmpassword=formErrors.password
+    } else {
+      delete formErrors.confirmpassword;
+      return true;
+    }
+  }
+   console.log(formErrors);
+  
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -134,15 +237,17 @@ export default function SignIn(props) {
             disabled={pwdVerified}
             fullWidth
             id="email"
+            onBlur={handleChanges}
             label="Email Address"
             name="email"
+            onChange={handleMail}
             InputLabelProps={{
               className: classes.floatingLabelFocusStyle,
             }}
             autoComplete="email"
             autoFocus
-            onChange={handleMail}
           />
+          {formErrors['email']?<Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['email']}</Typography>:null}
           <TextField
             variant="outlined"
             margin="normal"
@@ -153,12 +258,14 @@ export default function SignIn(props) {
             label="Password"
             type="password"
             id="password"
+            onBlur={handleChanges}
             autoComplete="current-password"
             InputLabelProps={{
               className: classes.floatingLabelFocusStyle,
             }}
             onChange={handlePassword}
           />
+          {formErrors['password']?<Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['passsword']}</Typography>:null}
           <Button
             fullWidth
             disabled={pwdVerified}
@@ -166,6 +273,7 @@ export default function SignIn(props) {
             color="primary"
             onClick={handleSendOTP}
             className={classes.submit}
+            disabled={Object.entries(formErrors || {}).length > 0}
           >
             Send OTP
           </Button>

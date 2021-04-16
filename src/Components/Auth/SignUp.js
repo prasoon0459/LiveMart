@@ -16,6 +16,8 @@ import { MenuItem,Menu,List,ListItem,ListItemText } from '@material-ui/core';
 import serverUrl from "../../serverURL";
 import { render } from 'react-dom';
 import axios from "axios";
+import {useHistory} from "react-router-dom";
+
 var FormData = require('form-data');
 
 const roles = [
@@ -64,6 +66,8 @@ export default function SignUp() {
   const [mail, setMail] = useState(''); 
   const [phone, setPhone] = useState('');
 
+  const history = useHistory();
+
   const payload = {
     username: username,
     user_type: role,
@@ -98,7 +102,8 @@ export default function SignUp() {
       };
       axios(config2)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
+        history.push("/login");
       })
       .catch(function (error) {
         console.log(error);

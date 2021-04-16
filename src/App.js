@@ -64,7 +64,7 @@ const App =() =>{
             </Route>
             <Route path='/myProfile'>
               {getHeader()} 
-              <Profile/>
+              <Profile token={token}/>
             </Route>
             <Route path='/mycart'>   
               {getHeader()}
@@ -100,7 +100,6 @@ const App =() =>{
             </Route>
             <Route path='/login'>   
               <SignIn handleToken={handleToken}></SignIn>
-              <SignIn/>
             </Route>
             <Route path='/signup'>
               <SignUp/>
