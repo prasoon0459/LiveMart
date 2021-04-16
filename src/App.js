@@ -17,9 +17,10 @@ import Categories from './Components/Categories/Categories';
 import Profile from './Components/Profile/Profile';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
-import Reviews from './Components/Product/Reviews';
 import Notifs from './Components/Notifs/Notifs';
 import Orders from './Components/Order/Orders';
+import Wallet from './Components/Wallet/Wallet'
+import MyReviews from './Components/MyReview/myReview';
 
 const App =() =>{
     const screen = UseWindowDimensions().screen;
@@ -72,6 +73,14 @@ const App =() =>{
             <Route path='/orders'>
               {getHeader()}
               <Orders></Orders>
+            </Route>
+            <Route path='/reviews'>
+              {getHeader()}
+              <MyReviews></MyReviews>
+            </Route>
+            <Route path='/wallet'>
+              {getHeader()}
+              <Wallet></Wallet>
             </Route>
             <Route path='/search'>   
             {getHeader()}

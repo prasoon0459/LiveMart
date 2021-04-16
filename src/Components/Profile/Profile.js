@@ -1,9 +1,12 @@
 import React from "react";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import { CardActionArea,
+   Divider,
+    Link,
+    makeStyles,
+    Container,
+    Typography,
+    Grid,
+    CssBaseline } from "@material-ui/core";
 import Order from "../../img/order.jfif";
 import Review from "../../img/review.jfif";
 import Wallet from "../../img/wallet.jfif";
@@ -11,8 +14,6 @@ import Coin from "../../img/coins.jpg";
 import ReactRoundedImage from "react-rounded-image";
 import Info from "./info";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import { CardActionArea, Divider, Link } from "@material-ui/core";
-import { NavLink } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   roots: {
@@ -48,13 +49,13 @@ export default function Profile() {
   const history= useHistory()
 
   const handleReviewsClicked =()=>{
-
+    history.push('/reviews')
   }
   const handleOrdersClicked =()=>{
     history.push('/orders')
   }
   const handleWalletHistoryClicked =()=>{
-    
+    history.push('/wallet')
   }
 
   return (
