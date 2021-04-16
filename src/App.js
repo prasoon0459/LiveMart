@@ -14,11 +14,16 @@ import Search from './Components/Search/Search';
 import Product from './Components/Product/Product';
 import ChangePwd from './Components/Auth/ChangePwd';
 import Categories from './Components/Categories/Categories';
+import Profile from './Components/Profile/Profile';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
 import Reviews from './Components/Product/Reviews';
 import React from "react";
 
+import Notifs from './Components/Notifs/Notifs';
+import Orders from './Components/Order/Orders';
+import Wallet from './Components/Wallet/Wallet'
+import MyReviews from './Components/MyReview/myReview';
 
 const App =() =>{
     const screen = UseWindowDimensions().screen;
@@ -51,47 +56,65 @@ const App =() =>{
       <BrowserRouter>  
         <div className="App">
           <Switch>
-          <Route path='/filter'>
-          {getHeader()}   
-              <Filter></Filter>
+            <Route path='/filter'>
+              {getHeader()}   
+              <Filter/>
             </Route>
             <Route path='/change_pwd'>
-              <ChangePwd></ChangePwd>
+              <ChangePwd/>
+            </Route>
+            <Route path='/myProfile'>
+              {getHeader()} 
+              <Profile/>
             </Route>
             <Route path='/mycart'>   
-            {getHeader()}
+              {getHeader()}
               <Cart></Cart>
             </Route>
-
-            <Route path='/rvw'>
-              
-            <Reviews></Reviews>
+            <Route path='/notifs'>
+              {getHeader()}
+              <Notifs></Notifs>
             </Route>
-
+            <Route path='/orders'>
+              {getHeader()}
+              <Orders></Orders>
+            </Route>
+            <Route path='/reviews'>
+              {getHeader()}
+              <MyReviews></MyReviews>
+            </Route>
+            <Route path='/wallet'>
+              {getHeader()}
+              <Wallet></Wallet>
+            </Route>
             <Route path='/search'>   
             {getHeader()}
-              <Search></Search>
+              <Search/>
             </Route>
             <Route path='/categories'>   
             {getHeader()}
-              <Categories></Categories>
+              <Categories/>
             </Route>
             <Route path='/product'>   
             {getHeader()}
-              <Product></Product>
+              <Product/>
             </Route>
             <Route path='/login'>   
+<<<<<<< HEAD
               <SignIn handleToken={handleToken}></SignIn>
+=======
+              <SignIn/>
+>>>>>>> f6672c77b45b5d8bc7486cc46b5b7eb69d1142c8
             </Route>
             <Route path='/signup'>
-              <SignUp></SignUp>
+              <SignUp/>
             </Route>
             <Route path='/forgot_pwd'>
-              <ForgotPassword></ForgotPassword>
+              <ForgotPassword/>
             </Route>
             <Route path='/'>
             {getHeader()}
-              <Home></Home>
+              <Home/>
             </Route>
           </Switch>
           <Box pt={3} pb={3}>

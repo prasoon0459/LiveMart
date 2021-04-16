@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, IconButton, makeStyles, MenuItem, Paper, TextField, Typography } from "@material-ui/core"
-import { AddOutlined, AddShoppingCartOutlined, Image, Remove, RemoveOutlined, ShoppingCartOutlined } from "@material-ui/icons"
+import { AddOutlined, AddSharp, AddShoppingCartOutlined, Image, LocalMall, Remove, RemoveOutlined, RemoveSharp, ShoppingCartOutlined } from "@material-ui/icons"
 import Rating from '@material-ui/lab/Rating'
 import theme from "../../theme"
 import React from 'react'
@@ -7,6 +7,8 @@ import UseWindowDimensions from '../../utils/UseWindowDimensions'
 import kurkure from '../../img/kurkure.jpeg'
 import Imgix from "react-imgix"
 import Reviews from "./Reviews"
+import DialogShop from "../Home/DialogShop"
+import Quantity from "../../utils/Quantity"
 
 const useStyles= makeStyles({
     root:{
@@ -40,6 +42,14 @@ const useStyles= makeStyles({
         height:'350px',
         margin:theme.spacing(1,1,1),
         padding:theme.spacing(3,3,3)
+    },
+    btn:{
+        paddingLeft:theme.spacing(0),
+        paddingRight: theme.spacing(0)
+    },
+    span:{
+        textAlign: 'center',
+        margin:theme.spacing(0,2,0)
     },
     productInfo:{
         padding:theme.spacing(2,2,2)
@@ -85,9 +95,22 @@ const Product = () => {
     const [variant, setVariant]=React.useState('200mg');
     const screen= UseWindowDimensions().screen;
     const mobile=screen==='xs'
-
+    const [showDialog, setShowDialog] = React.useState(false)
     const classes = useStyles(mobile)
     const variants=['100mg','200mg','300mg','400mg']
+    const [quantity, setQuantity]=React.useState(1)
+
+    const handleQuantityIncrease = () => {
+        setQuantity(quantity+1)
+    }
+    const handleQuantityDecrease = () => {
+        setQuantity(quantity-1)
+    }
+
+    const handleDialog = () => {
+        setShowDialog(!showDialog)
+    }
+
     const handleProductVariantChange = (event) => {
         setVariant(event.target.value)
     }
@@ -152,35 +175,51 @@ const Product = () => {
                         </Box>
                         <Typography variant='body1' className={classes.priceText}>$ 72.40</Typography>
                         <Divider width='100%' className={classes.Divider}></Divider>
-                        <Grid container className={classes.variantBox} flexDirection='row' 
+                        <Grid container spacing={2}  className={classes.variantBox} flexDirection='row' 
                             width='100%' justify='flex-start' alignItems='flex-start'>
-                                <TextField
-                                    id="standard-select-currency"
-                                    select
-                                    fullWidth
-                                    label="Variant"
-                                    value={variant}
-                                    variant='outlined'
-                                    InputLabelProps={{
-                                        style: { color: theme.palette.text.primary},
-                                    }}
-                                    className={classes.variantTextField}
-                                    onChange={handleProductVariantChange}
-                                    >
-                                    {variants.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                        {option}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                <Grid item xs ={12} sm={6}>
+                                    <TextField
+                                        id="standard-select-currency"
+                                        select
+                                        fullWidth
+                                        label="Variant"
+                                        value={variant}
+                                        variant='outlined'
+                                        InputLabelProps={{
+                                            style: { color: theme.palette.text.primary},
+                                        }}
+                                        className={classes.variantTextField}
+                                        onChange={handleProductVariantChange}
+                                        >
+                                        {variants.map((option) => (
+                                            <MenuItem key={option} value={option}>
+                                            {option}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                <Grid container direction='column' alignItems='flex-start' className={classes.cartitemQty}>
+                                    <Grid item xs={12}>
+                                    <Grid className={classes.root} container direction='row' className={classes.root} alignItems='center'>
+                                        <Button xs={4} className={classes.btn} onClick={handleQuantityDecrease} variant='outlined'><RemoveSharp></RemoveSharp></Button>
+                                        <span xs={4} className={classes.span}>{quantity}</span>
+                                        <Button xs={4} className={classes.btn} onClick={handleQuantityIncrease} variant='outlined' ><AddSharp></AddSharp></Button>
+                                    </Grid>
+                                    </Grid>
+                                    <Typography className={classes.cartItemQtyInfo} variant='body2'>Note - ({quantity} Nos.)</Typography>
+                                </Grid>
+                                </Grid>
                         </Grid>
+                        
                         <Box className={classes.purchaseBox} width='100%'>
                             <Grid container direction='row' >
                                 <Button color='secondary' variant="contained" 
                                 className={classes.buttonAddtoCart}
                                 fullWidth
-                                endIcon={<ShoppingCartOutlined></ShoppingCartOutlined>}>
-                                    <Typography className={classes.textAddtoCart}>Add to Cart</Typography>
+                                onClick={handleDialog}
+                                endIcon={<LocalMall/>}>
+                                    <Typography className={classes.textAddtoCart}>Select Retailer</Typography>
                                 </Button>
                             </Grid>
                         </Box>
@@ -190,9 +229,10 @@ const Product = () => {
                         </Box>
                     </Grid>                                        
                 </Grid>
-                
             </Grid>
             <Reviews></Reviews>
+
+        {showDialog?<DialogShop handleDialog={handleDialog}/>:null}
         </div>
     )
 
