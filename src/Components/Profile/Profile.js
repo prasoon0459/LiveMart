@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Profile() {
+export default function Profile(props) {
   const classes = useStyles();
   const mobile=UseWindowDimensions().mobile
   const history= useHistory()
@@ -63,7 +63,7 @@ export default function Profile() {
       <CssBaseline />
       <div className={classes.roots}>
       <Grid container direction='row' alignItems='flex-start' spacing={2} className={classes.root}>
-          <Info />
+          <Info token={props.token}/>
           <Grid item xs={12} md={8}>
             <Grid
               item

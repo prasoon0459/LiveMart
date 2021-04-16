@@ -8,6 +8,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import { Edit, UpdateOutlined } from "@material-ui/icons";
 import ReactRoundedImage from "react-rounded-image";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles((theme) => ({
     paper:{
@@ -72,14 +74,48 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
   
-export default function Info() {
+export default function Info(props) {
     const classes = useStyles();
     const [edit,setEdit]=React.useState(false);
     const [userDetails, setUserDetails]=React.useState({
-        name:'John Doe',
-        mobile:'0123456789',
-        email:'abc@xyz.com'
+        name:'',
+        mobile:'',
+        email:'',
+        url:''
     })
+    // const [name, setName] = React.useState('');
+    // console.log(props);
+
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODYwMTQ5MiwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODYwMTE5Mn0._whNCP82itSvcIpWziFhkFC9VOSBMCvo8ldsBPnxKus";
+    const username = "vijay";
+
+    const setDetails = (result) => {
+        console.log(result[0]);
+        // setName(result[0].name);
+        // console.log(name);
+        setUserDetails({name: result[0].name, email: result[0].mail, mobile: result[0].phno, url: result[0].url});
+        console.log(userDetails);
+    }
+
+    const getUserDetails = () => {
+        var config = {
+            method: 'get',
+            url: serverUrl+'/account/users/',
+            headers: { 
+              'Authorization': "JWT " + token
+            }
+          };
+
+          axios(config)
+          .then(function (response) {
+            // console.log(JSON.stringify(response.data));
+            const result = response.data.filter((val) => username===val.username);
+            setDetails(result);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });          
+    }
 
     const handleNameChange = (event)=>{
         setUserDetails({
@@ -104,8 +140,54 @@ export default function Info() {
         setEdit(true)
     }
     const handleUpdateClick = () => {
+        var config2 = {
+            method: 'get',
+            url: userDetails.url,
+            headers: { 
+              'Authorization': 'JWT ' + token
+            }
+        };
+          
+        axios(config2)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            response.data.name = userDetails.name;
+            response.data.mail = userDetails.email
+            response.data.phno = userDetails.mobile;
+            var data = JSON.stringify(response.data)
+            
+            var config = {
+            method: 'put',
+            url: userDetails.url,
+            headers: { 
+                'Authorization': 'JWT ' + token, 
+                'Content-Type': 'application/json'
+            },
+            data : data
+            };
+        
+            axios(config)
+            .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+            console.log(error);
+            });              
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+          
         setEdit(false)
     }
+
+    React.useEffect(() => {
+        try {
+            getUserDetails();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
 
     return (
             <Grid item xs={12} md={4}>
