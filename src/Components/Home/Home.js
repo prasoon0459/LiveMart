@@ -52,7 +52,7 @@ const classes = useStyles();
     "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/3/17/d5db02ca-8ca7-4258-a4e7-ee5f6b3a357b1615966448151-holi-desktop-banner.jpg",
     "https://www.grocerysumo.com/media/slider/home/fsfhjllz_vegetables-banner.png",
   ];
-  console.log(window)
+  console.log(window);
   const categories = [1, 2, 3, 4, 5, 6, 7, 8,];
 
   const settings = {

@@ -12,22 +12,17 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { MenuItem } from '@material-ui/core';
+import { MenuItem,Menu,List,ListItem,ListItemText } from '@material-ui/core';
+import serverUrl from "../../serverURL";
+import { render } from 'react-dom';
+import axios from "axios";
+var FormData = require('form-data');
 
 const roles = [
-    {
-      value: 'customer',
-      label: 'Customer',
-    },
-    {
-      value: 'retailer',
-      label: 'Retailer',
-    },
-    {
-      value: 'wholesaler',
-      label: 'Wholesaler',
-    },
-  ];
+  'Customer',
+  'Retailer',
+  'Wholesaler',
+];
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -55,13 +50,100 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export default function SignUp() {
   const classes = useStyles();
-  const [role, setRole] = useState('Customer');
-  const handleChange = (event) => {
-    setRole(event.target.value)
+  const [jwt, setJWT] = useState(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [role, setRole] = useState(0);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [name, setName] = useState('');
+  const [mail, setMail] = useState(''); 
+  const [phone, setPhone] = useState('');
+
+  const payload = {
+    username: username,
+    user_type: role,
+    name: name,
+    mail: mail,
+    phno: phone,
+    wallet: 0
+  };
+
+  const handleSubmit=()=>{
+    JSON.stringify(payload);
+    var data = new FormData();
+    data.append('username', username);
+    data.append('password', password);
+    data.append('password2', password2);
+    var config = {
+      method: 'post',
+      url: serverUrl+'/account/register/',
+      data : data
+    };
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      var config2 = {
+        method: 'post',
+        url: serverUrl+'/account/users/',
+        headers: { 
+          'Authorization': `JWT ${response.data.token}`,
+          'Content-Type': 'application/json'
+        },
+        data : payload
+      };
+      axios(config2)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }).catch(function (error) {
+      console.log(error);
+    });
+  }
+  const handleName=(e)=>{
+    setName(e.target.value);
+  }
+  const handleUsername=(e)=>{
+    setUsername(e.target.value);
+  }
+  const handleEmail=(e)=>{
+    setMail(e.target.value);
+  }
+  const handleMobNo=(e)=>{
+    setPhone(e.target.value);
+  }
+  const handlePass=(e)=>{
+    setPassword(e.target.value);
+  }
+  const handleConfirmPass=(e)=>{
+    setPassword2(e.target.value);
   }
 
+  const handleClickListItem = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+  
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+    setRole(index);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
+  // React.useEffect(() => {
+  //   return () => (
+  //     cleanup
+  //   )
+  // }, [])
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -74,6 +156,22 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} >
+              <TextField
+                autoComplete="userName"
+                name="userName"
+                variant="outlined"
+                required
+                fullWidth
+                id="userName"
+                label="Usename"
+                autoFocus
+                InputLabelProps={{
+                    className: classes.floatingLabelFocusStyle
+                }}
+                onChange={handleUsername}
+              />
+            </Grid>
             <Grid item xs={12} sm={6} >
               <TextField
                 autoComplete="name"
@@ -85,29 +183,42 @@ export default function SignUp() {
                 label="Name"
                 autoFocus
                 InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle
+                  className: classes.floatingLabelFocusStyle
                 }}
+                onChange={handleName}
               />
             </Grid>
             <Grid item xs={12}sm={6}>
-                <TextField
-                    id="select-role"
-                    select
-                    fullWidth
-                    label="Role"
-                    value={role}
-                    onChange={handleChange}
-                    InputLabelProps={{
-                        className: classes.floatingLabelFocusStyle
-                    }}
-                    variant="outlined"
-                    >
-                    {roles.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
+
+            <List component="nav" aria-label="User Type">
+              <ListItem
+                button
+                aria-haspopup="true"
+                aria-controls="user-type"
+                aria-label="User Type"
+                onClick={handleClickListItem}
+              >
+                <ListItemText primary="User Role" secondary={roles[selectedIndex]} />
+              </ListItem>
+            </List>
+
+            <Menu
+              id="user-type"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+              >
+              {roles.map((option,index) => (
+                  <MenuItem key={option.value} 
+                  value={option.value}
+                  selected={index === selectedIndex}
+                  onClick={(event) => handleMenuItemClick(event, index)}
+                  >
+                  {option}
+                  </MenuItem>
+              ))}
+            </Menu>
             </Grid>
             <Grid item xs={12}>
               <TextField
@@ -121,6 +232,7 @@ export default function SignUp() {
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
+                onChange={handleEmail}
               />
             </Grid>
             
@@ -135,6 +247,7 @@ export default function SignUp() {
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
+                onChange={handleMobNo}
               />
             </Grid>
             <Grid item xs={12}>
@@ -149,6 +262,7 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
+                onChange={handlePass}
               />
             </Grid>
             <Grid item xs={12}>
@@ -158,20 +272,22 @@ export default function SignUp() {
                 fullWidth
                 name="confirmpassword"
                 label="Confirm Password"
-                InputLabelProps={{
+                InputLabelProps={{  
                     className: classes.floatingLabelFocusStyle
                 }}
                 type="password"
                 id="confirmpassword"
+                onChange={handleConfirmPass}
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleSubmit}
           >
             Sign Up
           </Button>
