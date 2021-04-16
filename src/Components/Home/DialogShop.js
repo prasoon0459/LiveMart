@@ -14,6 +14,7 @@ import {
     DialogActions,
     Menu,
   MenuItem,
+  Fab,
   } from "@material-ui/core";
   import Imgix from "react-imgix";
   import Item from "../../Data/Item";
@@ -35,7 +36,7 @@ import {
       price:{
         marginLeft: theme.spacing(1),
     },
-    itemName:{
+    shopName:{
         fontWeight: 700,
     },
 })
@@ -120,7 +121,7 @@ export default  function DialogShop(props){
                     direction="column"
                     alignItems="flex-start"
                   >
-                      <Box className={classes.itemImage}>
+                      {/* <Box className={classes.itemImage}>
                         <Imgix
                             src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
                             width='30%'
@@ -129,17 +130,21 @@ export default  function DialogShop(props){
                             fm: "jpg",
                             }}
                         />
-                      </Box>
+                      </Box> */}
                       <Grid container direction='row' >
                         <Box display='flex' width='100%' alignItems='center'>
                             <Box flexGrow={1}>
                                 <Grid container direction='column' >
-                                    <Typography align='left' variant='subtitle1' className={classes.itemName}>Satyam Store </Typography>
-                                    <Typography align='left' variant='body2' className={classes.price}>Shahdol </Typography>
+                                    <Typography align='left' variant='subtitle1' className={classes.shopName}>Satyam Store </Typography>
+                                    <Typography align='left' variant='body2' className={classes.location}>Shahdol </Typography>
+                                    <Typography align='left' variant='body2'className={classes.distance}>2.3kms</Typography>
                                 </Grid>
                             </Box>
                             <Box >
-                                <IconButton onClick={handleDialog}><AddShoppingCartOutlined  color='secondary'></AddShoppingCartOutlined></IconButton>
+                                <Fab onClick={handleDialog} variant='contained' size='medium'  color='secondary'>
+                                  <AddShoppingCartOutlined ></AddShoppingCartOutlined>
+                                  Add to Cart
+                                </Fab>
                             </Box>
                         </Box>
                       </Grid>

@@ -6,6 +6,7 @@
         ArrowForwardIos,
         ArrowLeftRounded,
         ArrowRightRounded,
+        ChevronRight,
     } from "@material-ui/icons";
     import Imgix from "react-imgix";
     import Item from "../../Data/Item";
@@ -189,7 +190,7 @@
                                 </Box>
                                 <Box>
                                 <IconButton>
-                                    <AddShoppingCartOutlined color="secondary"></AddShoppingCartOutlined>
+                                    <ChevronRight color="secondary"/>
                                 </IconButton>
                                 </Box>
                             </Box>

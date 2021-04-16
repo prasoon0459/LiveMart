@@ -185,14 +185,7 @@ const Cart = () =>{
                                                                 startIcon={<DeleteOutlined  />}>
                                                                     Remove Item
                                                             </Button>
-                                                            <Grid item >
-                                                                <Grid container direction='column' alignItems='flex-start' className={classes.cartitemQty}>
-                                                                    <Grid item xs={12}>
-                                                                        <Quantity></Quantity>
-                                                                    </Grid>
-                                                                    <Typography className={classes.cartItemQtyInfo} variant='body2'>Note - (3 Nos.)</Typography>
-                                                                </Grid>
-                                                            </Grid>
+                                                            
                                                         </Grid>
                                                         <Typography variant='h6' className={classes.cartItemPrice}>$ 785.43</Typography>
                                                     </Grid>
