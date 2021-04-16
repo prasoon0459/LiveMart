@@ -3,7 +3,7 @@ import { AccountCircle, ChevronRight, LocationOn } from "@material-ui/icons";
 import ReactRoundedImage from 'react-rounded-image'
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import deliveryBoyAvatar from '../../img/deliveryBoyAvatar.svg'
+import Avatar from '../../img/deliveryBoyAvatar.svg'
 
 const useStyles=makeStyles({
 
@@ -29,38 +29,42 @@ const useStyles=makeStyles({
         color:theme.palette.text.hint,
         marginLeft:theme.spacing(1)
     },
-    itemOrderedStatus:{
+    itemOrderedBy:{
         // color:theme.palette.text.hint,
         margin:theme.spacing(2,1,0)
 
     },
-    itemExpectedDelivery:{
+    itemPickupTime:{
+        // color:theme.palette.text.hint,
+        margin:theme.spacing(0,1,2)
+    },
+    itemOrderID:{
         // color:theme.palette.text.hint,
         margin:theme.spacing(0,1,0)
     },
-    deliveryPersonDetails:{
-        margin:theme.spacing(2,1,2)
+    customerDetailsContainer:{
+        margin:theme.spacing(1,1,2)
     },
-    deliveryPersonContact:{
+    customerContact:{
         margin:theme.spacing(0,1,0)
     },
-    shopName:{
-        margin:theme.spacing(0,1,0)
+    CustomerDetailsHeading:{
+        fontWeight:500
     }
 
 })
 
-const ActiveOrders= () =>{
+const Pickups= () =>{
     const screen = UseWindowDimensions().screen;
     const mobile= screen==='xs'
     const sm= screen==='sm'
     const classes= useStyles({mobile:mobile, sm:sm});
-    const orders = [1,2,];
+    const orders = [1,2,3];
 
     return (
         <div className={classes.root}>
             <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
-                YOUR RECENT PURCHASES
+                Pickups Scheduled for Today
             </Typography>
             <Grid  container direction='row'>
                 {orders.map(()=>(
@@ -68,26 +72,26 @@ const ActiveOrders= () =>{
                         <Paper elevation={3} className={classes.itemRoot}>
                             <Grid container direction='column' >
                                 <Typography variant='h6' align='left' className={classes.itemTitle}>Lifeboy Soap + 3 more items</Typography>
-                                <Typography align='left' className={classes.shopName}>M/s AGARWAL GENERAL STORE</Typography>
                                 <Typography align='left' className={classes.itemOrderedDate}>Ordered on : 23rd April, 2021</Typography>
-                                <Typography align='left' className={classes.itemOrderedStatus}>Order Status : In Transit</Typography>
-                                <Typography align='left' className={classes.itemExpectedDelivery}>Expected Delivery: 24th April, 2021</Typography>
-                                <Grid className={classes.deliveryPersonDetails} container direction='row' alignItems='center'>
+                                <Typography align='left' className={classes.itemOrderID}>Order ID : 93GD73BDB82H</Typography>
+                                <Typography align='left' className={classes.itemPickupTime}>Pickup Time : Today, 03:00 PM</Typography>
+                                <Typography  variant='subtitle1' align='left' className={classes.CustomerDetailsHeading}>Customer Details</Typography>
+                                <Grid className={classes.customerDetailsContainer} container direction='row' alignItems='center'>
                                     <ReactRoundedImage
-                                        image={deliveryBoyAvatar}
+                                        image={Avatar}
                                         imageWidth='40'
                                         imageHeight='40'
                                         roundedSize={1}
                                     >
                                     </ReactRoundedImage>
                                     <Grid item>
-                                        <Grid container direction='column' className={classes.deliveryPersonContact}>
-                                            <Typography className={classes.DeliveryBoyName}>Ramesh Pawar</Typography>
-                                            <Typography className={classes.DeliveryBoyMobile}>+919567289930</Typography>
+                                        <Grid container direction='column' className={classes.customerContact}>
+                                            <Typography className={classes.CustomerName}>Ramesh Pawar</Typography>
+                                            <Typography className={classes.CustomerMobile}>+919567289930</Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Button variant='outlined' color='secondary' fullWidth endIcon={<LocationOn></LocationOn>}>Track Order</Button>
+                                <Button variant='outlined' color='secondary' fullWidth endIcon={<ChevronRight></ChevronRight>}>View Order</Button>
                             </Grid>
                         </Paper>
                     </Grid>
@@ -98,4 +102,4 @@ const ActiveOrders= () =>{
     )
     
 }
-export default ActiveOrders;
+export default Pickups;
