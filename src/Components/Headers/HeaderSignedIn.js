@@ -254,6 +254,8 @@ const Header = () => {
                   <IconButton
                     aria-label="show 17 new notifications"
                     color="inherit"
+                    component={NavLink}
+                    to="/notifs"
                     paddingLeft={3}
                   >
                     <Badge badgeContent={17} color="secondary">

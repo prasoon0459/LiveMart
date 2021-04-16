@@ -51,23 +51,23 @@ const App =() =>{
 
           
           <Switch>
-          <Route path='/filter'>
-          {getHeader()}   
+            <Route path='/filter'>
+              {getHeader()}   
               <Filter/>
             </Route>
             <Route path='/change_pwd'>
               <ChangePwd/>
             </Route>
             <Route path='/myProfile'>
-            {getHeader()} 
+              {getHeader()} 
               <Profile/>
             </Route>
             <Route path='/mycart'>   
-            {getHeader()}
+              {getHeader()}
               <Cart></Cart>
             </Route>
-
-            <Route path='/test'>
+            <Route path='/notifs'>
+              {getHeader()}
               <Notifs></Notifs>
             </Route>
             <Route path='/orders'>
