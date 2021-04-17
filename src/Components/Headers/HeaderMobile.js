@@ -1,24 +1,46 @@
 import {
-    AppBar,
-    Toolbar,
-    makeStyles,
-    Grid,
-    Box,
-    InputBase,
-    IconButton,
-    Badge,
-  } from "@material-ui/core";
+  AppBar,
+  Toolbar,
+  makeStyles,
+  Grid,
+  Box,
+  InputBase,
+  IconButton,
+  Badge,
+  Menu,
+  MenuItem,
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  SwipeableDrawer,
+} from "@material-ui/core";
+
+import clsx from 'clsx';
   import logo from "../../img/logo.png";
   import React from "react";
-  import { NavLink } from "react-router-dom";
+  import { NavLink, useHistory } from "react-router-dom";
   import {
-      LocationOnOutlined,
-    MenuOutlined,
+    LocationOnOutlined,
+    MenuSharp,
+    Person,
+    Folder,
+    ExitToApp,
     Notifications,
     SearchOutlined,
     ShoppingCartOutlined,
+    Inbox,
+    Mail,
+    FolderSharp,
+    PersonSharp,
+    CategoryOutlined,
+    CategorySharp,
   } from "@material-ui/icons";
   import theme from "../../theme";
+import Imgix from "react-imgix";
   
   const useStyles = makeStyles({
     headerLogo: {
@@ -44,7 +66,9 @@ import {
       borderRadius:10,
       backgroundColor: theme.palette.background.search,
     },
-  
+    drawerLogo:{
+      margin:theme.spacing(3,5,0)
+    },
     location: {
       
       position: "relative",
@@ -106,7 +130,57 @@ import {
   });
   
   const HeaderMobile = () => {
+    const history=useHistory();
     const classes = useStyles();
+    const [drawerState, setState] = React.useState(false);
+  
+    const toggleDrawer = (anchor, open) => (event) => {
+      if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+        return;
+      }
+      setState({ ...drawerState, [anchor]: open });
+    };
+    const handleSearchSubmit = (event) => {
+      if(event.key ==='Enter'){
+        const params=new URLSearchParams()
+        console.log(event.target.value)
+        if(event.target.value){
+          params.append('q',event.target.value)
+          history.push({pathname:  '/search',search:params.toString()})
+        }
+      }
+    }
+  
+    const list = (anchor) => (
+      <div
+        className={clsx(classes.list, {
+          [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+        })}
+        role="presentation"
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+      >
+        <img className={classes.drawerLogo} src={logo} width='150px' alt='logo'></img>
+        <List>
+            <ListItem button key='my_profile'  component={NavLink} to="/myProfile" >
+              <ListItemIcon><PersonSharp color='primary'/> </ListItemIcon>
+              <ListItemText primary='My Profile' />
+            </ListItem>
+            <ListItem button key='categories' component={NavLink} to="/categories">
+              <ListItemIcon><CategorySharp color='primary'></CategorySharp></ListItemIcon>
+              <ListItemText primary='Categories' />
+            </ListItem>
+            <ListItem button key='my_orders' component={NavLink} to="/orders">
+              <ListItemIcon><FolderSharp color='primary'></FolderSharp></ListItemIcon>
+              <ListItemText primary='My Orders' />
+            </ListItem>
+            <ListItem button key='logout' >
+              <ListItemIcon><ExitToApp color='primary'></ExitToApp></ListItemIcon>
+              <ListItemText primary='Logout' />
+            </ListItem>
+        </List>
+      </div>
+    );
     return (
       <div>
         <AppBar position="static" elevation={0} color="transparent">
@@ -126,11 +200,19 @@ import {
                     justify="flex-start"
                     alignItems="center"
                   >
-                    <Grid item className={classes.menuIcon}>
-                      <IconButton>
-                        <MenuOutlined></MenuOutlined>
+                    <React.Fragment key={'left'}>
+                      <IconButton onClick={toggleDrawer('left', true)}>
+                        <MenuSharp color='primary'></MenuSharp>
                       </IconButton>
-                    </Grid>
+                      <SwipeableDrawer
+                        anchor={'left'}
+                        open={drawerState['left']}
+                        onClose={toggleDrawer('left', false)}
+                        onOpen={toggleDrawer('left', true)}
+                      >
+                        {list('left')}
+                      </SwipeableDrawer>
+                    </React.Fragment>
                     <Box component={NavLink} to="/">
                       <img
                         src={logo}
@@ -165,7 +247,9 @@ import {
                       </Grid>
                       <Grid item className={classes.headerLinks}>
                         <IconButton
-                          aria-label="show 17 new notifications"
+                          component={NavLink}
+                          to="/notifs"
+                          aria-label="show 4 cart Items"
                           color="inherit"
                         >
                           <Badge badgeContent={17} color="secondary">
@@ -201,6 +285,8 @@ import {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                       }}
+
+                      onKeyPress={handleSearchSubmit}
                       inputProps={{ "aria-label": "search" ,className: classes.inputField}}
                     />
                   </Grid>

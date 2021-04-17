@@ -17,6 +17,9 @@ import Categories from './Components/Categories/Categories';
 import Profile from './Components/Profile/Profile';
 import Cart from './Components/Cart/Cart';
 import Quantity from './utils/Quantity'
+import Reviews from './Components/Product/Reviews';
+import React from "react";
+
 import Notifs from './Components/Notifs/Notifs';
 import Orders from './Components/Order/Orders';
 import Wallet from './Components/Wallet/Wallet'
@@ -25,12 +28,15 @@ import MyReviews from './Components/MyReview/myReview';
 const App =() =>{
     const screen = UseWindowDimensions().screen;
     const mobileHeader= screen==='sm'||screen==='xs'
+    const [token, setToken] = React.useState("");
 
+    const handleToken = (props) => {
+      setToken(props);
+    }
 
     function getHeader() {
       return mobileHeader?<HeaderMobile/>:<Header/> 
     }
-
 
     function Copyright() {
       return (
@@ -48,26 +54,24 @@ const App =() =>{
     return (
       <BrowserRouter>  
         <div className="App">
-
-          
           <Switch>
-          <Route path='/filter'>
-          {getHeader()}   
+            <Route path='/filter'>
+              {getHeader()}   
               <Filter/>
             </Route>
             <Route path='/change_pwd'>
               <ChangePwd/>
             </Route>
             <Route path='/myProfile'>
-            {getHeader()} 
-              <Profile/>
+              {getHeader()} 
+              <Profile token={token}/>
             </Route>
             <Route path='/mycart'>   
-            {getHeader()}
+              {getHeader()}
               <Cart></Cart>
             </Route>
-
-            <Route path='/test'>
+            <Route path='/notifs'>
+              {getHeader()}
               <Notifs></Notifs>
             </Route>
             <Route path='/orders'>
@@ -95,7 +99,7 @@ const App =() =>{
               <Product/>
             </Route>
             <Route path='/login'>   
-              <SignIn/>
+              <SignIn handleToken={handleToken}></SignIn>
             </Route>
             <Route path='/signup'>
               <SignUp/>

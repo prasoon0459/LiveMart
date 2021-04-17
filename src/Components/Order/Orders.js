@@ -11,6 +11,7 @@ const useStyles= makeStyles({
         padding:(props)=>props.sm||props.mobile?theme.spacing(2,0,0): theme.spacing(4,5,0),
     },
     orderPaper:{
+        width:'100%',
         margin:theme.spacing(1,1,1),
         padding:theme.spacing(2,2,2),
         maxWidth:'992px'
@@ -60,14 +61,12 @@ const Orders= () => {
 
     return (
         <div className={classes.root}>
-            <Grid container direction="column" className={classes.root}>
+            <Grid container direction="column" alignItems='center' className={classes.root}>
                 <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
                     My Orders
                 </Typography>
-                <Divider></Divider>
-                <Grid container direction='column' className={classes.ordersContainer}>
+                <Grid container direction='column' alignItems='center' className={classes.ordersContainer}>
                     {orders.map((order)=>(
-                        <Grid item width='100%'>
                             <Paper className={classes.orderPaper}>
                                 <Grid container alignItems='center' direction='row'>
                                     <Grid item className={classes.orderStatusItem}>
@@ -96,7 +95,6 @@ const Orders= () => {
                                 </Grid>
                                 
                             </Paper>
-                        </Grid>
                     ))}
                 </Grid>
             </Grid>

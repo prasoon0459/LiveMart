@@ -12,6 +12,7 @@ const useStyles= makeStyles({
         padding:(props)=>props.sm||props.mobile?theme.spacing(2,0,0): theme.spacing(4,5,0),
     },
     orderPaper:{
+        width:'100%',
         margin:theme.spacing(1,1,1),
         padding:theme.spacing(2,2,2),
         maxWidth:'992px'
@@ -57,7 +58,7 @@ const useStyles= makeStyles({
     title:{
         fontWeight:500,
         letterSpacing:2,
-        margin:(props) => props.mobile ?theme.spacing(2,1,2): theme.spacing(2,2,1),
+        margin:(props) => props.mobile ?theme.spacing(2,1,2): theme.spacing(1,2,1),
         padding: (props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
     },
     
@@ -73,19 +74,15 @@ const MyReviews= () => {
     const rating =4
     return (
         <div className={classes.root}>
-            <Grid container direction="column" className={classes.root}>
-                <Grid item container width='100%'>
-                    <RateReviewIcon className={classes.storeIcon} />
-                <Grid item>
-                <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
-                    My Reviews
-                </Typography>
+            <Grid container direction="column" alignItems='center' className={classes.root}>
+                <Grid container direction='row' alignItems='center' justify='center'>
+                    <RateReviewIcon />
+                    <Typography variant={mobile?'h6':'h5'} align="center" className={classes.title}>
+                        My Reviews
+                    </Typography>
                 </Grid>
-                </Grid>
-                <Divider></Divider>
-                <Grid container direction='column' className={classes.ordersContainer}>
+                <Grid container direction='column' alignItems='center' className={classes.ordersContainer}>
                     {orders.map((order)=>(
-                        <Grid item width='100%'>
                             <Paper className={classes.orderPaper}>
                                 <Grid container alignItems='center' direction='row'>
                                 
@@ -111,7 +108,6 @@ const MyReviews= () => {
                                 </Grid>
                                 
                             </Paper>
-                        </Grid>
                     ))}
                 </Grid>
             </Grid>
