@@ -1,29 +1,28 @@
 import React from "react";
-import { CardActionArea,
-   Divider,
-    Link,
-    makeStyles,
-    Container,
-    Typography,
-    Grid,
-    CssBaseline } from "@material-ui/core";
+import {
+  CardActionArea,
+  makeStyles,
+  Container,
+  Typography,
+  Grid,
+  CssBaseline
+} from "@material-ui/core";
 import Order from "../../img/order.jfif";
 import Review from "../../img/review.jfif";
 import Wallet from "../../img/wallet.jfif";
 import Coin from "../../img/coins.jpg";
 import ReactRoundedImage from "react-rounded-image";
 import Info from "./info";
-import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import { useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   roots: {
     margin: `calc(1em + ${theme.spacing(1)}px)`,
   },
-  divider:{
-    margin:theme.spacing(1,0,2)
+  divider: {
+    margin: theme.spacing(1, 0, 2)
   },
   text: {
-    padding: theme.spacing(3,3,3),
+    padding: theme.spacing(3, 3, 3),
     margin: theme.spacing(0, 0, 3,),
     backgroundImage: `url(${Coin})`,
     height: "20vh",
@@ -35,26 +34,25 @@ const useStyles = makeStyles((theme) => ({
   roundedImage: {
     margin: theme.spacing(2),
   },
-  walletBalance:{
+  walletBalance: {
     fontWeight: 500
   },
-  cardContainer:{
-    padding:theme.spacing(2,2,2)
+  cardContainer: {
+    padding: theme.spacing(2, 2, 2)
   }
 }));
 
 export default function Profile(props) {
   const classes = useStyles();
-  const mobile=UseWindowDimensions().mobile
-  const history= useHistory()
+  const history = useHistory()
 
-  const handleReviewsClicked =()=>{
+  const handleReviewsClicked = () => {
     history.push('/reviews')
   }
-  const handleOrdersClicked =()=>{
+  const handleOrdersClicked = () => {
     history.push('/orders')
   }
-  const handleWalletHistoryClicked =()=>{
+  const handleWalletHistoryClicked = () => {
     history.push('/wallet')
   }
 
@@ -62,8 +60,8 @@ export default function Profile(props) {
     <Container component="main">
       <CssBaseline />
       <div className={classes.roots}>
-      <Grid container direction='row' alignItems='flex-start' spacing={2} className={classes.root}>
-          <Info token={props.token}/>
+        <Grid container direction='row' alignItems='flex-start' spacing={2} className={classes.root}>
+          <Info token={props.token} />
           <Grid item xs={12} md={8}>
             <Grid
               item
@@ -86,21 +84,21 @@ export default function Profile(props) {
                 className={classes.roundedImage}
               >
                 <CardActionArea onClick={handleWalletHistoryClicked}>
-                  <Grid container 
+                  <Grid container
                     className={classes.cardContainer}
                     direction="column"
                     alignItems="center"
                   >
-                  <ReactRoundedImage
-                  image={Wallet}
-                  imageWidth="100"
-                  imageHeight="100"
-                  //roundedColor={theme.palette.primary.main}
-                  //hoverColor={theme.palette.secondary.main}
-                  roundedSize={2}
-                  hoverColor="#DD1144"
-                />
-                <Typography>Wallet History</Typography>
+                    <ReactRoundedImage
+                      image={Wallet}
+                      imageWidth="100"
+                      imageHeight="100"
+                      //roundedColor={theme.palette.primary.main}
+                      //hoverColor={theme.palette.secondary.main}
+                      roundedSize={2}
+                      hoverColor="#DD1144"
+                    />
+                    <Typography>Wallet History</Typography>
                   </Grid>
                 </CardActionArea>
               </Grid>
@@ -114,21 +112,21 @@ export default function Profile(props) {
                 className={classes.roundedImage}
               >
                 <CardActionArea onClick={handleOrdersClicked}>
-                  <Grid container 
+                  <Grid container
                     className={classes.cardContainer}
                     direction="column"
                     alignItems="center"
                   >
-                  <ReactRoundedImage
-                  image={Order}
-                  imageWidth="100"
-                  imageHeight="100"
-                  //roundedColor={theme.palette.primary.main}
-                  //hoverColor={theme.palette.secondary.main}
-                  roundedSize={2}
-                  hoverColor="#DD1144"
-                />
-                <Typography>Your Orders</Typography>
+                    <ReactRoundedImage
+                      image={Order}
+                      imageWidth="100"
+                      imageHeight="100"
+                      //roundedColor={theme.palette.primary.main}
+                      //hoverColor={theme.palette.secondary.main}
+                      roundedSize={2}
+                      hoverColor="#DD1144"
+                    />
+                    <Typography>Your Orders</Typography>
                   </Grid>
                 </CardActionArea>
               </Grid>
@@ -142,27 +140,27 @@ export default function Profile(props) {
                 className={classes.roundedImage}
               >
                 <CardActionArea onClick={handleReviewsClicked}>
-                  <Grid container 
+                  <Grid container
                     className={classes.cardContainer}
                     direction="column"
                     alignItems="center"
                   >
-                  <ReactRoundedImage
-                  image={Review}
-                  imageWidth="100"
-                  imageHeight="100"
-                  //roundedColor={theme.palette.primary.main}
-                  //hoverColor={theme.palette.secondary.main}
-                  roundedSize={2}
-                  hoverColor="#DD1144"
-                />
-                <Typography>Your Reviews</Typography>
+                    <ReactRoundedImage
+                      image={Review}
+                      imageWidth="100"
+                      imageHeight="100"
+                      //roundedColor={theme.palette.primary.main}
+                      //hoverColor={theme.palette.secondary.main}
+                      roundedSize={2}
+                      hoverColor="#DD1144"
+                    />
+                    <Typography>Your Reviews</Typography>
                   </Grid>
                 </CardActionArea>
               </Grid>
             </Grid>
           </Grid>
-      </Grid>
+        </Grid>
       </div>
     </Container>
   );

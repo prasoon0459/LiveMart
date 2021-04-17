@@ -1,8 +1,8 @@
-import { Avatar, Box, Button, Container, CssBaseline, makeStyles, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Container, CssBaseline, makeStyles, TextField, Typography } from '@material-ui/core';
 import Imgix from 'react-imgix';
 import forgotpwd from '../../img/forgot_pwd.svg'
 import theme from '../../theme';
-const useStyles=makeStyles({
+const useStyles = makeStyles({
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -22,21 +22,21 @@ const useStyles=makeStyles({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-    root:{
-        marginTop:'20px',
-        height:'70vh'
+    root: {
+        marginTop: '20px',
+        height: '70vh'
     },
-    image:{
-        width:'100vw',
-        height:'60vh',
+    image: {
+        width: '100vw',
+        height: '60vh',
     }
 })
 
-const ForgotPassword =()=>{
-    const classes= useStyles();
+const ForgotPassword = () => {
+    const classes = useStyles();
 
-    return(
-        <div className={classes.root}> 
+    return (
+        <div className={classes.root}>
             <Container component="main" maxWidth="xs" >
                 <CssBaseline />
                 <div className={classes.paper}>

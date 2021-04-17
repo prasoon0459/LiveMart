@@ -71,17 +71,17 @@ export default function SignIn(props) {
     data.append('email', email);
     var config = {
       method: 'post',
-      url: serverUrl+'/otp/',
-      data : data
+      url: serverUrl + '/otp/',
+      data: data
     };
     axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-      setRecOtp(response.data.otp);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setRecOtp(response.data.otp);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     setPwdVerified(true);
   };
 
@@ -95,21 +95,21 @@ export default function SignIn(props) {
       // console.log(data2);
       var config2 = {
         method: 'post',
-        url: serverUrl+'/account/login/',
-        data : data2
+        url: serverUrl + '/account/login/',
+        data: data2
       };
 
       axios(config2)
-      .then(function (response) {
+        .then(function (response) {
           delete formErrors['password'];
           // console.log(JSON.stringify(response.data));
           // setToken(response.data.token);
           props.handleToken(response.data.token);
           history.push("/");
-      }).catch(function (error) {
-        console.log(error);
-        formErrors.password = "Incorrect Credentials";
-      });
+        }).catch(function (error) {
+          console.log(error);
+          formErrors.password = "Incorrect Credentials";
+        });
     } else {
       console.log("OTP Mismatch!")
     }
@@ -119,7 +119,7 @@ export default function SignIn(props) {
     setOtp(parseInt(e.target.value));
   }
   const handleMail = (e) => {
-    setEmail(e.target.value); 
+    setEmail(e.target.value);
   }
   const handlePassword = (e) => {
     setPassword(e.target.value);
@@ -127,10 +127,10 @@ export default function SignIn(props) {
 
   const [role, setRole] = useState('customer');
 
-  const  [user, setUser] = useState({});
-  const  [formErrors, setFormErrors] = useState({});
-  
-  const handleChanges= (e)=>{
+  const [user, setUser] = useState({});
+  const [formErrors, setFormErrors] = useState({});
+
+  const handleChanges = (e) => {
     const { name, value } = e.target;
     let currentFormErrors = formErrors;
     switch (name) {
@@ -144,7 +144,7 @@ export default function SignIn(props) {
       //     delete currentFormErrors[name];
       //     setUser({ ...user, firstName: value });
       //   }
-                  
+
       //   break;
       case 'email':
         if (!value || validEmail(value)) {
@@ -159,8 +159,8 @@ export default function SignIn(props) {
               setUser({ ...user, email: value });
             }
           });
-      }
-                  
+        }
+
         break;
       // case 'password':if (minMaxLength(value, 6)) {
       //   currentFormErrors[name] = 'Password should have minimum 6 characters';
@@ -208,15 +208,15 @@ export default function SignIn(props) {
         ' Password is not matching';
       return false;
     }
-    else if(formErrors.password){
-      formErrors.confirmpassword=formErrors.password
+    else if (formErrors.password) {
+      formErrors.confirmpassword = formErrors.password
     } else {
       delete formErrors.confirmpassword;
       return true;
     }
   }
-   console.log(formErrors);
-  
+  console.log(formErrors);
+
 
 
   return (
@@ -247,7 +247,7 @@ export default function SignIn(props) {
             autoComplete="email"
             autoFocus
           />
-          {formErrors['email']?<Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['email']}</Typography>:null}
+          {formErrors['email'] ? <Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['email']}</Typography> : null}
           <TextField
             variant="outlined"
             margin="normal"
@@ -265,7 +265,7 @@ export default function SignIn(props) {
             }}
             onChange={handlePassword}
           />
-          {formErrors['password']?<Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['passsword']}</Typography>:null}
+          {formErrors['password'] ? <Typography align='center' color='textSecondary' variant="caption" display="block">{formErrors['passsword']}</Typography> : null}
           <Button
             fullWidth
             disabled={pwdVerified}
@@ -324,8 +324,8 @@ export default function SignIn(props) {
               </Button>
             </Grid>
           ) : (
-            <div />
-          )}
+              <div />
+            )}
         </form>
       </div>
     </Container>

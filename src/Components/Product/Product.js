@@ -1,5 +1,5 @@
-import { Box, Button, Divider, Grid, IconButton, makeStyles, MenuItem, Paper, TextField, Typography } from "@material-ui/core"
-import { AddOutlined, AddSharp, AddShoppingCartOutlined, Image, LocalMall, Remove, RemoveOutlined, RemoveSharp, ShoppingCartOutlined } from "@material-ui/icons"
+import { Box, Button, Divider, Grid,  makeStyles, MenuItem, Paper, TextField, Typography } from "@material-ui/core"
+import {  AddSharp,  LocalMall,  RemoveSharp, } from "@material-ui/icons"
 import Rating from '@material-ui/lab/Rating'
 import theme from "../../theme"
 import React from 'react'
@@ -8,7 +8,6 @@ import kurkure from '../../img/kurkure.jpeg'
 import Imgix from "react-imgix"
 import Reviews from "./Reviews"
 import DialogShop from "../Home/DialogShop"
-import Quantity from "../../utils/Quantity"
 
 const useStyles= makeStyles({
     root:{
@@ -201,7 +200,7 @@ const Product = () => {
                                 <Grid item xs={12} sm={6}>
                                 <Grid container direction='column' alignItems='flex-start' className={classes.cartitemQty}>
                                     <Grid item xs={12}>
-                                    <Grid className={classes.root} container direction='row' className={classes.root} alignItems='center'>
+                                    <Grid className={classes.root} container direction='row'  alignItems='center'>
                                         <Button xs={4} className={classes.btn} onClick={handleQuantityDecrease} variant='outlined'><RemoveSharp></RemoveSharp></Button>
                                         <span xs={4} className={classes.span}>{quantity}</span>
                                         <Button xs={4} className={classes.btn} onClick={handleQuantityIncrease} variant='outlined' ><AddSharp></AddSharp></Button>

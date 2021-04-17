@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop:theme.spacing(1)
+    marginTop: theme.spacing(1)
   },
   button: {
     marginTop: theme.spacing(3),
@@ -62,21 +62,21 @@ export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [address, setAddress] = React.useState({
-      firstName:null,
-      lastName:null,
-      addressLine1:null,
-      addressLine2:null,
-      city:null,
-      state:null,
-      zip:null,
-      country:null
+    firstName: null,
+    lastName: null,
+    addressLine1: null,
+    addressLine2: null,
+    city: null,
+    state: null,
+    zip: null,
+    country: null
   });
 
-  const handleAddressChange = (event)=>{
-      const id=event.target.id
-      const new_address=address
-      new_address[id]=event.target.value
-      setAddress(new_address)
+  const handleAddressChange = (event) => {
+    const id = event.target.id
+    const new_address = address
+    new_address[id] = event.target.value
+    setAddress(new_address)
   }
 
 
@@ -212,7 +212,7 @@ export default function Checkout() {
       case 1:
         return <PaymentForm />;
       case 2:
-        return <Review address={address}/>;
+        return <Review address={address} />;
       default:
         throw new Error("Unknown step");
     }
@@ -253,14 +253,14 @@ export default function Checkout() {
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>
-                  <Imgix
-                    src={check}
-                    width='100'
-                    height='100'
-                    imgixParams={{
-                        fit: "fit",
-                        fm: "gif",
-                    }}
+                <Imgix
+                  src={check}
+                  width='100'
+                  height='100'
+                  imgixParams={{
+                    fit: "fit",
+                    fm: "gif",
+                  }}
                 >
                 </Imgix>
                 <Typography variant="h5" gutterBottom>
@@ -273,25 +273,25 @@ export default function Checkout() {
                 </Typography>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                {getStepContent(activeStep)}
-                <div className={classes.buttons}>
-                  {activeStep !== 0 && (
-                    <Button onClick={handleBack} className={classes.button}>
-                      Back
+                <React.Fragment>
+                  {getStepContent(activeStep)}
+                  <div className={classes.buttons}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} className={classes.button}>
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleNext}
+                      className={classes.button}
+                    >
+                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
                     </Button>
-                  )}
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                  </Button>
-                </div>
-              </React.Fragment>
-            )}
+                  </div>
+                </React.Fragment>
+              )}
           </React.Fragment>
         </Paper>
       </main>
