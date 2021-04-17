@@ -130,7 +130,7 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
-  const [locData,setLocData]=React.useState(null);
+  //const [locData,setLocData]=React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
   // React.useEffect(() => {
@@ -210,7 +210,6 @@ const Header = () => {
                     </div>
                     <InputBase
                       placeholder="Select City"
-                      defaultValue={locData!=null?locData.city:""}
                       classes={{
                         root: classes.inputRootLocation,
                         input: classes.inputInputLocation,
