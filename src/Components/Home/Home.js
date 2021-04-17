@@ -7,7 +7,6 @@ import theme from "../../theme";
 import FeatureItem from "./FeatureItem";
 import MainSlider from "./MainSlider";
 import CategoryComp from "./CategoryComp";
-import MostPurchased from "./MostPurchased";
 import TopBrand from "./TopBrands";
 import ActiveOrders from "./ActiveOrders";
 import PendingOrders from './PendingOrders'
@@ -42,11 +41,11 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
-// const mobile= useMediaQuery(theme.breakpoints.down('xs'));
+  // const mobile= useMediaQuery(theme.breakpoints.down('xs'));
   // const user = 'customer'
   const user = 'retailer'
   // const user = 'wholesaler'
-const classes = useStyles();
+  const classes = useStyles();
   const images = [
     "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/3/20/70b0cd7c-1f13-4d91-9bac-ac6ba1a6963e1616251205883-desktop-banner-2.jpg",
     "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/3/17/d5db02ca-8ca7-4258-a4e7-ee5f6b3a357b1615966448151-holi-desktop-banner.jpg",
@@ -67,15 +66,15 @@ const classes = useStyles();
   return (
     <div className={classes.root}>
       <MainSlider images={images} settings={settings}></MainSlider>
-      {user==='customer'?<ActiveOrders></ActiveOrders>:
-        user==='retailer'?
+      {user === 'customer' ? <ActiveOrders></ActiveOrders> :
+        user === 'retailer' ?
           <div>
-            <Pickups></Pickups> 
+            <Pickups></Pickups>
             <PendingOrders></PendingOrders>
             <ActiveOrders></ActiveOrders>
-          </div>:
+          </div> :
           <div>
-            <Pickups></Pickups> 
+            <Pickups></Pickups>
             <PendingOrders></PendingOrders>
             <ActiveOrders></ActiveOrders>
           </div>}

@@ -1,66 +1,66 @@
 import { Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core"
-import { AccountCircle, ChevronRight, LocationOn } from "@material-ui/icons";
+import { LocationOn } from "@material-ui/icons";
 import ReactRoundedImage from 'react-rounded-image'
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import deliveryBoyAvatar from '../../img/deliveryBoyAvatar.svg'
 
-const useStyles=makeStyles({
+const useStyles = makeStyles({
 
-    root:{
-        margin:theme.spacing(1,0,1),
-        padding:theme.spacing(2,2,2),
-        background:theme.palette.background.paper
+    root: {
+        margin: theme.spacing(1, 0, 1),
+        padding: theme.spacing(2, 2, 2),
+        background: theme.palette.background.paper
     },
-    itemRoot:{
-        borderRadius:10,
-        padding:theme.spacing(2,2,2),
-        margin:theme.spacing(2,2,2)
+    itemRoot: {
+        borderRadius: 10,
+        padding: theme.spacing(2, 2, 2),
+        margin: theme.spacing(2, 2, 2)
     },
-    title:{
-        fontWeight:800,
-        margin:(props) => props.mobile ?theme.spacing(2,0,2): theme.spacing(2,0,3),
-        padding: (props) => props.mobile ?theme.spacing(0,0,0):theme.spacing(1, 0, 1) ,
+    title: {
+        fontWeight: 800,
+        margin: (props) => props.mobile ? theme.spacing(2, 0, 2) : theme.spacing(2, 0, 3),
+        padding: (props) => props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
     },
-    itemTitle:{
-        fontWeight:600,
+    itemTitle: {
+        fontWeight: 600,
     },
-    itemOrderedDate:{
-        color:theme.palette.text.hint,
-        marginLeft:theme.spacing(1)
+    itemOrderedDate: {
+        color: theme.palette.text.hint,
+        marginLeft: theme.spacing(1)
     },
-    itemOrderedStatus:{
+    itemOrderedStatus: {
         // color:theme.palette.text.hint,
-        margin:theme.spacing(2,1,0)
+        margin: theme.spacing(2, 1, 0)
 
     },
-    itemExpectedDelivery:{
+    itemExpectedDelivery: {
         // color:theme.palette.text.hint,
-        margin:theme.spacing(0,1,0)
+        margin: theme.spacing(0, 1, 0)
     },
-    deliveryPersonDetails:{
-        margin:theme.spacing(2,1,2)
+    deliveryPersonDetails: {
+        margin: theme.spacing(2, 1, 2)
     },
-    deliveryPersonContact:{
-        margin:theme.spacing(0,1,0)
+    deliveryPersonContact: {
+        margin: theme.spacing(0, 1, 0)
     }
 
 })
 
-const PendingOrders= () =>{
+const PendingOrders = () => {
     const screen = UseWindowDimensions().screen;
-    const mobile= screen==='xs'
-    const sm= screen==='sm'
-    const classes= useStyles({mobile:mobile, sm:sm});
-    const orders = [1,2,3,4];
+    const mobile = screen === 'xs'
+    const sm = screen === 'sm'
+    const classes = useStyles({ mobile: mobile, sm: sm });
+    const orders = [1, 2, 3, 4];
 
     return (
         <div className={classes.root}>
-            <Typography variant={mobile?'h6':'h5'} align="left" className={classes.title}>
+            <Typography variant={mobile ? 'h6' : 'h5'} align="left" className={classes.title}>
                 PENDING ORDERS
             </Typography>
-            <Grid  container direction='row'>
-                {orders.map(()=>(
+            <Grid container direction='row'>
+                {orders.map(() => (
                     <Grid item lg={3} md={4} sm={6} xs={12}>
                         <Paper elevation={3} className={classes.itemRoot}>
                             <Grid container direction='column' >
@@ -92,6 +92,6 @@ const PendingOrders= () =>{
 
         </div>
     )
-    
+
 }
 export default PendingOrders;

@@ -1,14 +1,14 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
-const Test= () =>{
-    const [m, set_m]=React.useState(0)
+const Test = () => {
+    const [m, set_m] = React.useState(0)
 
-    const handleClick = (event)=>{
-        set_m(m+1);
+    const handleClick = (event) => {
+        set_m(m + 1);
         console.log(m)
     }
 
-    return(
+    return (
         <div>
             <Button onClick={handleClick}>
                 {m}
@@ -17,4 +17,4 @@ const Test= () =>{
     )
 }
 
-export default  Test;
+export default Test;
