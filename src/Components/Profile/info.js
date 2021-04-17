@@ -84,8 +84,8 @@ export default function Info(props) {
     // const [name, setName] = React.useState('');
     // console.log(props);
 
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODY1NDc5OCwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODY1NDQ5OH0.XIu9sutzb8AJR1HGckf7mqSF-EdpUFJqd7DNb_jhKJk";
-    const username = "vijay";
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
 
     const setDetails = (result) => {
         // console.log(result[0]);
@@ -137,6 +137,7 @@ export default function Info(props) {
     const handleEditClick = () => {
         setEdit(true)
     }
+
     const handleUpdateClick = () => {
         var config2 = {
             method: 'get',
@@ -181,7 +182,7 @@ export default function Info(props) {
                     },
                     data: data
                 };
-
+                setEdit(false);
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
@@ -189,13 +190,14 @@ export default function Info(props) {
                     .catch(function (error) {
                         console.log(error);
                     });
-            })
-            .catch(function (error) {
+                }).catch(function (error) {
                 console.log(error);
-            });
-
-        setEdit(false)
+                })
+        }).catch(function (error) {
+            console.log(error);
+        })
     }
+
 
     React.useEffect(() => {
         try {
@@ -203,7 +205,7 @@ export default function Info(props) {
         } catch (error) {
             console.log(error);
         }
-    }, )
+    }, [])
 
     return (
         <Grid item xs={12} md={4}>

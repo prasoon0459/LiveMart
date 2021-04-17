@@ -16,6 +16,7 @@ import Info from "./info";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";
+import UseWindowDimensions from '../../utils/UseWindowDimensions';
 
 const useStyles = makeStyles((theme) => ({
   roots: {
@@ -51,8 +52,8 @@ export default function Profile(props) {
   const history= useHistory()
   const [wallet, setWallet]=React.useState(300);
   
-  const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODY1NDc5OCwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODY1NDQ5OH0.XIu9sutzb8AJR1HGckf7mqSF-EdpUFJqd7DNb_jhKJk";
-  const username = "vijay";
+  const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
 
   const setDetails = (result) => {
     console.log(result[0]);
@@ -88,7 +89,6 @@ export default function Profile(props) {
           console.log(error);
       }
     }, [])
-  const history = useHistory()
 
   const handleReviewsClicked = () => {
     history.push('/reviews')

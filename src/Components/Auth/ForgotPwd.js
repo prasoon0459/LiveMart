@@ -43,48 +43,54 @@ const ForgotPassword = () => {
     const classes= useStyles();
     const [pwdVerified, setPwdVerified] = React.useState(false);
     const [email, setEmail] = React.useState('');
-    const [otp, setOtp] = React.useState(0);
-    const [recOtp, setRecOtp] = React.useState(0);
-    const [formErrors, setFormErrors] = React.useState({});
-    const [password, setPassword] = React.useState('');
     const [token, setToken] = React.useState('');
 
-    const handlePassword = (e) => {
-        setPassword(e.target.value);
-    }
-    
-    const handleOtp = (e) => {
-        setOtp(parseInt(e.target.value));
-    }
 
-    const handleSendOTP = () => {
+    // const handleToken = (e) => {
+    //     setToken(e.target.value);
+    // };
+    const handleEmail =(e)=>{
+        setEmail(e.target.value);
+        console.log(email);
+    }
+    const handleReset = () => {
         var data = new FormData();
-        data.append('email', email);
+        data.append('email', 'scamazon.oops.123@gmail.com');
+        data.append('password', 'admin123');
+
         var config = {
-          method: 'post',
-          url: serverUrl+'/otp/',
-          data : data
+        method: 'post',
+        url: serverUrl+'/account/login/',
+        data : data
         };
+
         axios(config)
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
-          setRecOtp(response.data.otp);
+            console.log(JSON.stringify(response.data));
+            setToken(response.data.token);
+
+            var data2 = new FormData();
+            data2.append('email', email);
+            data2.append('token', token);
+
+            var config2 = {
+            method: 'post',
+            url: serverUrl+'/account/sendresetmail/',
+            data : data2
+            };
+
+            axios(config2)
+            .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
         })
         .catch(function (error) {
-          console.log(error);
+        console.log(error);
         });
-        setPwdVerified(true);
     };
-
-
-    const handleToken = (e) => {
-        setToken(e.target.value);
-    };
-    
-    const handleReset = () => {
-        
-    };
-    const classes = useStyles();
 
     return (
         <div className={classes.root}>
@@ -115,55 +121,25 @@ const ForgotPassword = () => {
                             id="email"
                             label="Email Address"
                             name="email"
+                            onChange={handleEmail}
                             InputLabelProps={{
                                 className: classes.floatingLabelFocusStyle
                             }}
                             autoComplete="email"
                             autoFocus
                         />
-                        <Button
-                            fullWidth
-                            disabled={pwdVerified}
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSendOTP}
-                            className={classes.submit}
-                            disabled={Object.entries(formErrors || {}).length > 0}
-                        >
-                            Send OTP
-                        </Button>
-                        <Grid container className={classes.infoContainer}>
-                            <Typography variant="body2" color="secondary">
-                            * An OTP will be sent to your Email.
-                            </Typography>
-                        </Grid>
-                        {pwdVerified ? (
                         <Grid>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="OTP"
-                                label="OTP"
-                                type="password"
-                                id="OTP"
-                                InputLabelProps={{
-                                className: classes.floatingLabelFocusStyle,
-                                }}
-                                onChange={handleOtp}
-                            />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
-                                className={classes.submit}>
-                                Send Reset Link
+                                className={classes.submit}
                                 onClick={handleReset}
+                                >
+                                Send Reset Link
                             </Button>
                         </Grid>
-                        ) : (<div />)}
                     </form>
                 </div>
             </Container>

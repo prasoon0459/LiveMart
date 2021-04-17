@@ -95,6 +95,8 @@ export default function SignIn(props) {
           // console.log(JSON.stringify(response.data));
           // setToken(response.data.token);
           props.handleToken(response.data.token);
+          localStorage.setItem('token',response.data.token);
+          localStorage.setItem('username',response.data.user);
           history.push("/");
         }).catch(function (error) {
           console.log(error);

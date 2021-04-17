@@ -8,6 +8,10 @@ import Imgix from "react-imgix";
 import Item from "../../Data/Item";
 import theme from "../../theme";
 import { NavLink, useLocation } from 'react-router-dom'
+import serverUrl from "../../serverURL";
+import axios from "axios";
+import React from 'react';
+
 
 const {
     makeStyles,
@@ -76,14 +80,56 @@ const useStyles = makeStyles({
 
 const Search = () => {
     const location = useLocation();
-    const search_query = new URLSearchParams(location.search)
-    console.log(search_query)
+    console.log(location.search);
+    // const search_query = new URLSearchParams(location.search);
+    const search_query = (location.search).toString();
     const classes = useStyles();
-    // const history = useHistory();    
+    // const history = useHistory();
 
-    let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
-    const items = [a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
+    const token = localStorage.getItem('token');
+    // const username = localStorage.getItem('username');
 
+    // let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
+    // const items = [a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
+    const [items, setItems] = React.useState({});
+    //const items = [];
+
+    const handleSearch = () => {
+        var config = {
+            method: 'get',
+            url: serverUrl+'/products/'+search_query,
+            headers: { 
+            'Authorization': 'JWT ' + token
+            }
+        };
+        
+        axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            response.data.map((item) => {
+                var i = new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating);
+                // setItems([
+                //     ...items, new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)
+                // ]);
+                // setItems(items=>[...items, new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)]);
+                 setItems(items => [...items, i]);
+                //items.concat(i);
+            });
+            console.log(items);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+  
+    }
+
+    React.useEffect(() => {
+        try {
+            handleSearch();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
 
     return (
         <div className={classes.root}>
