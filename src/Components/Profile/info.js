@@ -86,15 +86,15 @@ export default function Info(props) {
     // const [name, setName] = React.useState('');
     // console.log(props);
 
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODYwMTQ5MiwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODYwMTE5Mn0._whNCP82itSvcIpWziFhkFC9VOSBMCvo8ldsBPnxKus";
+    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODY1NDc5OCwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODY1NDQ5OH0.XIu9sutzb8AJR1HGckf7mqSF-EdpUFJqd7DNb_jhKJk";
     const username = "vijay";
 
     const setDetails = (result) => {
-        console.log(result[0]);
+        // console.log(result[0]);
         // setName(result[0].name);
         // console.log(name);
         setUserDetails({name: result[0].name, email: result[0].mail, mobile: result[0].phno, url: result[0].url});
-        console.log(userDetails);
+        // console.log(userDetails);
     }
 
     const getUserDetails = () => {
@@ -150,7 +150,7 @@ export default function Info(props) {
           
         axios(config2)
         .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            // console.log(JSON.stringify(response.data));
             response.data.name = userDetails.name;
             response.data.mail = userDetails.email
             response.data.phno = userDetails.mobile;
