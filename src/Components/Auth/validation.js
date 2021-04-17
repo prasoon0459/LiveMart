@@ -1,4 +1,4 @@
-// import * as zxcvbn from 'zxcvbn';
+import * as zxcvbn from 'zxcvbn';
 
 
 export function minMaxLength(text, minLength, maxLength) {   // name validation 
@@ -10,7 +10,7 @@ export function minMaxLength(text, minLength, maxLength) {   // name validation
 
 export function validEmail(text) {   //email regex
     const regex = RegExp(
-        /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        /^\S+@\S+\.\S+$/
       );
      
     return !regex.test(text);
@@ -36,7 +36,7 @@ export function userExists(email) {   // email validator
     });
 }
 
-// export function passwordStrength(text) {
-//     let result = zxcvbn(text);
-//     return result.score < 3;
-// }
+export function passwordStrength(text) {
+    let result = zxcvbn(text);
+    return result.score < 3;
+}

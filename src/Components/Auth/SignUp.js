@@ -17,6 +17,12 @@ import serverUrl from "../../serverURL";
 import { render } from 'react-dom';
 import axios from "axios";
 import {useHistory} from "react-router-dom";
+import {
+  minMaxLength,
+  validEmail,
+  passwordStrength,
+  userExists,
+} from './validation';
 
 var FormData = require('form-data');
 
@@ -65,6 +71,14 @@ export default function SignUp() {
   const [name, setName] = useState('');
   const [mail, setMail] = useState(''); 
   const [phone, setPhone] = useState('');
+  const [error,setError]=useState({
+    name:'',
+    mob:'',
+    userName:'',
+    mail:'',
+    password:'',
+    confirmPassword:''
+  });
 
   const history = useHistory();
 
@@ -114,21 +128,27 @@ export default function SignUp() {
   }
   const handleName=(e)=>{
     setName(e.target.value);
+    setError({...error, name:''})
   }
   const handleUsername=(e)=>{
     setUsername(e.target.value);
+    setError({...error, userName:''})
   }
   const handleEmail=(e)=>{
     setMail(e.target.value);
+    setError({...error, mail:''})
   }
   const handleMobNo=(e)=>{
     setPhone(e.target.value);
+    setError({...error, mob:''})
   }
   const handlePass=(e)=>{
     setPassword(e.target.value);
+    setError({...error, password:''})
   }
   const handleConfirmPass=(e)=>{
     setPassword2(e.target.value);
+    setError({...error, confirmPassword:''})
   }
 
   const handleClickListItem = (event) => {
@@ -149,8 +169,68 @@ export default function SignUp() {
   //     cleanup
   //   )
   // }, [])
+  const handleUserNameError=()=>{
+    if (minMaxLength(username, 3)) {
+      setError({...error,userName:'Must be greater than 3 character'});
+    }
+  }
+  const handleMobError=()=>{
+    console.log(phone.length);
+    let reg= new RegExp(/^\d*$/).test(phone);
+    if(phone.length!=10)
+      setError({...error,mob:'Must be 10 digit'});
+    else if(!reg)
+    setError({...error,mob:'Only number permitted'});
+  }
+  const handleNameError=()=>{
+    if (minMaxLength(name, 3)) {
+      setError({...error,name:'Must be greater than 3 character'});
+    }
+  }
+  const handleEmailError=()=>{
+    if (!mail || validEmail(mail)) {
+      setError({...error,mail:'Please provide a valid email'});
+    }
+  }
+  const handlePasswordError=()=>{
+    if ((minMaxLength(password, 6))) 
+      setError({...error,password:'Must be greater than 6 character'});
+    else if (passwordStrength(password))
+      setError({...error,password:'Password is not strong enough. Include an upper case letter, a number or a special character to make it strong'});
+      if (password2!='') {
+        validateConfirmPassword(
+          password,
+          password2,
+        );
+      }
+  }
+  const handleConfirmPasswordError=()=>{
+    let valid = validateConfirmPassword(
+      password,
+      password2,
+    );
+  }
+  function validateConfirmPassword(
+    password,
+    confirmpassword,
+  ) {
+    if (password !== confirmpassword) {
+      setError({...error,confirmPassword:
+        ' Password is not matching'});
+      return false;
+    }
+    else if(error['password']!=''){
+      setError({...error,confirmPassword:
+        error['password']});
+      return false;
+    }
+    else
+    setError({...error,confirmPassword:
+      ''});
+  }
   return (
     <Container component="main" maxWidth="xs">
+    {/* {console.log(typeof error)} */}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -163,14 +243,18 @@ export default function SignUp() {
           <Grid container spacing={2}>
           <Grid item xs={12} sm={6} >
               <TextField
+                autoFocus
                 autoComplete="userName"
                 name="userName"
                 variant="outlined"
                 required
                 fullWidth
                 id="userName"
-                label="Usename"
+                label="Username"
                 autoFocus
+                onBlur={handleUserNameError}
+                error={error['userName']!==''}
+                helperText={error['userName']}
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
@@ -186,7 +270,9 @@ export default function SignUp() {
                 fullWidth
                 id="name"
                 label="Name"
-                autoFocus
+                onBlur={handleNameError}
+                error={error['name']!==''}
+                helperText={error['name']}
                 InputLabelProps={{
                   className: classes.floatingLabelFocusStyle
                 }}
@@ -234,6 +320,9 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onBlur={handleEmailError}
+                error={error['mail']!==''}
+                helperText={error['mail']}
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
@@ -249,6 +338,9 @@ export default function SignUp() {
                 id="mobile"
                 label="Mobile Number"
                 name="mobile"
+                onBlur={handleMobError}
+                error={error['mob']!==''}
+                helperText={error['mob']}
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
@@ -264,6 +356,9 @@ export default function SignUp() {
                 InputLabelProps={{
                     className: classes.floatingLabelFocusStyle
                 }}
+                onBlur={handlePasswordError}
+                error={error['password']!==''}
+                helperText={error['password']}
                 label="Password"
                 type="password"
                 id="password"
@@ -280,6 +375,9 @@ export default function SignUp() {
                 InputLabelProps={{  
                     className: classes.floatingLabelFocusStyle
                 }}
+                onBlur={handleConfirmPasswordError}
+                error={error['confirmPassword']!==''}
+                helperText={error['confirmPassword']}
                 type="password"
                 id="confirmpassword"
                 onChange={handleConfirmPass}
@@ -293,6 +391,7 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
             onClick={handleSubmit}
+            // disabled={error['name']!==''}
           >
             Sign Up
           </Button>
