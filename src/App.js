@@ -24,6 +24,7 @@ import Notifs from './Components/Notifs/Notifs';
 import Orders from './Components/Order/Orders';
 import Wallet from './Components/Wallet/Wallet'
 import MyReviews from './Components/MyReview/myReview';
+import Checkout from './Components/Checkout/Checkout';
 
 const App =() =>{
     const screen = UseWindowDimensions().screen;
@@ -94,6 +95,11 @@ const App =() =>{
             {getHeader()}
               <Categories/>
             </Route>
+
+            <Route path='/checkout'>  
+              <Checkout/>
+            </Route>
+
             <Route path='/product'>   
             {getHeader()}
               <Product/>
