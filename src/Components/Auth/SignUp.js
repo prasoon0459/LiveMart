@@ -277,8 +277,6 @@ export default function SignUp() {
                     select
                     fullWidth
                     label="Role"
-                    //value={role}
-                    //onChange={handleChange}
                     InputLabelProps={{
                         className: classes.floatingLabelFocusStyle
                     }}
