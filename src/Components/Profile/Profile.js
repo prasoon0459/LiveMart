@@ -14,6 +14,10 @@ import Coin from "../../img/coins.jpg";
 import ReactRoundedImage from "react-rounded-image";
 import Info from "./info";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import serverUrl from "../../serverURL";
+import UseWindowDimensions from '../../utils/UseWindowDimensions';
+
 const useStyles = makeStyles((theme) => ({
   roots: {
     margin: `calc(1em + ${theme.spacing(1)}px)`,
@@ -44,7 +48,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(props) {
   const classes = useStyles();
-  const history = useHistory()
+  const mobile=UseWindowDimensions().mobile
+  const history= useHistory()
+  const [wallet, setWallet]=React.useState(300);
+  
+  const token = localStorage.getItem('token');
+  const username = localStorage.getItem('username');
+
+  const setDetails = (result) => {
+    console.log(result[0]);
+    // setName(result[0].name);
+     console.log(result);
+    setWallet(result[0].wallet);
+  }
+
+  const getUserWallet = () => {
+    var config = {
+        method: 'get',
+        url: serverUrl+'/account/users/',
+        headers: { 
+          'Authorization': "JWT " + token
+        }
+      };
+
+      axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        const result = response.data.filter((val) => username===val.username);
+        setDetails(result);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });          
+  }
+
+  React.useEffect(() => {
+      try {
+          getUserWallet();
+      } catch (error) {
+          console.log(error);
+      }
+    }, [])
 
   const handleReviewsClicked = () => {
     history.push('/reviews')
@@ -70,7 +114,7 @@ export default function Profile(props) {
               xs={12}
             >
               <Typography className={classes.walletBalance} component="h1" variant="h4">
-                Wallet Balance: $10
+                Wallet Balance: ${wallet}
               </Typography>
             </Grid>
             <Grid container spacing={3} justify="space-evenly">

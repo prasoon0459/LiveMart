@@ -1,8 +1,15 @@
 import { Box, Button, Container, CssBaseline, makeStyles, TextField, Typography } from '@material-ui/core';
 import Imgix from 'react-imgix';
 import forgotpwd from '../../img/forgot_pwd.svg'
+import Grid from "@material-ui/core/Grid";
 import theme from '../../theme';
-const useStyles = makeStyles({
+import React from "react";
+import axios from "axios";
+import serverUrl from "../../serverURL";
+
+var FormData = require('form-data');
+
+const useStyles=makeStyles({
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -33,7 +40,57 @@ const useStyles = makeStyles({
 })
 
 const ForgotPassword = () => {
-    const classes = useStyles();
+    const classes= useStyles();
+    const [pwdVerified, setPwdVerified] = React.useState(false);
+    const [email, setEmail] = React.useState('');
+    const [token, setToken] = React.useState('');
+
+
+    // const handleToken = (e) => {
+    //     setToken(e.target.value);
+    // };
+    const handleEmail =(e)=>{
+        setEmail(e.target.value);
+        console.log(email);
+    }
+    const handleReset = () => {
+        var data = new FormData();
+        data.append('email', 'scamazon.oops.123@gmail.com');
+        data.append('password', 'admin123');
+
+        var config = {
+        method: 'post',
+        url: serverUrl+'/account/login/',
+        data : data
+        };
+
+        axios(config)
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            setToken(response.data.token);
+
+            var data2 = new FormData();
+            data2.append('email', email);
+            data2.append('token', token);
+
+            var config2 = {
+            method: 'post',
+            url: serverUrl+'/account/sendresetmail/',
+            data : data2
+            };
+
+            axios(config2)
+            .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+            console.log(error);
+            });
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
+    };
 
     return (
         <div className={classes.root}>
@@ -64,20 +121,25 @@ const ForgotPassword = () => {
                             id="email"
                             label="Email Address"
                             name="email"
+                            onChange={handleEmail}
                             InputLabelProps={{
                                 className: classes.floatingLabelFocusStyle
                             }}
                             autoComplete="email"
                             autoFocus
                         />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}>
-                            Send Reset Link
-                        </Button>
+                        <Grid>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                                onClick={handleReset}
+                                >
+                                Send Reset Link
+                            </Button>
+                        </Grid>
                     </form>
                 </div>
             </Container>

@@ -84,15 +84,15 @@ export default function Info(props) {
     // const [name, setName] = React.useState('');
     // console.log(props);
 
-    const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNSwidXNlcm5hbWUiOiJ2aWpheSIsImV4cCI6MTYxODYwMTQ5MiwiZW1haWwiOiIiLCJvcmlnX2lhdCI6MTYxODYwMTE5Mn0._whNCP82itSvcIpWziFhkFC9VOSBMCvo8ldsBPnxKus";
-    const username = "vijay";
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
 
     const setDetails = (result) => {
-        console.log(result[0]);
+        // console.log(result[0]);
         // setName(result[0].name);
         // console.log(name);
-        setUserDetails({ name: result[0].name, email: result[0].mail, mobile: result[0].phno, url: result[0].url });
-        console.log(userDetails);
+        setUserDetails({name: result[0].name, email: result[0].mail, mobile: result[0].phno, url: result[0].url});
+        // console.log(userDetails);
     }
 
     const getUserDetails = () => {
@@ -137,6 +137,7 @@ export default function Info(props) {
     const handleEditClick = () => {
         setEdit(true)
     }
+
     const handleUpdateClick = () => {
         var config2 = {
             method: 'get',
@@ -147,6 +148,24 @@ export default function Info(props) {
         };
 
         axios(config2)
+        .then(function (response) {
+            // console.log(JSON.stringify(response.data));
+            response.data.name = userDetails.name;
+            response.data.mail = userDetails.email
+            response.data.phno = userDetails.mobile;
+            var data = JSON.stringify(response.data)
+            
+            var config = {
+            method: 'put',
+            url: userDetails.url,
+            headers: { 
+                'Authorization': 'JWT ' + token, 
+                'Content-Type': 'application/json'
+            },
+            data : data
+            };
+        
+            axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
                 response.data.name = userDetails.name;
@@ -163,7 +182,7 @@ export default function Info(props) {
                     },
                     data: data
                 };
-
+                setEdit(false);
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
@@ -171,13 +190,14 @@ export default function Info(props) {
                     .catch(function (error) {
                         console.log(error);
                     });
-            })
-            .catch(function (error) {
+                }).catch(function (error) {
                 console.log(error);
-            });
-
-        setEdit(false)
+                })
+        }).catch(function (error) {
+            console.log(error);
+        })
     }
+
 
     React.useEffect(() => {
         try {
@@ -185,7 +205,7 @@ export default function Info(props) {
         } catch (error) {
             console.log(error);
         }
-    }, )
+    }, [])
 
     return (
         <Grid item xs={12} md={4}>

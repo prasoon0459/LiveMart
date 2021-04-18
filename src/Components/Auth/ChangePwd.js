@@ -1,4 +1,4 @@
-import React from "react";
+import {React,useState} from 'react' ;
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,7 +7,16 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import theme from '../../theme'
+import theme from '../../theme';
+import axios from "axios";
+import serverUrl from '../../serverURL';
+import {
+  minMaxLength,
+  validEmail,
+  passwordStrength,
+} from './validation';
+import { NavLink, useLocation } from 'react-router-dom'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   paper: {
@@ -39,11 +48,110 @@ const useStyles = makeStyles({
 const ChangePwd = () => {
 
   const classes = useStyles();
+  const username = '';
+  const token = '';
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [error, setError] = useState({
+    password: '',
+    confirmPassword: ''
+  });
+  
+  const history = useHistory();
+
+  const location = useLocation();
+  console.log(location);
 
   const handlechangePassword = () => {
-
+    if (password === password2) {
+      var data = JSON.stringify({
+        "username": username,
+        "new_password2": password,
+        "new_password": password,
+        "password": password,
+        "last_login": null,
+        "is_superuser": false,
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": false,
+        "groups": [],
+        "user_permissions": []
+      });
+      
+      var config = {
+        method: 'put',
+        url: serverUrl+'/account/resetpassword/',
+        headers: { 
+          'Authorization': 'JWT ' + token, 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
+      
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        history.push('/login');
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    } else {
+      console.log("password mismatch!");
+    }
   }
-
+  const handlePass = (e) => {
+    setPassword(e.target.value);
+    setError({ ...error, password: '' })
+  }
+  const handleConfirmPass = (e) => {
+    setPassword2(e.target.value);
+    setError({ ...error, confirmPassword: '' })
+  }
+  const handlePasswordError = () => {
+    if ((minMaxLength(password, 6)))
+      setError({ ...error, password: 'Must be greater than 6 character' });
+    else if (passwordStrength(password))
+      setError({ ...error, password: 'Password is not strong enough. Include an upper case letter, a number or a special character to make it strong' });
+    if (password2 !== '') {
+      validateConfirmPassword(
+        password,
+        password2,
+      );
+    }
+  }
+  const handleConfirmPasswordError = () => {
+     validateConfirmPassword(
+      password,
+      password2,
+    );
+  }
+  function validateConfirmPassword(
+    password,
+    confirmpassword,
+  ) {
+    if (password !== confirmpassword) {
+      setError({
+        ...error, confirmPassword:
+          ' Password is not matching'
+      });
+      return false;
+    }
+    else if (error['password'] !== '') {
+      setError({
+        ...error, confirmPassword:
+          error['password']
+      });
+      return false;
+    }
+    else
+      setError({
+        ...error, confirmPassword:
+          ''
+      });
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -60,9 +168,13 @@ const ChangePwd = () => {
             margin="normal"
             required
             fullWidth
+            onChange={handlePass}
+            onBlur={handlePasswordError}
             name="new_password"
             label="New Password"
             type="password"
+            error={error['password'] !== ''}
+                helperText={error['password']}
             id="new_password"
             InputLabelProps={{
               className: classes.floatingLabelFocusStyle,
@@ -73,8 +185,12 @@ const ChangePwd = () => {
             margin="normal"
             required
             fullWidth
+            onChange={handleConfirmPass}
+            onBlur={handleConfirmPasswordError}
             name="confirm_password"
             label="Confirm Password"
+            error={error['confirmPassword'] !== ''}
+            helperText={error['confirmPassword']}
             type="password"
             id="password"
             InputLabelProps={{

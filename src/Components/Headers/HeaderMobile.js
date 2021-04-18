@@ -132,7 +132,6 @@ const HeaderMobile = () => {
   const handleSearchSubmit = (event) => {
     if (event.key === 'Enter') {
       const params = new URLSearchParams()
-      console.log(event.target.value)
       if (event.target.value) {
         params.append('q', event.target.value)
         history.push({ pathname: '/search', search: params.toString() })
