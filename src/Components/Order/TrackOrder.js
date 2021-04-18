@@ -71,7 +71,6 @@ const TrackOrder = () => {
 
     const steps = getSteps();
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(2);
     const address = {
         firstName: 'Prasoon',
         lastName: 'Baghel',
@@ -181,7 +180,7 @@ const TrackOrder = () => {
                             <Typography variant='h6' className={classes.trackingHead}>Tracking Details</Typography>
                             <Grid container direction='row' justify='center'>
                                 <Grid item xs={8}>
-                                    <Stepper className={classes.stepper} activeStep={activeStep} orientation="vertical">
+                                    <Stepper className={classes.stepper} activeStep={order.status} orientation="vertical">
                                         {steps.map((label, index) => (
                                             <Step key={label} >
                                                 <StepLabel classes={{ label:classes.label}}>
