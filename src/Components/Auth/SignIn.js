@@ -48,6 +48,7 @@ export default function SignIn(props) {
   const classes = useStyles();
 
   const [pwdVerified, setPwdVerified] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState(0);
@@ -56,6 +57,7 @@ export default function SignIn(props) {
     mail: '',
     password: '',
   });
+  const [otpStatus,setOtpStatus]=useState(false);
 
   const handleSendOTP = () => {
     var data = new FormData();
@@ -73,13 +75,14 @@ export default function SignIn(props) {
       .catch(function (error) {
         console.log(error);
       });
-    setPwdVerified(true);
+    setOtpStatus(true);
   };
 
   const history = useHistory();
 
   const handleSignIn = () => {
     if (otp === recOtp) {
+      setOtpVerified(true);
       var data2 = new FormData();
       data2.append('email', email);
       data2.append('password', password);
@@ -100,9 +103,10 @@ export default function SignIn(props) {
           history.push("/");
         }).catch(function (error) {
           console.log(error);
+          setPwdVerified(true);
         });
     } else {
-      console.log("OTP Mismatch!")
+      setOtpVerified(false);
     }
   }
 
@@ -141,7 +145,7 @@ export default function SignIn(props) {
             variant="outlined"
             margin="normal"
             required
-            disabled={pwdVerified}
+            disabled={otpStatus}
             fullWidth
             id="email"
             label="Email Address"
@@ -155,22 +159,6 @@ export default function SignIn(props) {
             }}
             autoComplete="email"
             autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            disabled={pwdVerified}
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            InputLabelProps={{
-              className: classes.floatingLabelFocusStyle,
-            }}
-            onChange={handlePassword}
           />
           <Button
             fullWidth
@@ -201,7 +189,7 @@ export default function SignIn(props) {
             </Grid>
           </Grid>
 
-          {pwdVerified ? (
+          {otpStatus ? (
             <Grid container>
               <TextField
                 variant="outlined"
@@ -217,6 +205,27 @@ export default function SignIn(props) {
                 }}
                 onChange={handleOtp}
               />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                InputLabelProps={{
+                  className: classes.floatingLabelFocusStyle,
+                }}
+                onChange={handlePassword}
+              />
+              {pwdVerified ? (<Typography align='center' color='secondary'>
+                Password Incorrect
+              </Typography>) : null}
+              {!otpVerified ? (<Typography align='center' color='secondary'>
+                OTP Incorrect
+              </Typography>) : null}
               <Button
                 // type="submit"
                 fullWidth

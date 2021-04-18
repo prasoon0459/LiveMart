@@ -46,10 +46,7 @@ const useStyles = makeStyles({
 })
 
 const ChangePwd = () => {
-
   const classes = useStyles();
-  const username = '';
-  const token = '';
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [error, setError] = useState({
@@ -60,7 +57,9 @@ const ChangePwd = () => {
   const history = useHistory();
 
   const location = useLocation();
-  console.log(location);
+  const params = new URLSearchParams(location.search);
+  const token = params.get('q');
+  const username = params.get('u');
 
   const handlechangePassword = () => {
     if (password === password2) {
@@ -113,8 +112,8 @@ const ChangePwd = () => {
   const handlePasswordError = () => {
     if ((minMaxLength(password, 6)))
       setError({ ...error, password: 'Must be greater than 6 character' });
-    else if (passwordStrength(password))
-      setError({ ...error, password: 'Password is not strong enough. Include an upper case letter, a number or a special character to make it strong' });
+    // else if (passwordStrength(password))
+    //   setError({ ...error, password: 'Password is not strong enough. Include an upper case letter, a number or a special character to make it strong' });
     if (password2 !== '') {
       validateConfirmPassword(
         password,
@@ -201,6 +200,7 @@ const ChangePwd = () => {
             fullWidth
             variant="contained"
             color="primary"
+            disabled={error['password']!=='' || error['confirmPassword']!==''}
             onClick={handlechangePassword}
             className={classes.submit}
           >

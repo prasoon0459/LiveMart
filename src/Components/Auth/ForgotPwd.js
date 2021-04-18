@@ -56,7 +56,7 @@ const ForgotPassword = () => {
     const handleReset = () => {
         var data = new FormData();
         data.append('email', 'scamazon.oops.123@gmail.com');
-        data.append('password', 'admin123');
+        data.append('password', 'shauryavj');
 
         var config = {
         method: 'post',
@@ -130,7 +130,6 @@ const ForgotPassword = () => {
                         />
                         <Grid>
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 color="primary"
