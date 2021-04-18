@@ -8,13 +8,25 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
-import { Grid, TextField } from "@material-ui/core";
+import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@material-ui/core";
 import Imgix from "react-imgix";
 import check from '../../img/check.gif'
 
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: "relative",
+  },
+
+  floatingLabelFocusStyle: {
+    color: theme.palette.text.hint
+  },
+  shipmentToHeading: {
+    fontWeight: 600
   },
   layout: {
     width: "auto",
@@ -36,19 +48,22 @@ const useStyles = makeStyles((theme) => ({
       padding: theme.spacing(3),
     },
   },
-  floatingLabelFocusStyle: {
-    color: theme.palette.text.hint
-  },
   title: {
     margin: theme.spacing(0, 0, 2),
   },
   stepper: {
     padding: theme.spacing(3, 0, 5),
   },
+  label: {
+    color: theme.palette.text.disabled
+  },
   buttons: {
     display: "flex",
     justifyContent: "flex-end",
     marginTop: theme.spacing(1)
+  },
+  date:{
+    margin:theme.spacing(2,0,2)
   },
   button: {
     marginTop: theme.spacing(3),
@@ -56,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["Delivery Option", "Shipping address / Pickup Details", "Payment details", "Review your order"];
 
 export default function Checkout() {
   const classes = useStyles();
@@ -72,6 +87,39 @@ export default function Checkout() {
     country: null
   });
 
+  const [orders, setOrders] = React.useState([
+    {
+      seller_name: 'M/s Agarwal General Store',
+      seller_address: 'Shop No 3, Ground Floor \nAnand Plaza, Telibagh \nLucknow, UP, \n226029, India',
+      items: [
+        { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+        { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+        { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+      ],
+      total_price: 342.64,
+      expected_delivery: '04/04/21 15:36',
+      status: 2
+    },
+    {
+      seller_name: 'M/s Agarwal General Store',
+      seller_address: 'Shop No 3, Ground Floor \nAnand Plaza, Telibagh \nLucknow, UP, \n226029, India',
+      items: [
+        { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+        { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+        { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+      ],
+      total_price: 342.64,
+      expected_delivery: '04/04/21 08:26',
+      status: 2
+    },
+  ])
+
+  const [option, setOption] = React.useState(0)
+
+  const handleOptionChanged = (event) => {
+    setOption(event.target.value)
+  }
+
   const handleAddressChange = (event) => {
     const id = event.target.id
     const new_address = address
@@ -79,6 +127,168 @@ export default function Checkout() {
     setAddress(new_address)
   }
 
+  const handlePickupDateChange = (index, event) => {
+    var newOrders = orders
+    console.log(index + ' ' + event)
+    newOrders[index].expected_delivery = event.target.value
+    console.log(newOrders[index].expected_delivery)
+    setOrders(newOrders)
+  }
+
+  const getAddressStep = () => {
+    return (
+      <React.Fragment>
+        <Typography variant="h6" gutterBottom>
+          Shipping address
+      </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="firstName"
+              name="firstName"
+              label="First name"
+              onChange={handleAddressChange}
+              fullWidth
+              value={address.firstName}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              autoComplete="given-name"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="lastName"
+              name="lastName"
+              label="Last name"
+              onChange={handleAddressChange}
+              fullWidth
+              value={address.lastName}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              autoComplete="family-name"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              id="addressLine1"
+              name="addressLine1"
+              label="Address line 1"
+              onChange={handleAddressChange}
+              fullWidth
+              value={address.addressLine1}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              autoComplete="shipping address-line1"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="addressLine2"
+              name="addressLine2"
+              label="Address line 2"
+              onChange={handleAddressChange}
+              fullWidth
+              value={address.addressLine2}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              autoComplete="shipping address-line2"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="city"
+              name="city"
+              label="City"
+              fullWidth
+              value={address.city}
+              onChange={handleAddressChange}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              autoComplete="shipping address-level2"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              id="state"
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              name="state"
+              value={address.state}
+              onChange={handleAddressChange}
+              label="State/Province/Region"
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="zip"
+              name="zip"
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              label="Zip / Postal code"
+              fullWidth
+              value={address.zip}
+              onChange={handleAddressChange}
+              autoComplete="shipping postal-code"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              id="country"
+              name="country"
+              label="Country"
+              value={address.country}
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              onChange={handleAddressChange}
+              fullWidth
+              autoComplete="shipping country"
+            />
+          </Grid>
+        </Grid>
+      </React.Fragment>
+    )
+  }
+
+  const getPickupDetailsStep = () => {
+    return (
+      <React.Fragment>
+        {orders.map((order, index) => (
+          <Grid container direction='column' alignItems='flex-start'>
+            <Typography align='left' className={classes.shipmentToHeading}>Pickup of {order.items.length} item(s) from:</Typography>
+            <Typography align='left'>{order.seller_address}</Typography>
+            <form className={classes.container} noValidate>
+              <TextField
+                id="datetime-local"
+                label="Pickup Time"
+                type="datetime-local"
+                className={classes.date}
+                onChange={(e)=>handlePickupDateChange(index,e)}
+                InputLabelProps={{
+                  shrink: true,
+                  className: classes.floatingLabelFocusStyle
+                }}
+              />
+            </form>
+          </Grid>
+        ))}
+      </React.Fragment>
+    )
+  }
 
   const getStepContent = (step) => {
     switch (step) {
@@ -86,140 +296,28 @@ export default function Checkout() {
         return (
           <React.Fragment>
             <Typography variant="h6" gutterBottom>
-              Shipping address
+              Delivery Option
             </Typography>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id="firstName"
-                  name="firstName"
-                  label="First name"
-                  onChange={handleAddressChange}
-                  fullWidth
-                  value={address.firstName}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  autoComplete="given-name"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id="lastName"
-                  name="lastName"
-                  label="Last name"
-                  onChange={handleAddressChange}
-                  fullWidth
-                  value={address.lastName}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  id="addressLine1"
-                  name="addressLine1"
-                  label="Address line 1"
-                  onChange={handleAddressChange}
-                  fullWidth
-                  value={address.addressLine1}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  autoComplete="shipping address-line1"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="addressLine2"
-                  name="addressLine2"
-                  label="Address line 2"
-                  onChange={handleAddressChange}
-                  fullWidth
-                  value={address.addressLine2}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  autoComplete="shipping address-line2"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id="city"
-                  name="city"
-                  label="City"
-                  fullWidth
-                  value={address.city}
-                  onChange={handleAddressChange}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  autoComplete="shipping address-level2"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="state"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  name="state"
-                  value={address.state}
-                  onChange={handleAddressChange}
-                  label="State/Province/Region"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id="zip"
-                  name="zip"
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  label="Zip / Postal code"
-                  fullWidth
-                  value={address.zip}
-                  onChange={handleAddressChange}
-                  autoComplete="shipping postal-code"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  id="country"
-                  name="country"
-                  label="Country"
-                  value={address.country}
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                  onChange={handleAddressChange}
-                  fullWidth
-                  autoComplete="shipping country"
-                />
-              </Grid>
-            </Grid>
+            <FormControl component="fieldset">
+              <RadioGroup aria-label="option" name="option" value={option} onChange={handleOptionChanged}>
+                <FormControlLabel value='0' control={<Radio />} label="Delivery to Home" />
+                <FormControlLabel value='1' control={<Radio />} label="Store Pickup" />
+              </RadioGroup>
+            </FormControl>
           </React.Fragment>
-        );
+        )
       case 1:
-        return <PaymentForm />;
+        return option === '0' ? getAddressStep() : getPickupDetailsStep()
       case 2:
-        return <Review address={address} />;
+        return <PaymentForm />;
+      case 3:
+        return <Review orders={orders} option={option} address={address} />;
       default:
         throw new Error("Unknown step");
     }
   };
 
   const handleNext = () => {
-    console.log(address)
     setActiveStep(activeStep + 1);
   };
 
@@ -246,7 +344,7 @@ export default function Checkout() {
           >
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel>{label}</StepLabel>
+                <StepLabel classes={{ label: classes.label }}>{label}</StepLabel>
               </Step>
             ))}
           </Stepper>

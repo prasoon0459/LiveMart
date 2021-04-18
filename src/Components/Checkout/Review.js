@@ -7,38 +7,20 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { Divider } from "@material-ui/core";
 
-const orders = [
-  {
-    shopName: 'M/s Agarwal General Store',
-    items: [
-      { name: "Product 1", desc: "A nice thing", price: "$9.99" },
-      { name: "Product 2", desc: "Another thing", price: "$3.45" },
-      { name: "Product 3", desc: "Something else", price: "$6.51" },
-    ]
-  },
-  {
-    shopName: 'M/s Gowani General Store',
-    items: [
-      { name: "Product 4", desc: "A nice thing", price: "$9.99" },
-      { name: "Product 5", desc: "Another thing", price: "$3.45" },
-    ]
-  },
-
-]
-
 const useStyles = makeStyles((theme) => ({
   listItem: {
     padding: theme.spacing(0, 2),
   },
   shipmentToHeading: {
-    fontWeight: 600
+    fontWeight: 600,
+    margin: theme.spacing(1, 0, 0)
   },
   indOrdersContainer: {
     marginTop: theme.spacing(4)
   },
   shopNameHeading: {
     margin: theme.spacing(0, 0, 1),
-    fontWeight: 400
+    fontWeight: 600
   },
   orderSummaryHeading: {
     margin: theme.spacing(2, 0, 0)
@@ -54,24 +36,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Review({ address }) {
+function getDate(date) {
+  var d = new Date(date)
+  var dd = d.getDate();
+
+  var mm = d.getMonth() + 1;
+  var yyyy = d.getFullYear();
+  if (dd < 10) {
+    dd = '0' + dd;
+  }
+  if (mm < 10) {
+    mm = '0' + mm;
+  }
+  return dd+'/'+mm+'/'+yyyy+' '+d.getHours()+':'+d.getMinutes()
+}
+
+export default function Review({ orders, option, address, }) {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Grid container direction='column' alignItems='flex-start'>
-        <Typography align='left' className={classes.shipmentToHeading}>Shipment to:</Typography>
-        <Typography align='left'>{address.firstName + ' ' + address.lastName}</Typography>
-        <Typography align='left'>{address.addressLine1}</Typography>
-        <Typography align='left'>{address.addressLine2}</Typography>
-        <Typography align='left'>{address.city + ', ' + address.state}</Typography>
-        <Typography align='left'>{address.zip + ', ' + address.country}</Typography>
-      </Grid>
       <Typography variant="h6" gutterBottom className={classes.orderSummaryHeading}>
         Order Summary
       </Typography>
       {orders.map((order) => (
         <Grid container direction='column' className={classes.indOrdersContainer}>
-          <Typography variant='h6' align='left' className={classes.shopNameHeading}>{order.shopName}</Typography>
+          <Typography variant='h6' align='left' className={classes.shopNameHeading}>{order.seller_name}</Typography>
+          <Grid container direction='column' alignItems='flex-start'>
+            {option==='1'?<div>
+                <Typography align='left' className={classes.shipmentToHeading}>{'Pickup From :'}</Typography>
+                <Typography align='left'>{order.seller_address}</Typography>
+            </div> : <div></div>}
+            <Typography align='left' className={classes.shipmentToHeading}>{(option==='1'?'Pickup Date: ':'Expected Delivery :') + getDate(order.expected_delivery)} </Typography>
+            <Typography align='left'></Typography>
+          </Grid>
           <Divider></Divider>
           <List className={classes.list} disablePadding>
             {order.items.map((product) => (
