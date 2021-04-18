@@ -1,9 +1,10 @@
 import { Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core"
-import { LocationOn } from "@material-ui/icons";
+import { ChevronRight, LocationOn } from "@material-ui/icons";
 import ReactRoundedImage from 'react-rounded-image'
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import deliveryBoyAvatar from '../../img/deliveryBoyAvatar.svg'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
 
@@ -48,11 +49,16 @@ const useStyles = makeStyles({
 })
 
 const PendingOrders = () => {
+    const history = useHistory()
     const screen = UseWindowDimensions().screen;
     const mobile = screen === 'xs'
     const sm = screen === 'sm'
     const classes = useStyles({ mobile: mobile, sm: sm });
     const orders = [1, 2, 3, 4];
+
+    const handleOrderOpen = () =>{
+        history.push('/seller_view_order')
+    }
 
     return (
         <div className={classes.root}>
@@ -83,7 +89,7 @@ const PendingOrders = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Button variant='outlined' color='secondary' fullWidth endIcon={<LocationOn></LocationOn>}>Track Order</Button>
+                                <Button variant='outlined' onClick={handleOrderOpen} color='secondary' fullWidth endIcon={<ChevronRight></ChevronRight>}>View Order</Button>
                             </Grid>
                         </Paper>
                     </Grid>
