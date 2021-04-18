@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     },
     itemTitle: {
         fontWeight: 600,
-        fontSize:18
+        fontSize: 18
     },
     itemOrderedDate: {
         color: theme.palette.text.hint,
@@ -52,9 +52,9 @@ const useStyles = makeStyles({
 
 })
 
-function getStatus(status){
-    switch (status){
-        case 0: 
+function getStatus(status) {
+    switch (status) {
+        case 0:
             return 'Order Placed';
         case 1:
             return 'Order Packed';
@@ -62,7 +62,7 @@ function getStatus(status){
             return 'Out for Delivery';
         case 3:
             return 'Delivered';
-        default: 
+        default:
             return 'UNKNOWN_STATUS';
     }
 }
@@ -76,50 +76,50 @@ const ActiveOrders = () => {
         {
             seller_name: 'M/s Agarwal General Store',
             items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
+                { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+                { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+                { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
             ],
-            total_price:342.64,
-            order_date:'18th March 2021',
+            total_price: 342.64,
+            order_date: '18th March 2021',
             expected_delivery: '23rd March 2021',
-            status:2
+            status: 2
         },
         {
             seller_name: 'M/s Agarwal General Store',
             items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
+                { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+                { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+                { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
             ],
-            total_price:342.64,
-            order_date:'18th March 2021',
+            total_price: 342.64,
+            order_date: '18th March 2021',
             expected_delivery: '23rd March 2021',
-            status:2
-        },        {
+            status: 2
+        }, {
             seller_name: 'M/s Agarwal General Store',
             items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
+                { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+                { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+                { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
             ],
-            total_price:342.64,
-            order_date:'18th March 2021',
+            total_price: 342.64,
+            order_date: '18th March 2021',
             expected_delivery: '23rd March 2021',
-            status:2
-        },        {
+            status: 2
+        }, {
             seller_name: 'M/s Agarwal General Store',
             items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
+                { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+                { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+                { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
             ],
-            total_price:342.64,
-            order_date:'18th March 2021',
+            total_price: 342.64,
+            order_date: '18th March 2021',
             expected_delivery: '23rd March 2021',
-            status:2
+            status: 2
         },
-        
+
     ]
 
     const handleTrackClick = (order) => {
@@ -136,7 +136,7 @@ const ActiveOrders = () => {
                     <Grid item lg={3} md={4} sm={6} xs={12}>
                         <Paper elevation={3} className={classes.itemRoot}>
                             <Grid container direction='column' >
-                                <Typography  align='left' className={classes.itemTitle}>{order.items.length>1?order.items[0].name+ ' + ' + (order.items.length-1) +' more item(s)':order.items[0].name}</Typography>
+                                <Typography align='left' className={classes.itemTitle}>{order.items.length > 1 ? order.items[0].name + ' + ' + (order.items.length - 1) + ' more item(s)' : order.items[0].name}</Typography>
                                 <Typography align='left' className={classes.shopName}>{order.seller_name}</Typography>
                                 <Typography align='left' className={classes.itemOrderedDate}>Ordered on : {order.order_date}</Typography>
                                 <Typography align='left' className={classes.itemOrderedStatus}>Order Status : {getStatus(order.status)}</Typography>
@@ -156,7 +156,7 @@ const ActiveOrders = () => {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                <Button variant='outlined' onClick={()=>handleTrackClick(order)} color='secondary' fullWidth endIcon={<LocationOn></LocationOn>}>Track Order</Button>
+                                <Button variant='outlined' onClick={() => handleTrackClick(order)} color='secondary' fullWidth endIcon={<LocationOn></LocationOn>}>Track Order</Button>
                             </Grid>
                         </Paper>
                     </Grid>

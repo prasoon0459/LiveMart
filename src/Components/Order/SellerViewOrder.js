@@ -1,9 +1,14 @@
-import { Divider, Grid, List, ListItem, ListItemText, makeStyles, Paper, Step, StepContent, StepLabel, Stepper, Typography } from "@material-ui/core"
+import { Button, Divider, Fab, Grid, List, ListItem, ListItemText, makeStyles, MenuItem, Paper, Step, StepContent, StepLabel, Stepper, TextField, Typography } from "@material-ui/core"
 import React from 'react'
 import theme from '../../theme'
 import ReactRoundedImage from 'react-rounded-image'
 import deliveryBoyAvatar from '../../img/deliveryBoyAvatar.svg'
-
+import DateFnsUtils from '@date-io/date-fns';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { Edit, UpdateOutlined } from "@material-ui/icons"
 const useStyles = makeStyles({
     listItem: {
         padding: theme.spacing(0, 2),
@@ -14,11 +19,18 @@ const useStyles = makeStyles({
         width: '100%',
         maxWidth: '992px'
     },
+
+    floatingLabelFocusStyle: {
+        color: theme.palette.text.hint
+    },
     shipmentToHeading: {
         fontWeight: 600
     },
     indOrdersContainer: {
         marginTop: theme.spacing(4)
+    },
+    fab:{
+        
     },
     shopNameHeading: {
         margin: theme.spacing(0, 0, 1),
@@ -50,6 +62,9 @@ const useStyles = makeStyles({
     statusTime: {
         fontSize: 12,
     },
+    dateMargin:{
+        margin: theme.spacing(0,2,0)
+    },
     deliveryPersonDetails: {
         margin: theme.spacing(2, 0, 2)
     },
@@ -59,18 +74,28 @@ const useStyles = makeStyles({
     expDeliveryText: {
         margin: theme.spacing(1, 0, 0),
         fontWeight: 600
+    },
+    statusContainer: {
+        margin: theme.spacing(0, 2, 2)
+    },
+    assignDeliveryBtn: {
+        margin: theme.spacing(1, 0, 0)
     }
 })
 
 function getSteps() {
-    return ['Ordered', 'Packed', 'Out for Delivery', 'Delivered'];
+    return ['Order Recieved', 'Pack', 'Assign Delivery Person', 'Out for Delivery', 'Delivered'];
 }
 
 
-const TrackOrder = () => {
+const SellerViewOrder = () => {
 
     const steps = getSteps();
     const classes = useStyles();
+    const [orderStatus, setOrderStatus] = React.useState(1)
+    const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState();
+
+
     const address = {
         firstName: 'Prasoon',
         lastName: 'Baghel',
@@ -93,18 +118,67 @@ const TrackOrder = () => {
         status: 2
     }
 
+
+    const handlePackedClicked = () => {
+        setOrderStatus(orderStatus + 1)
+    }
+    const handleAssignDelivery = () => {
+        setOrderStatus(orderStatus + 1)
+    }
+
+    const handleExpectedDeliveryDateChange = (date) => {
+        setExpectedDeliveryDate(date)
+    }
+
     const getStepContent = (step) => {
         switch (step) {
             case 0:
                 return <Typography>on 16th April 2021</Typography>
             case 1:
                 return (
-                    <div>
-                        <Typography className={classes.statusDate}>on 18th April 2021 </Typography>
-                        <Typography className={classes.statusTime}>03:36 PM</Typography>
-                    </div>
+                    <Grid container direction='column' alignItems='flex-start'>
+                        <Button onClick={handlePackedClicked} color='secondary' variant='contained'>Mark Packed</Button>
+                    </Grid>
                 )
             case 2:
+                return (
+                    <div>
+                        <Grid container direction='column' spacing={1} className={classes.deliveryStepContent}>
+                            <Grid item>
+                                <TextField
+                                    autoComplete="name"
+                                    name="name"
+                                    // variant="outlined" 
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    InputLabelProps={{
+                                        className: classes.floatingLabelFocusStyle
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    name="mobile"
+                                    // variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="mobile"
+                                    label="Mobile No."
+                                    InputLabelProps={{
+                                        className: classes.floatingLabelFocusStyle
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <Button className={classes.assignDeliveryBtn} fullWidth onClick={handleAssignDelivery} color='secondary' variant='contained'>Assign Delivery Person</Button>
+                            </Grid>
+
+                        </Grid>
+                    </div>
+                )
+            case 3:
                 return (
                     <div>
                         <Grid container direction='column' className={classes.deliveryStepContent}>
@@ -128,8 +202,10 @@ const TrackOrder = () => {
                         </Grid>
                     </div>
                 )
-            case 3:
-                return 'The product was delivered successfully';
+            case 4:
+                return (
+                    <div></div>
+                )
             default:
                 return 'UNKNOWN_STATUS'
         }
@@ -149,7 +225,6 @@ const TrackOrder = () => {
                                 <Typography align='left'>{address.addressLine2}</Typography>
                                 <Typography align='left'>{address.city + ', ' + address.state}</Typography>
                                 <Typography align='left'>{address.zip + ', ' + address.country}</Typography>
-                                <Typography align='left' className={classes.expDeliveryText}>Expected Delivery : {order.expected_delivery}</Typography>
                             </Grid>
 
                             <Typography variant="h6" gutterBottom className={classes.orderSummaryHeading}>
@@ -175,12 +250,37 @@ const TrackOrder = () => {
                             </Grid>
                         </React.Fragment>
                     </Grid>
-                    <Grid item xs={7}>
-                        <Grid container direction='column'>
+                    <Grid item xs={2}>
+
+                    </Grid>
+                    <Grid item xs={5}>
+                        <Grid container direction='column' alignItems='flex-start'>
                             <Typography variant='h6' className={classes.trackingHead}>Tracking Details</Typography>
+                            <Grid item className={classes.dateMargin}>
+                                <Grid container direction='row' alignItems='center'>
+                                    <Grid item>
+                                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                            <KeyboardDatePicker
+                                                margin="normal"
+                                                id="expected-delivery"
+                                                label="Expected Delivery Date"
+                                                format="MM/dd/yyyy"
+                                                value={expectedDeliveryDate}
+                                                InputLabelProps={{
+                                                    className: classes.floatingLabelFocusStyle
+                                                }}
+                                                onChange={handleExpectedDeliveryDateChange}
+                                                KeyboardButtonProps={{
+                                                    'aria-label': 'change date',
+                                                }}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
                             <Grid container direction='row' justify='center'>
-                                <Grid item xs={8}>
-                                    <Stepper className={classes.stepper} activeStep={order.status} orientation="vertical">
+                                <Grid item xs={12}>
+                                    <Stepper className={classes.stepper} activeStep={orderStatus} orientation="vertical">
                                         {steps.map((label, index) => (
                                             <Step key={label} >
                                                 <StepLabel classes={{ label: classes.label }}>
@@ -203,4 +303,4 @@ const TrackOrder = () => {
 
 }
 
-export default TrackOrder;
+export default SellerViewOrder;
