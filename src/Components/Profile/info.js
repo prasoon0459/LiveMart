@@ -207,8 +207,9 @@ export default function Info(props) {
         }
     }, [])
 
-    return (
+    return (   
         <Grid item xs={12} md={4}>
+            {userDetails.name!=='' ? localStorage.setItem('name', userDetails.name) : null}
             <Paper className={classes.paper}>
                 <Grid container spacing={2} direction="column" justify='flex-start' alignItems='center' className={classes.left}>
                     <ReactRoundedImage

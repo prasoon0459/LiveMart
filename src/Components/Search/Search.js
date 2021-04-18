@@ -109,17 +109,25 @@ const Search = () => {
         .then(function (response) {
             // console.log(JSON.stringify(response.data));
             // setData(response.data);
-            response.data.map((item) => {
-                // setItems(...items, {'item' : new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)});
-                setItems(...items, items.concat(item));
-                //items.concat(i);
-            });
+            const len = (response.data).length
+            var new_items = []
+            for (var i=0;i<len;i++) {
+                var temp = [...new_items];
+                temp = [...temp, {item : response.data[i]}];
+                new_items = temp;
+            }
+            setItems(new_items);
             setStatus(true);
         })
         .catch(function (error) {
             console.log(error);
         });
   
+    }
+
+    const setProduct = (product) => {
+        localStorage.setItem('product', product.item.url);
+        localStorage.setItem('productName', product.item.name);
     }
 
     React.useEffect(() => {
@@ -178,7 +186,7 @@ const Search = () => {
                         <Grid container spacing={5} justify="flex-start" alignItems="center" className={classes.itemsContainer}>
                             {items.map((product) => (
                                 <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'>
-                                    <Card variant="outlined" className={classes.card}>
+                                    <Card variant="outlined" className={classes.card} onClick={setProduct(product)}>
                                         <Grid
                                             container
                                             justify="center"
@@ -216,7 +224,7 @@ const Search = () => {
                                                                 className={classes.itemName}
                                                             >
                                                                 {/* Too Yumm{" "} */}
-                                                                {product.name}
+                                                                {product.item.name}
                                                             </Typography>
                                                             <Typography
                                                                 align="left"
@@ -224,7 +232,7 @@ const Search = () => {
                                                                 className={classes.price}
                                                             >
                                                                 {/* Rs. 518{" "} */}
-                                                                {product.wholesale_price}
+                                                                {product.item.wholesale_price}
                                                             </Typography>
                                                         </Grid>
                                                     </Box>

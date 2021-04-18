@@ -5,6 +5,8 @@ import theme from "../../theme"
 import React from 'react'
 import LinearWithValueLabel from "../../utils/LinearProgressWithLabel"
 import UseWindowDimensions from "../../utils/UseWindowDimensions"
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles({
     root: {
@@ -72,7 +74,47 @@ const Reviews = (props) => {
     const mobile = UseWindowDimensions().screen === 'xs'
 
     const classes = useStyles(mobile)
-    const reveiws = [1, 1, 1, 1]
+    // const reveiws = [1, 1, 1, 1]
+    const [reviews, setReviews] = React.useState([]);
+
+    const token = localStorage.getItem('token');
+    const productUrl = localStorage.getItem('product');
+    const productName = localStorage.getItem('productName');
+    const name = localStorage.getItem('name');
+
+    const getReviews = () => {
+        var config = {
+            method: 'get',
+            url: serverUrl+'/reviews/?p=' + productName,
+            headers: { 
+                'Authorization': 'JWT ' + token
+            }
+        };
+        
+        axios(config)
+            .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            const len = (response.data).length;
+            var new_reviews = [];
+            for (var i=0;i<len;i++) {
+                var temp = [...new_reviews];
+                temp = [...temp, {review: response.data[i]}];
+                new_reviews = temp;
+            }
+            setReviews(new_reviews);
+        })
+            .catch(function (error) {
+            console.log(error);
+        });          
+    }
+
+    React.useEffect(() => {
+        try {
+            getReviews();
+        } catch (e) {
+            console.log(e);
+        }
+    }, [])
 
     return (
         <div className={classes.root}>
@@ -120,7 +162,7 @@ const Reviews = (props) => {
                         <div style={{ width: '100%' }}>
                             <Box display='flex' mt={2} alignItems='center' >
                                 <Box className={classes.new_accountCircleBox}><AccountCircle></AccountCircle></Box>
-                                <Box flexGrow={1} className={classes.new_userNameBox}><Typography className={classes.new_userNameText} align='left'>Prasoon Baghel</Typography></Box>
+                                <Box flexGrow={1} className={classes.new_userNameBox}><Typography className={classes.new_userNameText} align='left'>{name}</Typography></Box>
                                 <Box className={classes.new_postButtonBox} >
                                     <Grid container direction='row-reverse'>
                                         <Button variant='outlined'>POST </Button>
@@ -154,18 +196,18 @@ const Reviews = (props) => {
                     </Grid>
                 </Paper>
 
-                {reveiws.map((review) => (
+                {reviews.map((rev) => (
                     <Paper elevation={1} className={classes.customerRvwPaper}>
                         <Grid container direction='column' alignItems='flex-start' width='100%' >
                             <Grid container direction='row' width='100%' alignItems='center' >
                                 <AccountCircle></AccountCircle>
-                                <Grid item><Typography className={classes.customerName} noWrap>Prasoon Baghel</Typography></Grid>
+                                <Grid item><Typography className={classes.customerName} noWrap>{rev.review.name}</Typography></Grid>
                                 <Rating
-                                    value={5}
+                                    value={rev.review.stars}
                                     readOnly
                                 />
                             </Grid>
-                            <Typography className={classes.reviewText} align='left'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas nibh dui, laoreet sed erat sit amet, condimentum efficitur eros. Vivamus dignissim, purus ac pharetra tincidunt, neque tortor fringilla urna, vitae aliquam tortor velit quis odio. Curabitur mattis, nisl a tristique sagittis, orci felis porta lectus, sed rhoncus lectus tortor at massa. Suspendisse mollis orci in felis laoreet dignissim. </Typography>
+                            <Typography className={classes.reviewText} align='left'>{rev.review.review}</Typography>
 
                         </Grid>
                     </Paper>
