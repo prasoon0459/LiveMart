@@ -5,7 +5,14 @@ import {
   Container,
   Typography,
   Grid,
-  CssBaseline
+  CssBaseline,
+  Fab,
+  DialogTitle,
+  DialogContent,
+  Dialog,
+  Button,
+  DialogActions,
+  TextField,
 } from "@material-ui/core";
 import Order from "../../img/order.jfif";
 import Review from "../../img/review.jfif";
@@ -17,11 +24,17 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import UseWindowDimensions from '../../utils/UseWindowDimensions';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import Imgix from "react-imgix";
+import check from '../../img/check.gif'
 
 const useStyles = makeStyles((theme) => ({
   roots: {
     margin: `calc(1em + ${theme.spacing(1)}px)`,
   },
+  floatingLabelFocusStyle: {
+    color: theme.palette.text.hint,
+},
   divider: {
     margin: theme.spacing(1, 0, 2)
   },
@@ -43,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContainer: {
     padding: theme.spacing(2, 2, 2)
+  },
+  editIcon: {
+      marginRight: theme.spacing(1)
+  },
+  add:{
+    textAlign:'center'
   }
 }));
 
@@ -51,6 +70,8 @@ export default function Profile(props) {
   const mobile=UseWindowDimensions().mobile
   const history= useHistory()
   const [wallet, setWallet]=React.useState(300);
+  const [open,setOpen]=React.useState(false);
+  const [add,setAdd]=React.useState(false);
   
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
@@ -60,6 +81,22 @@ export default function Profile(props) {
     // setName(result[0].name);
      console.log(result);
     setWallet(result[0].wallet);
+  }
+  const handleClickFab = () => {
+    setOpen(true);
+  }
+  const handleDialogClose=()=>{
+    setOpen(false);
+  }
+  const handleAddClose=()=>{
+    setAdd(false);
+  }
+  const handleFinal=()=>{
+    setOpen(false);
+    setAdd(true);
+  };
+  const handleAmount = (e) => {
+    console.log(e.target.value)
   }
 
   const getUserWallet = () => {
@@ -108,14 +145,97 @@ export default function Profile(props) {
           <Info token={props.token} />
           <Grid item xs={12} md={8}>
             <Grid
-              item
               container
+              justify='center'
+              alignItems='center'
               className={classes.text}
               xs={12}
             >
-              <Typography className={classes.walletBalance} component="h1" variant="h4">
-                Wallet Balance: ${wallet}
-              </Typography>
+              <Grid item xs={12}>
+                <Typography className={classes.walletBalance} component="h1" variant="h4">
+                  Wallet Balance: ${wallet}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+              <Fab variant='extended' 
+                size='small' 
+                className={classes.fab} 
+                onClick={handleClickFab}
+                color="primary" aria-label="edit">
+                <MonetizationOnIcon className={classes.editIcon} />
+                  Add Money
+              </Fab>
+              <Dialog
+                open={open}
+                scroll='paper'
+                onClose={handleDialogClose}
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+                >
+                <DialogTitle id="scroll-dialog-title">
+                  <Grid item container justify='center'>
+                    Add Money
+                  </Grid>
+                </DialogTitle>
+                <DialogContent dividers classes={classes.add} >
+                  Please enter a amount
+                  <TextField
+                    autoFocus
+                    margin='normal'
+                    id="input-amount"
+                    label="Amount"
+                    fullWidth
+                    onChange={handleAmount}
+                    InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle}}
+                  />
+                  <Grid container direction='column' alignItems='center'>
+                  <Grid item>
+                  <Typography color='secondary' variant="caption" align='right'>
+                    *The amount will be added to your LiveMart Wallet
+                  </Typography>
+                  </Grid>
+                  <Button align='center'  color="primary" variant="contained" onClick={handleFinal}>
+                    Add
+                  </Button>
+                  </Grid>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDialogClose} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+             </Dialog>
+             <Dialog
+              open={add}
+              scroll='paper'
+              onClose={handleAddClose}
+              aria-labelledby="scroll-dialog-title"
+              aria-describedby="scroll-dialog-description"
+            >
+              <DialogContent>
+                <Imgix
+                  src={check}
+                  width='100'
+                  height='100'
+                  align='center'
+                  imgixParams={{
+                    fit: "fit",
+                    fm: "gif",
+                  }}
+                >
+                </Imgix>
+                <Typography variant="subtitle1">
+                  The amount is succesfully added to your LiveMart Wallet
+                </Typography>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleAddClose} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+            </Dialog>
+              </Grid>
             </Grid>
             <Grid container spacing={3} justify="space-evenly">
               <Grid
