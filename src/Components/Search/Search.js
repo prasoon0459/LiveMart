@@ -91,7 +91,9 @@ const Search = () => {
 
     // let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
     // const items = [a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
-    const [items, setItems] = React.useState({});
+    const [items, setItems] = React.useState([]);
+    const [status, setStatus] = React.useState(false);
+    // const [data, setData] = React.useState([]);
     //const items = [];
 
     const handleSearch = () => {
@@ -105,17 +107,14 @@ const Search = () => {
         
         axios(config)
         .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            // console.log(JSON.stringify(response.data));
+            // setData(response.data);
             response.data.map((item) => {
-                var i = new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating);
-                // setItems([
-                //     ...items, new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)
-                // ]);
-                // setItems(items=>[...items, new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)]);
-                 setItems(items => [...items, i]);
+                // setItems(...items, {'item' : new Item(item.name, item.category, item.image, item.wholesale_price, item.wholesale_mrp, item.rating)});
+                setItems(...items, items.concat(item));
                 //items.concat(i);
             });
-            console.log(items);
+            setStatus(true);
         })
         .catch(function (error) {
             console.log(error);
@@ -175,9 +174,9 @@ const Search = () => {
                         </Box>
 
                         <Divider></Divider>
-
+                        {status ? (
                         <Grid container spacing={5} justify="flex-start" alignItems="center" className={classes.itemsContainer}>
-                            {items.map((item) => (
+                            {items.map((product) => (
                                 <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'>
                                     <Card variant="outlined" className={classes.card}>
                                         <Grid
@@ -198,6 +197,7 @@ const Search = () => {
                                                 >
                                                     <Imgix
                                                         src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
+                                                        // src = {product.image}
                                                         width="100%"
                                                         imgixParams={{
                                                             fit: "fit",
@@ -215,14 +215,16 @@ const Search = () => {
                                                                 variant="subtitle1"
                                                                 className={classes.itemName}
                                                             >
-                                                                Too Yumm{" "}
+                                                                {/* Too Yumm{" "} */}
+                                                                {product.name}
                                                             </Typography>
                                                             <Typography
                                                                 align="left"
                                                                 variant="body2"
                                                                 className={classes.price}
                                                             >
-                                                                Rs. 518{" "}
+                                                                {/* Rs. 518{" "} */}
+                                                                {product.wholesale_price}
                                                             </Typography>
                                                         </Grid>
                                                     </Box>
@@ -237,7 +239,7 @@ const Search = () => {
                                     </Card>
                                 </Grid>
                             ))}
-                        </Grid>
+                        </Grid>) : <div/>}
                         <Grid container xs={12} spacing={2}>
                             <Box display="flex" flexDirection='row-reverse' width="100%" alignItems="center" className={classes.pageNoBox}>
                                 <Grid item>
