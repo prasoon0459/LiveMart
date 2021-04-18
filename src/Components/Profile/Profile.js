@@ -68,10 +68,12 @@ const useStyles = makeStyles((theme) => ({
 export default function Profile(props) {
   const classes = useStyles();
   const mobile=UseWindowDimensions().mobile
-  const history= useHistory()
+  const history= useHistory();
   const [wallet, setWallet]=React.useState(300);
   const [open,setOpen]=React.useState(false);
   const [add,setAdd]=React.useState(false);
+  const [amount,setAmount]=React.useState('');
+  const [userDetails, setUserDetails] = React.useState({});
   
   const token = localStorage.getItem('token');
   const username = localStorage.getItem('username');
@@ -79,7 +81,7 @@ export default function Profile(props) {
   const setDetails = (result) => {
     console.log(result[0]);
     // setName(result[0].name);
-     console.log(result);
+    setUserDetails(result[0]);
     setWallet(result[0].wallet);
   }
   const handleClickFab = () => {
@@ -92,10 +94,12 @@ export default function Profile(props) {
     setAdd(false);
   }
   const handleFinal=()=>{
+    handleAddWallet();
     setOpen(false);
     setAdd(true);
   };
   const handleAmount = (e) => {
+    setAmount(e.target.value);
     console.log(e.target.value)
   }
 
@@ -135,6 +139,31 @@ export default function Profile(props) {
   }
   const handleWalletHistoryClicked = () => {
     history.push('/wallet')
+  }
+
+  const handleAddWallet = () => {
+    var data = userDetails;
+    data.wallet += parseInt(amount);
+    setWallet(wallet + parseInt(amount));
+    data = JSON.stringify(data)
+    console.log(data);
+    var config = {
+      method: 'put',
+      url: userDetails.url,
+      headers: { 
+        'Authorization': 'JWT ' + token, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });    
   }
 
   return (
@@ -238,7 +267,7 @@ export default function Profile(props) {
               </Grid>
             </Grid>
             <Grid container spacing={3} justify="space-evenly">
-              <Grid
+              {/* <Grid
                 item
                 container
                 direction="column"
@@ -265,7 +294,7 @@ export default function Profile(props) {
                     <Typography>Wallet History</Typography>
                   </Grid>
                 </CardActionArea>
-              </Grid>
+              </Grid> */}
               <Grid
                 item
                 container
