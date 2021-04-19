@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "flex-end",
     marginTop: theme.spacing(1)
   },
-  date:{
-    margin:theme.spacing(2,0,2)
+  date: {
+    margin: theme.spacing(2, 0, 2)
   },
   button: {
     marginTop: theme.spacing(3),
@@ -89,27 +89,38 @@ export default function Checkout() {
 
   const [orders, setOrders] = React.useState([
     {
+      id: '93GD73BDB82H',
       seller_name: 'M/s Agarwal General Store',
-      seller_address: 'Shop No 3, Ground Floor \nAnand Plaza, Telibagh \nLucknow, UP, \n226029, India',
+      seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
       items: [
         { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
         { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
         { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
       ],
       total_price: 342.64,
-      expected_delivery: '04/04/21 15:36',
+      mode:'online',
+      customer_name: 'Prasoon Baghel',
+      customer_mobile: '9133260431',
+      delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+      order_date: '18th March 2021',
+      expected_delivery: '23rd March 2021',
       status: 2
     },
     {
+      id: '93GD73BDB82H',
       seller_name: 'M/s Agarwal General Store',
-      seller_address: 'Shop No 3, Ground Floor \nAnand Plaza, Telibagh \nLucknow, UP, \n226029, India',
+      seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
       items: [
         { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-        { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
         { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
       ],
       total_price: 342.64,
-      expected_delivery: '04/04/21 08:26',
+      mode:'online',
+      customer_name: 'Prasoon Baghel',
+      customer_mobile: '9133260431',
+      delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+      order_date: '18th March 2021',
+      expected_delivery: '23rd March 2021',
       status: 2
     },
   ])
@@ -118,6 +129,10 @@ export default function Checkout() {
 
   const handleOptionChanged = (event) => {
     setOption(event.target.value)
+    for (var i=0;i<orders.length;i++){
+      if(option===0)orders[i].mode='online'
+      else orders[i].mode='offline'
+    }
   }
 
   const handleAddressChange = (event) => {
@@ -277,7 +292,7 @@ export default function Checkout() {
                 label="Pickup Time"
                 type="datetime-local"
                 className={classes.date}
-                onChange={(e)=>handlePickupDateChange(index,e)}
+                onChange={(e) => handlePickupDateChange(index, e)}
                 InputLabelProps={{
                   shrink: true,
                   className: classes.floatingLabelFocusStyle
