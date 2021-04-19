@@ -8,6 +8,8 @@ import kurkure from '../../img/kurkure.jpeg'
 import Imgix from "react-imgix"
 import Reviews from "./Reviews"
 import DialogShop from "../Home/DialogShop"
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles= makeStyles({
     root:{
@@ -94,10 +96,20 @@ const Product = () => {
     const [variant, setVariant]=React.useState('200mg');
     const screen= UseWindowDimensions().screen;
     const mobile=screen==='xs'
-    const [showDialog, setShowDialog] = React.useState(false)
-    const classes = useStyles(mobile)
-    const variants=['100mg','200mg','300mg','400mg']
-    const [quantity, setQuantity]=React.useState(1)
+    const [showDialog, setShowDialog] = React.useState(false);
+    const classes = useStyles(mobile);
+    const variants=['100mg','200mg','300mg','400mg'];
+    const [quantity, setQuantity]=React.useState(1);
+    const [product, setProduct] = React.useState({
+        name: "",
+        wholesale_price: 0,
+        unit: "kg",
+        details: "",
+        rating: 0
+    });
+
+    const token = localStorage.getItem('token');
+    const productUrl = localStorage.getItem('product');
 
     const handleQuantityIncrease = () => {
         setQuantity(quantity+1)
@@ -113,6 +125,33 @@ const Product = () => {
     const handleProductVariantChange = (event) => {
         setVariant(event.target.value)
     }
+
+    const getProduct = () => {
+        var config = {
+            method: 'get',
+            url: productUrl,
+            headers: { 
+                'Authorization': 'JWT '+token
+            }
+        };
+        
+        axios(config)
+            .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            setProduct(response.data);
+        })
+            .catch(function (error) {
+            console.log(error);
+        });          
+    }
+
+    React.useEffect(() => {
+        try {
+            getProduct();
+        } catch (e) {
+            console.log(e);
+        }
+    }, [])
 
     const images=['#a0e0ff', 'red', 'orange', 'blue', 'green']
     return(
@@ -166,13 +205,13 @@ const Product = () => {
                 <Grid item xs ={12} md={6}>
                     <Grid container direction='column' justify='flex-start' alignItems='flex-start' className={classes.productInfo}>
                         <Grid className={classes.titlesContainer} container width='100%' direction='column' alignItems='flex-start' >
-                            <Typography variant='h5' className={classes.itemName}>Too Yumm Karare</Typography>
-                            <Typography variant='body1' className={classes.brandName}>Parle</Typography>
+                            <Typography variant='h5' className={classes.itemName}>{product.name}</Typography>
+                            <Typography variant='body1' className={classes.brandName}>{product.shopName}</Typography>
                         </Grid>
                         <Box component="fieldset" borderColor="transparent">
-                            <Rating name="read-only" value={3.5 } precision={0.5} readOnly />
+                            <Rating name="read-only" value={product.rating} precision={0.1} readOnly />
                         </Box>
-                        <Typography variant='body1' className={classes.priceText}>$ 72.40</Typography>
+                        <Typography variant='body1' className={classes.priceText}>$ {product.wholesale_price} / {product.unit}</Typography>
                         <Divider width='100%' className={classes.Divider}></Divider>
                         <Grid container spacing={2}  className={classes.variantBox} flexDirection='row' 
                             width='100%' justify='flex-start' alignItems='flex-start'>
@@ -206,7 +245,7 @@ const Product = () => {
                                         <Button xs={4} className={classes.btn} onClick={handleQuantityIncrease} variant='outlined' ><AddSharp></AddSharp></Button>
                                     </Grid>
                                     </Grid>
-                                    <Typography className={classes.cartItemQtyInfo} variant='body2'>Note - ({quantity} Nos.)</Typography>
+                                    <Typography className={classes.cartItemQtyInfo} variant='body2'>Note - ({quantity} {product.unit})</Typography>
                                 </Grid>
                                 </Grid>
                         </Grid>
@@ -224,7 +263,7 @@ const Product = () => {
                         </Box>
                         <Box className={classes.detailsBox} >
                             <Typography align='left' variant='body1' className={classes.detailsTitle}>Product Details</Typography>
-                            <Typography align='left'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Typography>
+                            <Typography align='left'>{product.details}</Typography>
                         </Box>
                     </Grid>                                        
                 </Grid>
