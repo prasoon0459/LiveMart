@@ -150,6 +150,10 @@ const Header = () => {
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
+  const handleLogout=()=>{
+    localStorage.clear();
+    history.push('/login');
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -184,7 +188,7 @@ const Header = () => {
         <Person className={classes.menuIcon}/><Typography>My Profile</Typography></MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
         <Folder className={classes.menuIcon}></Folder><Typography>My Orders</Typography></MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={handleLogout}>
         <ExitToApp className={classes.menuIcon}></ExitToApp><Typography>Logout</Typography></MenuItem>
     </Menu>
   );

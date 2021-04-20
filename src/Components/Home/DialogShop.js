@@ -14,9 +14,13 @@ import {
   Menu,
   MenuItem,
   Fab,
+  Radio
 } from "@material-ui/core";
 import Item from "../../Data/Item";
-import { AddShoppingCartOutlined } from "@material-ui/icons";
+import { AddShoppingCartOutlined, RadioButtonUnchecked } from "@material-ui/icons";
+import axios from 'axios';
+import serverUrl from '../../serverURL';
+
 const useStyles = makeStyles({
   root: {
     flex: 1
@@ -45,11 +49,40 @@ export default function DialogShop(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
-  const handleDialog = () => {
+  const token = localStorage.getItem('token');
+
+  const handleCancel=()=>{
     props.handleDialog();
   }
-  let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
-  const items = [a, a, a, a, a, a, a, a, a, a];
+
+  const handleAddtoCart = (url) => {
+    var data = JSON.stringify({
+      "productId": url,
+      "quantity": props.qty
+    });
+    
+    var config = {
+      method: 'post',
+      url: serverUrl + '/cart/',
+      headers: { 
+        'Authorization': 'JWT ' + token, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+      props.handleDialog();
+    })
+    .catch(function (error) {
+      console.log(error);
+    });    
+  }
+  console.log(props.wholesellers);
+  // let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
+  // const items = [a, a, a, a, a, a, a, a, a, a];
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -84,7 +117,7 @@ export default function DialogShop(props) {
     <div>
       <Dialog
         open={true}
-        onClose={handleDialog}
+        onClose={handleCancel}
         scroll={scroll}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
@@ -110,8 +143,8 @@ export default function DialogShop(props) {
           </Grid>
         </DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
-          {items.map((item) => (
-            <Grid item key={item} className={classes.item}>
+          {props.wholesellers.map((wholesaler,index) => (
+            <Grid item key={wholesaler.id} className={classes.item}>
               <Card variant="outlined" className={classes.card}>
                 <Grid
                   container
@@ -133,16 +166,17 @@ export default function DialogShop(props) {
                     <Box display='flex' width='100%' alignItems='center'>
                       <Box flexGrow={1}>
                         <Grid container direction='column' >
-                          <Typography align='left' variant='subtitle1' className={classes.shopName}>Satyam Store </Typography>
-                          <Typography align='left' variant='body2' className={classes.location}>Shahdol </Typography>
-                          <Typography align='left' variant='body2' className={classes.distance}>2.3kms</Typography>
+                          <Typography align='left' variant='subtitle1' className={classes.shopName}>{wholesaler.shopName}</Typography>
+                          {/* <Typography align='left' variant='body2' className={classes.location}>{wholesaler.shopAddress}</Typography>
+                          <Typography align='left' variant='body2' className={classes.distance}>{wholesaler.shopLong}</Typography> */}
+                          <Typography align='left' variant='body2' className={classes.distance}>$ {wholesaler.wholesale_price}</Typography>
                         </Grid>
                       </Box>
                       <Box >
-                        <Fab onClick={handleDialog} variant='contained' size='medium' color='secondary'>
-                          <AddShoppingCartOutlined ></AddShoppingCartOutlined>
-                                  Add to Cart
-                                </Fab>
+                      <Fab onClick={() => handleAddtoCart(wholesaler.url)} variant='contained' size='medium' color='secondary'>
+                        <AddShoppingCartOutlined ></AddShoppingCartOutlined>
+                          Add to Cart
+                      </Fab>
                       </Box>
                     </Box>
                   </Grid>
@@ -152,7 +186,7 @@ export default function DialogShop(props) {
           ))}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDialog} color="primary">
+          <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
         </DialogActions>

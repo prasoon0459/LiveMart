@@ -100,6 +100,7 @@ export default function SignIn(props) {
           props.handleToken(response.data.token);
           localStorage.setItem('token',response.data.token);
           localStorage.setItem('username',response.data.user);
+          localStorage.setItem('usertype', response.data.user_type);
           history.push("/");
         }).catch(function (error) {
           console.log(error);

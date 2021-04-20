@@ -82,7 +82,13 @@ const Search = () => {
     const location = useLocation();
     console.log(location.search);
     // const search_query = new URLSearchParams(location.search);
-    const search_query = (location.search).toString();
+    const params = new URLSearchParams(location.search);
+    const category = params.get('c');
+    var product = params.get('q');
+    if (product===null) {
+        product = '';
+    }
+
     const classes = useStyles();
     // const history = useHistory();
 
@@ -99,7 +105,7 @@ const Search = () => {
     const handleSearch = () => {
         var config = {
             method: 'get',
-            url: serverUrl+'/products/'+search_query,
+            url: serverUrl+'/default_products/'+(category!==null ? '?c='+category : ''), // +(product!==null ? '?q='+product : '')
             headers: { 
             'Authorization': 'JWT ' + token
             }
@@ -107,7 +113,7 @@ const Search = () => {
         
         axios(config)
         .then(function (response) {
-            // console.log(JSON.stringify(response.data));
+            console.log(JSON.stringify(response.data));
             // setData(response.data);
             const len = (response.data).length
             var new_items = []
@@ -184,8 +190,8 @@ const Search = () => {
                         <Divider></Divider>
                         {status ? (
                         <Grid container spacing={5} justify="flex-start" alignItems="center" className={classes.itemsContainer}>
-                            {items.map((product) => (
-                                <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'>
+                            {items.filter(val=>val.item.name.toLowerCase().includes(product.toLowerCase())).map((product) => (
+                                <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'> {/* to={{pathname:'/product',aboutProps:{url:'asd',name:product.item.name}}} */}
                                     <Card variant="outlined" className={classes.card} onClick={setProduct(product)}>
                                         <Grid
                                             container
@@ -205,7 +211,7 @@ const Search = () => {
                                                 >
                                                     <Imgix
                                                         src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
-                                                        // src = {product.image}
+                                                        // src = {product.item.image}
                                                         width="100%"
                                                         imgixParams={{
                                                             fit: "fit",
@@ -232,7 +238,7 @@ const Search = () => {
                                                                 className={classes.price}
                                                             >
                                                                 {/* Rs. 518{" "} */}
-                                                                {product.item.wholesale_price}
+                                                                {/* {product.item.wholesale_price} */}
                                                             </Typography>
                                                         </Grid>
                                                     </Box>
