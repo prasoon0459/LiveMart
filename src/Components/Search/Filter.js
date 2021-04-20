@@ -7,15 +7,20 @@ import {
   Slider,
   Divider,
   FormGroup,
+  Button,
 } from "@material-ui/core";
 import theme from "../../theme";
 import React from "react";
+import { Check } from "@material-ui/icons";
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     // backgroundColor:'violet',
     padding: theme.spacing(1, 2, 1),
+  },
+  label: {
+    textAlign: 'left'
   },
   title: {
     letterSpacing: 2
@@ -27,6 +32,12 @@ const useStyles = makeStyles({
   },
   formControlLabel: {
     width: "100%",
+  },
+  flexGrow:{
+    flexGrow:1
+  },
+  filterHeadRow:{
+    margin:theme.spacing(0,0,2)
   },
   filterTitle: {
     margin: theme.spacing(2, 1, 0),
@@ -50,13 +61,21 @@ const useStyles = makeStyles({
   }
 });
 
-const Filter = () => {
+const Filter = ({ changeFilter, filters, handleCloseFilter }) => {
   const classes = useStyles();
 
-  const [filter_price, setFilter_price] = React.useState([0, 4999]);
-  const [filter_categories, setFilter_categories] = React.useState([]);
-  const [filter_discounts, setFilter_discount] = React.useState([]);
-  const [filter_brands, setFilter_Brand] = React.useState([]);
+  const [filter_price, setFilter_price] = React.useState(null);
+  const [filter_categories, setFilter_categories] = React.useState(null);
+  const [filter_discounts, setFilter_discount] = React.useState(null);
+  const [filter_brands, setFilter_Brand] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log(filters)
+    setFilter_price(filters.price)
+    setFilter_Brand(filters.brands)
+    setFilter_categories(filters.categories)
+    setFilter_discount(filters.discounts)
+  }, [])
 
   const marks = [
     {
@@ -68,6 +87,7 @@ const Filter = () => {
       label: 'Rs.4999',
     },
   ];
+
 
   const handlePriceSliderChange = (event, newPriceRange) => {
     setFilter_price(newPriceRange);
@@ -95,6 +115,14 @@ const Filter = () => {
     console.log(filter_categories)
   };
 
+
+  const handleApplyClick= () =>{
+    changeFilter('categories',filter_categories)
+    changeFilter('brands', filter_brands)
+    changeFilter('discounts', filter_discounts)
+    changeFilter('price', filter_price)
+    handleCloseFilter()
+  }
 
 
   const categories = [
@@ -125,9 +153,16 @@ const Filter = () => {
   return (
     <div className={classes.root}>
       <Grid container direction="column" >
-        <Typography align="left" variant="h6" className={classes.title}>
-          FILTERS
-        </Typography>
+        <Grid container direction='row' alignItems='center' className={classes.filterHeadRow} >
+          <Grid item className={classes.flexGrow}>
+              <Typography  align="left" variant="h6" className={classes.title}>
+                  FILTERS
+              </Typography>
+          </Grid>
+          <Grid item>
+              <Button variant='outlined' color='secondary' onClick={handleApplyClick} endIcon={<Check></Check>}>Apply</Button>
+          </Grid>
+        </Grid>
         <Divider ></Divider>
         <Grid
           container
@@ -141,6 +176,7 @@ const Filter = () => {
               <Grid>
                 <Typography variant='subtitle1' className={classes.filterTitle}>By Categories</Typography>
               </Grid>
+
               <Grid >
                 <FormGroup className={classes.filterTypeContainer} >
                   {categories.map((category) => (
@@ -149,8 +185,9 @@ const Filter = () => {
                         value={category}
                         onChange={handleCategoryFilterChange}
                         control={
-                          <Checkbox name={category} className={classes.checkbox} />
+                          <Checkbox name={category} checked={filter_categories!==null&&filter_categories.includes(category)} className={classes.checkbox} />
                         }
+                        classes={{ label: classes.label }}
                         label={category}
                       />
                     </Grid>
@@ -207,7 +244,7 @@ const Filter = () => {
                       value={brand}
                       onChange={handleBrandFilterChange}
                       control={
-                        <Checkbox name={brand} className={classes.checkbox} />
+                        <Checkbox name={brand} checked={filter_brands!==null&&filter_brands.includes(brand)} className={classes.checkbox} />
                       }
                       label={brand}
                     />
@@ -239,7 +276,7 @@ const Filter = () => {
                       value={discount}
                       onChange={handleDiscountFilterChange}
                       control={
-                        <Checkbox name={discount} className={classes.checkbox} />
+                        <Checkbox name={discount} checked={filter_discounts!==null&&filter_discounts.includes(discount)} className={classes.checkbox} />
                       }
                       label={discount}
                     />

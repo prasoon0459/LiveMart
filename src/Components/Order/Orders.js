@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Paper, Typography, Button } from "@material-ui/core"
-import { LocationOn, StoreOutlined } from "@material-ui/icons";
+import { ChevronRight, LocationOn, StoreOutlined } from "@material-ui/icons";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import {useHistory} from 'react-router-dom'
@@ -76,53 +76,83 @@ const Orders = () => {
 
 
     const orders = [
-        {
-            seller_name: 'M/s Agarwal General Store',
-            items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
-            ],
-            total_price:342.64,
-            expected_delivery: '23rd March 2021',
-            status:2
-        },
-        {
-            seller_name: 'M/s Agarwal General Store',
-            items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
-            ],
-            total_price:342.64,
-            expected_delivery: '23rd March 2021',
-            status:2
-        },        {
-            seller_name: 'M/s Agarwal General Store',
-            items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
-            ],
-            total_price:342.64,
-            expected_delivery: '23rd March 2021',
-            status:2
-        },        {
-            seller_name: 'M/s Agarwal General Store',
-            items: [
-                { name: "Lifeboy Soap", variant:'100gm', quantity: 6, price: 9.99 },
-                { name: "Kurkure Masala Munch", variant:'200gm', quantity: 4,  price: 3.45 },
-                { name: "Dettol Hand Sanitizer", quantity: 2, variant:'50ml', price: 6.51 },
-            ],
-            total_price:342.64,
-            expected_delivery: '23rd March 2021',
-            status:2
-        },
-        
+      {
+        id: '93GD73BDB82H',
+        seller_name: 'M/s Agarwal General Store',
+        seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+        items: [
+          { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+          { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
+          { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        ],
+        total_price: 342.64,
+        mode:'online',
+        customer_name: 'Prasoon Baghel',
+        customer_mobile: '9133260431',
+        delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+        order_date: '18th March 2021',
+        expected_delivery: '23rd March 2021',
+        status: 2
+      },
+      {
+        id: '93GD73BDB82H',
+        seller_name: 'M/s Agarwal General Store',
+        seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+        items: [
+          { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+          { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        ],
+        total_price: 342.64,
+        mode:'online',
+        customer_name: 'Prasoon Baghel',
+        customer_mobile: '9133260431',
+        delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+        order_date: '18th March 2021',
+        expected_delivery: '23rd March 2021',
+        status: 2
+      },
+      {
+        id: '93GD73BDB82H',
+        seller_name: 'M/s Agarwal General Store',
+        seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+        items: [
+          { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+          { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        ],
+        total_price: 342.64,
+        mode:'online',
+        customer_name: 'Prasoon Baghel',
+        customer_mobile: '9133260431',
+        delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+        order_date: '18th March 2021',
+        expected_delivery: '23rd March 2021',
+        status: 2
+      },
+      {
+        id: '93GD73BDB82H',
+        seller_name: 'M/s Agarwal General Store',
+        seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+        items: [
+          { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
+          { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        ],
+        total_price: 342.64,
+        mode:'offline',
+        customer_name: 'Prasoon Baghel',
+        customer_mobile: '9133260431',
+        delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
+        order_date: '18th March 2021',
+        expected_delivery: '23rd March 2021',
+        status: 2
+      },
+
     ]
+
     const handleTrackClick= (order)=>{
         console.log(order)
-        history.push('/track')
+        if(order.mode==='online')
+            history.push('/track')
+        else history.push('/pickup')
     }
 
     return (
@@ -136,9 +166,9 @@ const Orders = () => {
                         <Paper className={classes.orderPaper}>
                             <Grid container alignItems='center' direction='row'>
                                 <Grid item className={classes.orderStatusItem}>
-                                    <Typography className={classes.orderStatus} align='left'>{getStatus(order.status)}</Typography>
+                                    <Typography className={classes.orderStatus} align='left'>{order.mode==='online'?getStatus(order.status):'Offline Pickup'}</Typography>
                                 </Grid>
-                                <Button color='secondary' onClick={() => handleTrackClick (order)} endIcon={<LocationOn></LocationOn>} variant='outlined'>Track Your Order</Button>
+                                <Button color='secondary' onClick={() => handleTrackClick (order)} endIcon={order.mode==='online'?<LocationOn></LocationOn>:<ChevronRight></ChevronRight>} variant='outlined'>{order.mode==='online'?'Track Your Order':'View your Order'}</Button>
                             </Grid>
                             <Grid container direction='row' width='100%'>
                                 <StoreOutlined className={classes.storeIcon}></StoreOutlined>

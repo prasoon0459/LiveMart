@@ -24,6 +24,8 @@ import MyReviews from './Components/MyReview/myReview';
 import Checkout from './Components/Checkout/Checkout';
 import TrackOrder from './Components/Order/TrackOrder';
 import SellerViewOrder from './Components/Order/SellerViewOrder';
+import Pickups from './Components/Home/Pickups';
+import ViewPickup from './Components/Order/ViewPickup';
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -77,6 +79,10 @@ const App = () => {
           <Route path='/track'>
             {getHeader()}
             <TrackOrder></TrackOrder>
+          </Route>
+          <Route path='/pickup'>
+            {getHeader()}
+            <ViewPickup></ViewPickup>
           </Route>
           <Route path='/seller_view_order'>
             {getHeader()}
