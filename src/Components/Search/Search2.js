@@ -118,17 +118,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Search = () => {
-  const location = useLocation();
-  const screen = UseWindowDimensions().screen;
-  // const search_query = new URLSearchParams(location.search);
-  const search_query = location.search.toString().substr(3);
-  console.log(search_query);
-  const params = new URLSearchParams(location.search);
-  const category = params.get("c");
-  var product = params.get("q");
-  if (product === null) {
-    product = "";
-  }
+    const location = useLocation();
+    const screen = UseWindowDimensions().screen
+    // const search_query = new URLSearchParams(location.search);
+    const search_query = (location.search).toString().substr(3);
+    console.log(search_query);
+    const params = new URLSearchParams(location.search);
+    const category = params.get('c');
+    var product = params.get('q');
+    if (product===null) {
+        product = '';
+    }
 
   const classes = useStyles();
   // const history = useHistory();
@@ -364,40 +364,78 @@ const Search = () => {
               </Button>
             </Box>
 
-            <Divider></Divider>
-            {status ? (
-              <Grid
-                container
-                spacing={5}
-                justify="flex-start"
-                alignItems="center"
-                className={classes.itemsContainer}
-              >
-                {items
-                  .filter((val) =>
-                    val.item.name.toLowerCase().includes(product.toLowerCase())
-                  )
-                  .map((product) => (
-                    <Grid
-                      item
-                      xs={3}
-                      className={classes.item}
-                      style={{ textDecoration: "none" }}
-                      component={NavLink}
-                      to="/product"
-                    >
-                      {" "}
-                      {/* to={{pathname:'/product',aboutProps:{url:'asd',name:product.item.name}}} */}
-                      <Card
-                        variant="outlined"
-                        className={classes.card}
-                        onClick={setProduct(product)}
-                      >
-                        <Grid
-                          container
-                          justify="center"
-                          direction="column"
-                          alignItems="center"
+    return (
+        <div className={classes.root}>
+            <div className={classes.heroContent}>
+                <Grid container direction='row' className={classes.heroContainer} alignItems='center'>
+                    <Grid item className={classes.flexGrow}>
+                        <Grid container  direction="column" justify="center" alignItems="flex-start">
+                            <Grid item>
+                                <Typography variant="subtitle1" className={classes.searchNavigation}>
+                                    Home / Products / {search_query}
+                                </Typography>
+                            </Grid>
+                            <Grid item>
+                                <Typography variant="h6" className={classes.searchTitle}>
+                                    {search_query}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    {!filtershown?<Grid item>
+                        <Button variant='outlined' onClick={handleOpenFilter} endIcon={<FilterList/>}>Filters</Button>
+                    </Grid>:<div></div>}
+                </Grid>
+            </div>
+            {!filtershown&&
+                <div className={classes.activeFiltersContainer}>
+                    <Grid container direction='row'>
+                        {filters.categories.map((filter)=>(
+                            <Grid item className={classes.indFilterBtn}>
+                                <Button  className={classes.fab} variant='outlined' size='small'  color='secondary'>
+                                    <Typography className={classes.buttonText}>{filter}</Typography>
+                                </Button>
+                            </Grid>
+                        ))}
+                        {filters.brands.map((filter)=>(
+                            <Grid item className={classes.indFilterBtn}>
+                                <Button  className={classes.fab} variant='outlined' size='small'  color='secondary'>
+                                    <Typography className={classes.buttonText}>{filter}</Typography>
+                                </Button>
+                            </Grid>
+                        ))}
+                        {filters.discounts.map((filter)=>(
+                            <Grid item className={classes.indFilterBtn}>
+                                <Button  className={classes.fab} variant='outlined' size='small'  color='secondary'>
+                                    <Typography className={classes.buttonText}>{filter+' Off'}</Typography>
+                                </Button>
+                            </Grid>
+                        ))}
+                        {(filters.price[0]!==0||filters.price[1]!==4999)&&
+                           <Grid item className={classes.indFilterBtn}>
+                                <Button  className={classes.fab} variant='outlined' size='small'  color='secondary'>
+                                    <Typography className={classes.buttonText}>{'Rs.'+filters.price[0]+' - Rs.'+filters.price[1]}</Typography>
+                                </Button>
+                            </Grid> 
+                        }
+                    </Grid>
+                </div>
+            }
+            <Dialog fullScreen open={filterOpen} onClose={handleCloseFilter} TransitionComponent={Transition}>
+                <Filter changeFilter={handleFilterChange} filters={filters} handleCloseFilter={handleCloseFilter}></Filter>
+            </Dialog>
+            <Grid container>
+                {filtershown ?
+                    <Grid item xs={3}>
+                        <Filter changeFilter={handleFilterChange} filters={filters} handleCloseFilter={handleCloseFilter}></Filter>
+                    </Grid> : <div></div>}
+                <Grid item xs={filtershown ? 9 : 12}>
+                    <Paper className={classes.paper}>
+                        <Box
+                            display="flex"
+                            flexDirection="row-reverse"
+                            p={1}
+                            className={classes.topBox}
                         >
                           <Box className={classes.itemImage}>
                             <Badge
