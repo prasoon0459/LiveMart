@@ -10,7 +10,10 @@ import theme from "../../theme";
 import ReactRoundedImage from 'react-rounded-image'
 import UseWindowDimensions from '../../utils/UseWindowDimensions'
 import fruits from '../../img/personalCare.png'
-
+import axios from 'axios';
+import serverUrl from '../../serverURL';
+import { useHistory } from "react-router-dom";
+import React from 'react';
 const useStyles = makeStyles({
     root: {
         padding: (props) => props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(3, 8, 3),
@@ -34,14 +37,50 @@ const useStyles = makeStyles({
 })
 
 const Categories = () => {
-    const categories = [1, 2, 3, 4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8];
+    // const categories = [1, 2, 3, 4, 5, 6, 7, 8, 3, 4, 5, 6, 7, 8];
 
     const screen = UseWindowDimensions().screen;
     const mobile = screen === 'xs'
     const sm = screen === 'sm'
+    const history = useHistory();
+    const token = localStorage.getItem('token');
+    const [categories, setCategories] = React.useState([]);
 
     const classes = useStyles({ mobile: mobile, sm: sm });
     console.log(mobile)
+
+    const getCategories = () => {
+
+    var config = {
+        method: 'get',
+        url: serverUrl + '/category/',
+        headers: { 
+            'Authorization': 'JWT ' + token
+        }
+    };
+    
+    axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setCategories(response.data);
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  
+    }
+
+    const handleClick = (name) => {
+        history.push('/search?c='+name);
+    }
+
+    React.useEffect(() => {
+        try {
+            getCategories();
+        } catch (error) {
+            console.log(error);
+        }
+    }, [])
 
     return (
         <div>
@@ -51,9 +90,9 @@ const Categories = () => {
                 </Typography>
                 <Divider></Divider>
                 <Grid container className={classes.itemsContainer} >
-                    {categories.map((card) => (
-                        <Grid item key={card} xs={6} sm={4} md={3} xl={6}>
-                            <CardActionArea>
+                    {categories.map((category) => (
+                        <Grid item key={category.id} xs={6} sm={4} md={3} xl={6}>
+                            <CardActionArea onClick={() => handleClick(category.name)}>
                                 <Grid container direction='column' justify='center' alignItems='center' className={classes.categoryItem}>
                                     <Grid item>
                                         <ReactRoundedImage
@@ -69,7 +108,7 @@ const Categories = () => {
                                     <Grid item>
                                         <Box className={classes.categoryName}>
                                             <Typography variant={mobile ? 'subtitle1' : 'h6'}>
-                                                Personal Care
+                                                {category.name}
                                         </Typography>
                                         </Box>
                                     </Grid>

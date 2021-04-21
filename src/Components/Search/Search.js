@@ -125,6 +125,13 @@ const Search = () => {
     // const search_query = new URLSearchParams(location.search);
     const search_query = (location.search).toString().substr(3);
     console.log(search_query);
+    const params = new URLSearchParams(location.search);
+    const category = params.get('c');
+    var product = params.get('q');
+    if (product===null) {
+        product = '';
+    }
+
     const classes = useStyles();
     // const history = useHistory();
     const filtershown=screen === 'md' || screen === 'lg' || screen === 'xl'
@@ -148,30 +155,30 @@ const Search = () => {
     const handleSearch = () => {
         var config = {
             method: 'get',
-            url: serverUrl + '/products/' + search_query,
-            headers: {
-                'Authorization': 'JWT ' + token
+            url: serverUrl+'/default_products/'+(category!==null ? '?c='+category : ''), // +(product!==null ? '?q='+product : '')
+            headers: { 
+            'Authorization': 'JWT ' + token
             }
         };
 
         axios(config)
-            .then(function (response) {
-                // console.log(JSON.stringify(response.data));
-                // setData(response.data);
-                const len = (response.data).length
-                var new_items = []
-                for (var i = 0; i < len; i++) {
-                    var temp = [...new_items];
-                    temp = [...temp, { item: response.data[i] }];
-                    new_items = temp;
-                }
-                setItems(new_items);
-                setStatus(true);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
+        .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            // setData(response.data);
+            const len = (response.data).length
+            var new_items = []
+            for (var i=0;i<len;i++) {
+                var temp = [...new_items];
+                temp = [...temp, {item : response.data[i]}];
+                new_items = temp;
+            }
+            setItems(new_items);
+            setStatus(true);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+  
     }
 
     const setProduct = (product) => {
@@ -292,36 +299,64 @@ const Search = () => {
 
                         <Divider></Divider>
                         {status ? (
-                            <Grid container spacing={5} justify="flex-start" alignItems="center" className={classes.itemsContainer}>
-                                {items.map((product) => (
-                                    <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'>
-                                        <Card variant="outlined" className={classes.card} onClick={setProduct(product)}>
-                                            <Grid
-                                                container
-                                                justify="center"
-                                                direction="column"
-                                                alignItems="center"
-                                            >
-                                                <Box className={classes.itemImage}>
-                                                    <Badge
-                                                        anchorOrigin={{
-                                                            vertical: "top",
-                                                            horizontal: "right",
+                        <Grid container spacing={5} justify="flex-start" alignItems="center" className={classes.itemsContainer}>
+                            {items.filter(val=>val.item.name.toLowerCase().includes(product.toLowerCase())).map((product) => (
+                                <Grid item xs={3} className={classes.item} style={{ textDecoration: 'none' }} component={NavLink} to='/product'> {/* to={{pathname:'/product',aboutProps:{url:'asd',name:product.item.name}}} */}
+                                    <Card variant="outlined" className={classes.card} onClick={setProduct(product)}>
+                                        <Grid
+                                            container
+                                            justify="center"
+                                            direction="column"
+                                            alignItems="center"
+                                        >
+                                            <Box className={classes.itemImage}>
+                                                <Badge
+                                                    anchorOrigin={{
+                                                        vertical: "top",
+                                                        horizontal: "right",
+                                                    }}
+                                                    overlap="rectangle"
+                                                    badgeContent="40%"
+                                                    color="secondary"
+                                                >
+                                                    <Imgix
+                                                        src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
+                                                        // src = {product.item.image}
+                                                        width="100%"
+                                                        imgixParams={{
+                                                            fit: "fit",
+                                                            fm: "jpg",
                                                         }}
-                                                        overlap="rectangle"
-                                                        badgeContent="40%"
-                                                        color="secondary"
-                                                    >
-                                                        <Imgix
-                                                            src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
-                                                            // src = {product.image}
-                                                            width="100%"
-                                                            imgixParams={{
-                                                                fit: "fit",
-                                                                fm: "jpg",
-                                                            }}
-                                                        />
-                                                    </Badge>
+                                                    />
+                                                </Badge>
+                                            </Box>
+                                            <Grid container direction="row">
+                                                <Box display="flex" width="100%" alignItems="center">
+                                                    <Box flexGrow={1}>
+                                                        <Grid container direction="column">
+                                                            <Typography
+                                                                align="left"
+                                                                variant="subtitle1"
+                                                                className={classes.itemName}
+                                                            >
+                                                                {/* Too Yumm{" "} */}
+                                                                {product.item.name}
+                                                            </Typography>
+                                                            <Typography
+                                                                align="left"
+                                                                variant="body2"
+                                                                className={classes.price}
+                                                            >
+                                                                {/* Rs. 518{" "} */}
+                                                                {/* {product.item.wholesale_price} */}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Box>
+                                                    <Box>
+                                                        <IconButton>
+                                                            <ChevronRight color="secondary" />
+                                                        </IconButton>
+                                                    </Box>
                                                 </Box>
                                                 <Grid container direction="row">
                                                     <Box display="flex" width="100%" alignItems="center">
@@ -351,6 +386,7 @@ const Search = () => {
                                                             </IconButton>
                                                         </Box>
                                                     </Box>
+                                                </Grid>
                                                 </Grid>
                                             </Grid>
                                         </Card>

@@ -10,6 +10,7 @@ import Reviews from "./Reviews"
 import DialogShop from "../Home/DialogShop"
 import axios from "axios";
 import serverUrl from "../../serverURL";
+import {useLocation } from 'react-router-dom'
 
 const useStyles= makeStyles({
     root:{
@@ -92,7 +93,9 @@ const useStyles= makeStyles({
     },
 })
 
-const Product = () => {
+const Product = (props) => {
+    // const location = useLocation();
+    // console.log(props);
     const [variant, setVariant]=React.useState('200mg');
     const screen= UseWindowDimensions().screen;
     const mobile=screen==='xs'
@@ -137,7 +140,7 @@ const Product = () => {
         
         axios(config)
             .then(function (response) {
-            console.log(JSON.stringify(response.data));
+            // console.log(JSON.stringify(response.data));
             setProduct(response.data);
         })
             .catch(function (error) {
@@ -156,6 +159,7 @@ const Product = () => {
     const images=['#a0e0ff', 'red', 'orange', 'blue', 'green']
     return(
         <div className={classes.root}>
+            {console.log(product)}
             <Grid container direction='column'
                 justify="center"
                 alignItems="flex-start">
@@ -211,11 +215,11 @@ const Product = () => {
                         <Box component="fieldset" borderColor="transparent">
                             <Rating name="read-only" value={product.rating} precision={0.1} readOnly />
                         </Box>
-                        <Typography variant='body1' className={classes.priceText}>$ {product.wholesale_price} / {product.unit}</Typography>
+                        {/* <Typography variant='body1' className={classes.priceText}>$ {product.wholesale_price} / {product.unit}</Typography> */}
                         <Divider width='100%' className={classes.Divider}></Divider>
                         <Grid container spacing={2}  className={classes.variantBox} flexDirection='row' 
                             width='100%' justify='flex-start' alignItems='flex-start'>
-                                <Grid item xs ={12} sm={6}>
+                                {/* <Grid item xs ={12} sm={6}>
                                     <TextField
                                         id="standard-select-currency"
                                         select
@@ -235,7 +239,7 @@ const Product = () => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                </Grid>
+                                </Grid> */}
                                 <Grid item xs={12} sm={6}>
                                 <Grid container direction='column' alignItems='flex-start' className={classes.cartitemQty}>
                                     <Grid item xs={12}>
@@ -257,7 +261,7 @@ const Product = () => {
                                 fullWidth
                                 onClick={handleDialog}
                                 endIcon={<LocalMall/>}>
-                                    <Typography className={classes.textAddtoCart}>Select Retailer</Typography>
+                                    <Typography className={classes.textAddtoCart}>Select Wholesaler</Typography>
                                 </Button>
                             </Grid>
                         </Box>
@@ -270,7 +274,7 @@ const Product = () => {
             </Grid>
             <Reviews></Reviews>
 
-        {showDialog?<DialogShop handleDialog={handleDialog}/>:null}
+        {showDialog?<DialogShop handleDialog={handleDialog} wholesellers={product.wholesellers} qty={quantity}/>:null}
         </div>
     )
 

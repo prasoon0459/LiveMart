@@ -18,6 +18,8 @@ import theme from "../../theme";
 import UseWindowDimensions from '../../utils/UseWindowDimensions'
 import { DeleteOutlined, ExpandMoreOutlined, } from "@material-ui/icons";
 import kurkure from '../../img/kurkure.jpeg'
+import axios from 'axios';
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles({
     root: {
@@ -121,22 +123,99 @@ const useStyles = makeStyles({
 })
 
 const Cart = () => {
-    const items = [1, 2, 3]
     const [couponExpanded, setCouponExpanded] = React.useState(false);
     const screen = UseWindowDimensions().screen;
     console.log(screen)
     const mobile = screen === 'xs'
     const sm = screen === 'sm'
 
+    const token = localStorage.getItem('token');
+    const username = localStorage.getItem('username');
+    
+    const [items, setItems] = React.useState([]);
+    const [products, setProducts] = React.useState([]);
+    const [status, setStatus] = React.useState(false);
+
+    
+
     const handleCouponExpandClick = () => {
         setCouponExpanded(!couponExpanded)
     }
+
+    const getProduct = async() => {
+        var len = (items).length;
+        var new_products = [];
+        console.log(items);
+        // api_calls = [];
+        for (var i=0;i<len;i++) {
+            var config2 = {
+                method: 'get',
+                url: items[i].productId,
+                headers: { 
+                    'Authorization': 'JWT ' + token
+                }
+            };
+            var temp = [...new_products];
+            // api_calls.concat(axios.then(config2))
+            await axios(config2)
+            .then(function (response2) {
+                console.log(JSON.stringify(response2.data));
+                temp = [...temp, {product : response2.data}];
+                new_products = temp;
+                setProducts(new_products);
+                if (i == len-1) {
+                    setStatus(true);
+                }
+            })
+                .catch(function (error) {
+                console.log(error);
+            });
+        }
+    }
+
+    const getCartItems = () => {
+        var config = {
+            method: 'get',
+            url: serverUrl + '/cart/?u=' + username + '&a=Active',
+            headers: { 
+              'Authorization': 'JWT ' + token
+            }
+          };
+          
+          axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            const len = (response.data).length
+            var new_items = []
+            for (var i=0;i<len;i++) {
+                var temp = [...new_items];
+                temp = [...temp, {item : response.data[i]}];
+                new_items = temp;
+            }
+            setItems(new_items);
+            if (items !== []) {
+                getProduct();
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
+
+    React.useEffect(() => {
+        try {
+            getCartItems();
+        } catch (e) {
+            console.log(e);
+        }
+    }, []);
 
     const classes = useStyles({ mobile: mobile, sm: sm });
     console.log(mobile)
 
     return (
         <div>
+            {console.log(items, products)}
             <Grid container direction="column" className={classes.root}>
                 <Grid container direction='row' alignItems='center'>
                     <Typography variant={mobile ? 'h6' : 'h5'} align="left" className={classes.title}>
@@ -144,15 +223,15 @@ const Cart = () => {
                     </Typography>
                 </Grid>
                 <Divider></Divider>
-                <Grid container direction='row' justify='center'>
+                {status ? (
+                    <Grid container direction='row' justify='center'>
                     <Grid item xs={12} md={8}>
                         <Grid container>
                             <Box className={classes.cartItemsContainer} >
                                 <Typography variant='subtitle1' align='left' className={classes.cartInfoText}>Your Cart contains 3 item(s) </Typography>
                                 <Grid container direction='column' alignItems='flex-start'>
-                                    {items.map((item) => (
+                                    {items.map((product) => (
                                         <Grid item className={classes.cartItem}>
-
                                             <Grid container direction='row' alignItems='flex-start'>
                                                 <Grid item xs={12} sm={4} className={classes.itemCard}>
                                                     <Card >
@@ -241,6 +320,7 @@ const Cart = () => {
                         </Grid>
                     </Grid>
                 </Grid>
+                ) : null}
             </Grid>
         </div>
     )
