@@ -189,9 +189,9 @@ const Cart = () => {
   //         });
   //     }
   // }
-  const handleClick = () => {
-    setClick(!click);
-  };
+  // const handleClick = () => {
+  //   setClick(!click);
+  // };
   const handleDelete = (id) => {
     var config = {
       method: "delete",
@@ -204,11 +204,20 @@ const Cart = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        handleClick();
+        var new_items = items.filter((product) => product.item.id !== id);
+        setItems(new_items);
       })
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const handleCheckout = () => {
+    history.push({
+      pathname: "/checkout",
+      cartItems: items,
+      totalPrice: total_cost + 50,
+    });
   };
 
   const getCartItems = () => {
@@ -251,15 +260,16 @@ const Cart = () => {
       console.log(e);
     }
   }, []);
-  React.useEffect(() => {
-    console.log("Item deleted");
-  }, [click]);
+  // React.useEffect(() => {
+  //   console.log("Item deleted");
+  // }, [click]);
 
   const classes = useStyles({ mobile: mobile, sm: sm });
   console.log(mobile);
 
   return (
     <div>
+      {console.log(items)}
       <Grid container direction="column" className={classes.root}>
         <Grid container direction="row" alignItems="center">
           <Typography
@@ -448,6 +458,7 @@ const Cart = () => {
                       variant="contained"
                       className={classes.checkoutBtn}
                       color="secondary"
+                      onClick={handleCheckout}
                     >
                       Checkout
                     </Button>

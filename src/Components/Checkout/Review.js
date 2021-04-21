@@ -13,20 +13,20 @@ const useStyles = makeStyles((theme) => ({
   },
   shipmentToHeading: {
     fontWeight: 600,
-    margin: theme.spacing(1, 0, 0)
+    margin: theme.spacing(1, 0, 0),
   },
   indOrdersContainer: {
-    marginTop: theme.spacing(4)
+    marginTop: theme.spacing(4),
   },
   shopNameHeading: {
     margin: theme.spacing(0, 0, 1),
-    fontWeight: 600
+    fontWeight: 600,
   },
   orderSummaryHeading: {
-    margin: theme.spacing(2, 0, 0)
+    margin: theme.spacing(2, 0, 0),
   },
   list: {
-    margin: theme.spacing(1, 0, 1)
+    margin: theme.spacing(1, 0, 1),
   },
   total: {
     fontWeight: 700,
@@ -37,56 +37,119 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getDate(date) {
-  var d = new Date(date)
+  var d = new Date(date);
   var dd = d.getDate();
 
   var mm = d.getMonth() + 1;
   var yyyy = d.getFullYear();
   if (dd < 10) {
-    dd = '0' + dd;
+    dd = "0" + dd;
   }
   if (mm < 10) {
-    mm = '0' + mm;
+    mm = "0" + mm;
   }
-  return dd+'/'+mm+'/'+yyyy+' '+d.getHours()+':'+d.getMinutes()
+  return dd + "/" + mm + "/" + yyyy + " " + d.getHours() + ":" + d.getMinutes();
 }
 
-export default function Review({ orders, option, address, }) {
+export default function Review({ cartItems, delMode, delAddress, totalPrice }) {
   const classes = useStyles();
+  // const [shopSet, setShopSet] = React.useState(new Set());
+  const shopSet = new Set();
+  const [shopNames, setShopNames] = React.useState([]);
+
+  // React.useEffect(() => {
+  //   cartItems.map((cartItem) => {
+  //     var temp = shopSet;
+  //     temp.add(cartItem.item.shopName);
+  //     setShopSet(temp);
+  //   });
+  // }, []);
+
+  React.useEffect(() => {
+    cartItems.map((cartItem) => {
+      shopSet.add(cartItem.item.shopName);
+    });
+    setShopNames(Array.from(shopSet));
+  }, []);
+
+  console.log(cartItems);
+  console.log(delMode);
   return (
     <React.Fragment>
-      <Typography variant="h6" gutterBottom className={classes.orderSummaryHeading}>
-        Order Summary
-      </Typography>
-      {orders.map((order) => (
-        <Grid container direction='column' className={classes.indOrdersContainer}>
-          <Typography variant='h6' align='left' className={classes.shopNameHeading}>{order.seller_name}</Typography>
-          <Grid container direction='column' alignItems='flex-start'>
-            {option==='1'?<div>
-                <Typography align='left' className={classes.shipmentToHeading}>{'Pickup From :'}</Typography>
-                <Typography align='left'>{order.seller_address}</Typography>
-            </div> : <div></div>}
-            <Typography align='left' className={classes.shipmentToHeading}>{(option==='1'?'Pickup Date: ':'Expected Delivery :') + getDate(order.expected_delivery)} </Typography>
-            <Typography align='left'></Typography>
-          </Grid>
-          <Divider></Divider>
-          <List className={classes.list} disablePadding>
-            {order.items.map((product) => (
-              <ListItem className={classes.listItem} key={product.name}>
-                <ListItemText primary={product.name} secondary={product.desc} />
-                <Typography variant="body2">{product.price}</Typography>
-              </ListItem>
-            ))}
-          </List>
-          <ListItem className={classes.listItem}>
-            <ListItemText primary="Total" />
-            <Typography variant="subtitle1" className={classes.total}>
-              $34.06
+      {console.log(shopNames)}
+      <Grid container direction="column">
+        <Typography
+          variant="h6"
+          gutterBottom
+          className={classes.orderSummaryHeading}
+        >
+          Order Summary
+        </Typography>
+        {shopNames.map((shopName) =>
+          cartItems
+            .filter((product) => product.item.shopName === shopName)
+            .map((cartItem) => (
+              <Grid
+                container
+                direction="column"
+                className={classes.indOrdersContainer}
+              >
+                <Typography
+                  variant="h6"
+                  align="left"
+                  className={classes.shopNameHeading}
+                >
+                  {cartItem.item.shopName}
                 </Typography>
-          </ListItem>
-        </Grid>
-      ))}
-
+                <Grid container direction="column" alignItems="flex-start">
+                  {delMode === "Offline" ? (
+                    <div>
+                      <Typography
+                        align="left"
+                        className={classes.shipmentToHeading}
+                      >
+                        {"Pickup From :"}
+                      </Typography>
+                      <Typography align="left">
+                        {cartItem.item.shopId.address}
+                      </Typography>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                  <Typography
+                    align="left"
+                    className={classes.shipmentToHeading}
+                  >
+                    {(delMode === "Offline"
+                      ? "Pickup Date: "
+                      : "Expected Delivery :") +
+                      new Date().toLocaleDateString()}{" "}
+                  </Typography>
+                  <Typography align="left"></Typography>
+                </Grid>
+                <Divider></Divider>
+                <List className={classes.list} disablePadding>
+                  <ListItem
+                    className={classes.listItem}
+                    key={cartItem.item.productName}
+                  >
+                    <ListItemText primary={cartItem.item.productName} />
+                    <Typography variant="body2">
+                      {cartItem.item.productPrice}
+                    </Typography>
+                  </ListItem>
+                </List>{" "}
+                <ListItem className={classes.listItem}>
+                  <ListItemText primary="Total" />
+                  <Typography variant="subtitle1" className={classes.total}>
+                    {totalPrice}
+                  </Typography>
+                </ListItem>
+              </Grid>
+            ))
+        )}
+      </Grid>
     </React.Fragment>
   );
 }

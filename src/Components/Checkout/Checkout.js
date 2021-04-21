@@ -8,25 +8,33 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PaymentForm from "./PaymentForm";
 import Review from "./Review";
-import { FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@material-ui/core";
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@material-ui/core";
 import Imgix from "react-imgix";
-import check from '../../img/check.gif'
+import check from "../../img/check.gif";
 
-import DateFnsUtils from '@date-io/date-fns';
+import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
-} from '@material-ui/pickers';
+} from "@material-ui/pickers";
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: "relative",
   },
 
   floatingLabelFocusStyle: {
-    color: theme.palette.text.hint
+    color: theme.palette.text.hint,
   },
   shipmentToHeading: {
-    fontWeight: 600
+    fontWeight: 600,
   },
   layout: {
     width: "auto",
@@ -55,15 +63,15 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3, 0, 5),
   },
   label: {
-    color: theme.palette.text.disabled
+    color: theme.palette.text.disabled,
   },
   buttons: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop: theme.spacing(1)
+    marginTop: theme.spacing(1),
   },
   date: {
-    margin: theme.spacing(2, 0, 2)
+    margin: theme.spacing(2, 0, 2),
   },
   button: {
     marginTop: theme.spacing(3),
@@ -71,9 +79,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const steps = ["Delivery Option", "Shipping address / Pickup Details", "Payment details", "Review your order"];
+const steps = [
+  "Delivery Option",
+  "Shipping address / Pickup Details",
+  "Payment details",
+  "Review your order",
+];
 
-export default function Checkout() {
+export default function Checkout(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [address, setAddress] = React.useState({
@@ -84,78 +97,99 @@ export default function Checkout() {
     city: null,
     state: null,
     zip: null,
-    country: null
+    country: null,
   });
+  console.log(props.location.cartItems);
 
   const [orders, setOrders] = React.useState([
     {
-      id: '93GD73BDB82H',
-      seller_name: 'M/s Agarwal General Store',
-      seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+      id: "93GD73BDB82H",
+      seller_name: "M/s Agarwal General Store",
+      seller_address:
+        "Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India",
       items: [
-        { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-        { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
-        { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
+        {
+          name: "Kurkure Masala Munch",
+          variant: "200gm",
+          quantity: 4,
+          price: 3.45,
+        },
+        {
+          name: "Dettol Hand Sanitizer",
+          quantity: 2,
+          variant: "50ml",
+          price: 6.51,
+        },
       ],
       total_price: 342.64,
-      mode:'online',
-      customer_name: 'Prasoon Baghel',
-      customer_mobile: '9133260431',
-      delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-      order_date: '18th March 2021',
-      expected_delivery: '23rd March 2021',
-      status: 2
+      mode: "online",
+      customer_name: "Prasoon Baghel",
+      customer_mobile: "9133260431",
+      delivery_address:
+        "D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India",
+      order_date: "18th March 2021",
+      expected_delivery: "23rd March 2021",
+      status: 2,
     },
     {
-      id: '93GD73BDB82H',
-      seller_name: 'M/s Agarwal General Store',
-      seller_address: 'Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India',
+      id: "93GD73BDB82H",
+      seller_name: "M/s Agarwal General Store",
+      seller_address:
+        "Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India",
       items: [
-        { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-        { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
+        { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
+        {
+          name: "Dettol Hand Sanitizer",
+          quantity: 2,
+          variant: "50ml",
+          price: 6.51,
+        },
       ],
       total_price: 342.64,
-      mode:'online',
-      customer_name: 'Prasoon Baghel',
-      customer_mobile: '9133260431',
-      delivery_address: 'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-      order_date: '18th March 2021',
-      expected_delivery: '23rd March 2021',
-      status: 2
+      mode: "online",
+      customer_name: "Prasoon Baghel",
+      customer_mobile: "9133260431",
+      delivery_address:
+        "D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India",
+      order_date: "18th March 2021",
+      expected_delivery: "23rd March 2021",
+      status: 2,
     },
-  ])
+  ]);
 
-  const [option, setOption] = React.useState(0)
+  const [option, setOption] = React.useState(0);
+  const [mode, setMode] = React.useState("Online");
 
   const handleOptionChanged = (event) => {
-    setOption(event.target.value)
-    for (var i=0;i<orders.length;i++){
-      if(option===0)orders[i].mode='online'
-      else orders[i].mode='offline'
+    setOption(event.target.value);
+    for (var i = 0; i < orders.length; i++) {
+      if (option === 0) setMode("Online");
+      else setMode("Offline");
     }
-  }
+  };
 
   const handleAddressChange = (event) => {
-    const id = event.target.id
-    const new_address = address
-    new_address[id] = event.target.value
-    setAddress(new_address)
-  }
+    const id = event.target.id;
+    const new_address = address;
+    new_address[id] = event.target.value;
+    setAddress(new_address);
+  };
 
   const handlePickupDateChange = (index, event) => {
-    var newOrders = orders
-    console.log(index + ' ' + event)
-    newOrders[index].expected_delivery = event.target.value
-    console.log(newOrders[index].expected_delivery)
-    setOrders(newOrders)
-  }
+    var newOrders = orders;
+    console.log(index + " " + event);
+    newOrders[index].expected_delivery = event.target.value;
+    console.log(newOrders[index].expected_delivery);
+    setOrders(newOrders);
+  };
 
   const getAddressStep = () => {
     return (
       <React.Fragment>
         <Typography variant="h6" gutterBottom>
           Shipping address
-      </Typography>
+        </Typography>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -276,16 +310,18 @@ export default function Checkout() {
           </Grid>
         </Grid>
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   const getPickupDetailsStep = () => {
     return (
       <React.Fragment>
         {orders.map((order, index) => (
-          <Grid container direction='column' alignItems='flex-start'>
-            <Typography align='left' className={classes.shipmentToHeading}>Pickup of {order.items.length} item(s) from:</Typography>
-            <Typography align='left'>{order.seller_address}</Typography>
+          <Grid container direction="column" alignItems="flex-start">
+            <Typography align="left" className={classes.shipmentToHeading}>
+              Pickup of {order.items.length} item(s) from:
+            </Typography>
+            <Typography align="left">{order.seller_address}</Typography>
             <form className={classes.container} noValidate>
               <TextField
                 id="datetime-local"
@@ -295,15 +331,15 @@ export default function Checkout() {
                 onChange={(e) => handlePickupDateChange(index, e)}
                 InputLabelProps={{
                   shrink: true,
-                  className: classes.floatingLabelFocusStyle
+                  className: classes.floatingLabelFocusStyle,
                 }}
               />
             </form>
           </Grid>
         ))}
       </React.Fragment>
-    )
-  }
+    );
+  };
 
   const getStepContent = (step) => {
     switch (step) {
@@ -314,25 +350,50 @@ export default function Checkout() {
               Delivery Option
             </Typography>
             <FormControl component="fieldset">
-              <RadioGroup aria-label="option" name="option" value={option} onChange={handleOptionChanged}>
-                <FormControlLabel value='0' control={<Radio />} label="Delivery to Home" />
-                <FormControlLabel value='1' control={<Radio />} label="Store Pickup" />
+              <RadioGroup
+                aria-label="option"
+                name="option"
+                value={option}
+                onChange={handleOptionChanged}
+              >
+                <FormControlLabel
+                  value="0"
+                  control={<Radio />}
+                  label="Delivery to Home"
+                />
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Store Pickup"
+                />
               </RadioGroup>
             </FormControl>
           </React.Fragment>
-        )
+        );
       case 1:
-        return option === '0' ? getAddressStep() : getPickupDetailsStep()
+        return option === "0" ? getAddressStep() : getPickupDetailsStep();
       case 2:
         return <PaymentForm />;
       case 3:
-        return <Review orders={orders} option={option} address={address} />;
+        return (
+          <Review
+            cartItems={props.location.cartItems}
+            delMode={mode}
+            delAddress={address}
+            totalPrice={props.location.totalPrice}
+          />
+        );
       default:
         throw new Error("Unknown step");
     }
   };
 
   const handleNext = () => {
+    if (option == 0) {
+      setMode("Online");
+    } else {
+      setMode("Offline");
+    }
     setActiveStep(activeStep + 1);
   };
 
@@ -359,7 +420,9 @@ export default function Checkout() {
           >
             {steps.map((label) => (
               <Step key={label}>
-                <StepLabel classes={{ label: classes.label }}>{label}</StepLabel>
+                <StepLabel classes={{ label: classes.label }}>
+                  {label}
+                </StepLabel>
               </Step>
             ))}
           </Stepper>
@@ -368,14 +431,13 @@ export default function Checkout() {
               <React.Fragment>
                 <Imgix
                   src={check}
-                  width='100'
-                  height='100'
+                  width="100"
+                  height="100"
                   imgixParams={{
                     fit: "fit",
                     fm: "gif",
                   }}
-                >
-                </Imgix>
+                ></Imgix>
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
                 </Typography>
@@ -386,25 +448,25 @@ export default function Checkout() {
                 </Typography>
               </React.Fragment>
             ) : (
-                <React.Fragment>
-                  {getStepContent(activeStep)}
-                  <div className={classes.buttons}>
-                    {activeStep !== 0 && (
-                      <Button onClick={handleBack} className={classes.button}>
-                        Back
-                      </Button>
-                    )}
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
+              <React.Fragment>
+                {getStepContent(activeStep)}
+                <div className={classes.buttons}>
+                  {activeStep !== 0 && (
+                    <Button onClick={handleBack} className={classes.button}>
+                      Back
                     </Button>
-                  </div>
-                </React.Fragment>
-              )}
+                  )}
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleNext}
+                    className={classes.button}
+                  >
+                    {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                  </Button>
+                </div>
+              </React.Fragment>
+            )}
           </React.Fragment>
         </Paper>
       </main>

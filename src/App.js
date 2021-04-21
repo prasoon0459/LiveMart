@@ -121,9 +121,9 @@ const App = () => {
             <Categories />
           </Route>
 
-          <Route path="/checkout">
-            <Checkout />
-          </Route>
+          <Route path="/checkout" component={Checkout} />
+          {/* <Checkout /> */}
+          {/* </Route> */}
 
           <Route path="/product">
             {getHeader()}
