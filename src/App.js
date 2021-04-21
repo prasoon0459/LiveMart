@@ -26,6 +26,8 @@ import TrackOrder from './Components/Order/TrackOrder';
 import SellerViewOrder from './Components/Order/SellerViewOrder';
 import Pickups from './Components/Home/Pickups';
 import ViewPickup from './Components/Order/ViewPickup';
+import Inventory from './Components/Inventory/Inventory';
+import AddItem from './Components/Inventory/AddItem';
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -61,8 +63,17 @@ const App = () => {
             {getHeader()}
             <Filter />
           </Route>
+          <Route path='/add_item'>
+            {getHeader()}
+            <AddItem></AddItem>
+          </Route>
+          
           <Route path='/change_pwd'>
             <ChangePwd />
+          </Route>
+          <Route path='/my_inventory'>
+            {getHeader()}
+            <Inventory></Inventory>
           </Route>
           <Route path='/myProfile'>
             {getHeader()}

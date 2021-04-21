@@ -121,10 +121,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Search = () => {
     const location = useLocation();
-    console.log(location.search);
     const screen = UseWindowDimensions().screen
     // const search_query = new URLSearchParams(location.search);
-    const search_query = (location.search).toString();
+    const search_query = (location.search).toString().substr(3);
+    console.log(search_query);
     const classes = useStyles();
     // const history = useHistory();
     const filtershown=screen === 'md' || screen === 'lg' || screen === 'xl'
@@ -219,12 +219,12 @@ const Search = () => {
                         <Grid container  direction="column" justify="center" alignItems="flex-start">
                             <Grid item>
                                 <Typography variant="subtitle1" className={classes.searchNavigation}>
-                                    Home / Products / Milk
+                                    Home / Products / {search_query}
                                 </Typography>
                             </Grid>
                             <Grid item>
                                 <Typography variant="h6" className={classes.searchTitle}>
-                                    Milk
+                                    {search_query}
                                 </Typography>
                             </Grid>
                         </Grid>

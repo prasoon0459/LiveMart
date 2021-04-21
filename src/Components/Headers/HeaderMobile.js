@@ -28,13 +28,14 @@ import {
   FolderSharp,
   PersonSharp,
   CategorySharp,
+  AssignmentSharp,
 } from "@material-ui/icons";
 import theme from "../../theme";
 
 const useStyles = makeStyles({
   headerLogo: {
     width: "50px",
-    margin: theme.spacing(1, 1, 0),
+    margin: theme.spacing(1, 0, 0),
   },
   container: {
     height: "100%",
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
   },
   root: {
     flexGrow: 1,
-    margin: theme.spacing(1, 0, 2),
+    padding: theme.spacing(1, 1, 2),
     backgroundColor: theme.palette.background.paper
   },
   search: {
@@ -71,6 +72,9 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+  },
+  toolbar:{
+    padding:theme.spacing(0,0,0)
   },
   locationIcon: {
     padding: theme.spacing(0, 1, 0),
@@ -162,6 +166,10 @@ const HeaderMobile = () => {
           <ListItemIcon><FolderSharp color='primary'></FolderSharp></ListItemIcon>
           <ListItemText primary='My Orders' />
         </ListItem>
+        <ListItem button key='my_inventory' component={NavLink} to="/my_inventory">
+          <ListItemIcon><AssignmentSharp color='primary'></AssignmentSharp></ListItemIcon>
+          <ListItemText primary='My Inventory' />
+        </ListItem>
         <ListItem button key='logout' >
           <ListItemIcon><ExitToApp color='primary'></ExitToApp></ListItemIcon>
           <ListItemText primary='Logout' />
@@ -172,7 +180,7 @@ const HeaderMobile = () => {
   return (
     <div>
       <AppBar position="static" elevation={0} color="transparent">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
           <Grid container direction="column" className={classes.root}>
             <Grid
               container

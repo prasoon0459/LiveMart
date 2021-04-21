@@ -17,6 +17,7 @@ import React from "react";
 import { NavLink , useHistory,} from "react-router-dom";
 import {
   AccountCircle,
+  Assignment,
   ExitToApp,
   Folder,
   LocationOnOutlined,
@@ -184,6 +185,8 @@ const Header = () => {
         <Person className={classes.menuIcon}/><Typography>My Profile</Typography></MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
         <Folder className={classes.menuIcon}></Folder><Typography>My Orders</Typography></MenuItem>
+      <MenuItem onClick={handleMenuClose} component={NavLink} to="/my_inventory">
+        <Assignment className={classes.menuIcon}/><Typography>My Inventory</Typography></MenuItem>
       <MenuItem onClick={handleMenuClose}>
         <ExitToApp className={classes.menuIcon}></ExitToApp><Typography>Logout</Typography></MenuItem>
     </Menu>
