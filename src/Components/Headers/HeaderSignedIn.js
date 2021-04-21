@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core";
 import logo from "../../img/logo.png";
 import React from "react";
-import { NavLink , useHistory,} from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import {
   AccountCircle,
   ExitToApp,
@@ -26,32 +26,34 @@ import {
   ShoppingCartOutlined,
 } from "@material-ui/icons";
 import theme from "../../theme";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles({
   headerLogo: {
     width: "80px",
   },
-  toolbar:{
-    padding:theme.spacing(0,0,0)
+  toolbar: {
+    padding: theme.spacing(0, 0, 0),
   },
   container: {
     height: "100%",
   },
   headerLinks: {
-    padding:theme.spacing(1,1,1)
+    padding: theme.spacing(1, 1, 1),
   },
   root: {
     flexGrow: 1,
     padding: theme.spacing(1, 2, 1),
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   search: {
-    padding:theme.spacing(1,1,1),
+    padding: theme.spacing(1, 1, 1),
     position: "relative",
     height: "100%",
     backgroundColor: theme.palette.background.search,
     width: "100%",
-    borderRadius:10
+    borderRadius: 10,
   },
 
   location: {
@@ -86,7 +88,7 @@ const useStyles = makeStyles({
   inputRoot: {
     color: "inherit",
     height: "100%",
-    width:'100%',
+    width: "100%",
   },
   bar: {
     flexGrow: 1,
@@ -105,10 +107,10 @@ const useStyles = makeStyles({
   inputInputLocation: {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    width: "12ch"
+    width: "12ch",
   },
-  menuIcon:{
-    margin:theme.spacing(0,1,0)
+  menuIcon: {
+    margin: theme.spacing(0, 1, 0),
   },
   menuButton: {
     marginRight: theme.spacing(10),
@@ -126,12 +128,15 @@ const useStyles = makeStyles({
 });
 
 const Header = () => {
-  const history=useHistory()
+  const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
   //const [locData,setLocData]=React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+  const [cartNo, setCartNo] = React.useState(0);
 
   // React.useEffect(() => {
   //   try{
@@ -150,10 +155,10 @@ const Header = () => {
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-  const handleLogout=()=>{
+  const handleLogout = () => {
     localStorage.clear();
-    history.push('/login');
-  }
+    history.push("/login");
+  };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
@@ -161,15 +166,40 @@ const Header = () => {
   };
 
   const handleSearchSubmit = (event) => {
-    if(event.key ==='Enter'){
-      const params=new URLSearchParams()
-      console.log(event.target.value)
-      if(event.target.value){
-        params.append('q',event.target.value)
-        history.push({pathname:  '/search',search:params.toString()})
+    if (event.key === "Enter") {
+      const params = new URLSearchParams();
+      console.log(event.target.value);
+      if (event.target.value) {
+        params.append("q", event.target.value);
+        history.push({ pathname: "/search", search: params.toString() });
       }
     }
-  }
+  };
+
+  const getCartItems = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/cart/?u=" + username + "&a=Active",
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        if (response.data.length > 0) {
+          setCartNo(response.data.length);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  React.useEffect(() => {
+    getCartItems();
+  }, []);
 
   const menuId = "primary-search-account-menu";
 
@@ -185,17 +215,23 @@ const Header = () => {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose} component={NavLink} to="/myProfile">
-        <Person className={classes.menuIcon}/><Typography>My Profile</Typography></MenuItem>
+        <Person className={classes.menuIcon} />
+        <Typography>My Profile</Typography>
+      </MenuItem>
       <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
-        <Folder className={classes.menuIcon}></Folder><Typography>My Orders</Typography></MenuItem>
+        <Folder className={classes.menuIcon}></Folder>
+        <Typography>My Orders</Typography>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>
-        <ExitToApp className={classes.menuIcon}></ExitToApp><Typography>Logout</Typography></MenuItem>
+        <ExitToApp className={classes.menuIcon}></ExitToApp>
+        <Typography>Logout</Typography>
+      </MenuItem>
     </Menu>
   );
 
   return (
     <div>
-      <AppBar  elevation={0} color="transparent" position='relative'>
+      <AppBar elevation={0} color="transparent" position="relative">
         <Toolbar className={classes.toolbar}>
           <Grid container className={classes.root} direction="row">
             <Box>
@@ -245,7 +281,11 @@ const Header = () => {
                 className={classes.container}
               >
                 <Grid item className={classes.bar}>
-                  <Grid container alignItems='center' className={classes.search}>
+                  <Grid
+                    container
+                    alignItems="center"
+                    className={classes.search}
+                  >
                     <div className={classes.searchIcon}>
                       <SearchOutlined />
                     </div>
@@ -278,11 +318,14 @@ const Header = () => {
                   <IconButton
                     component={NavLink}
                     to="/mycart"
-                    aria-label="show 4 cart Items"
+                    aria-label="show cart Items"
                     color="inherit"
                     paddingLeft={3}
                   >
-                    <Badge badgeContent={4} color="secondary">
+                    <Badge
+                      badgeContent={cartNo > 0 ? cartNo : "0"}
+                      color="secondary"
+                    >
                       <ShoppingCartOutlined />
                     </Badge>
                   </IconButton>

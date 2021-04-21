@@ -1,54 +1,54 @@
-import './App.css';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom'
-import Header from './Components/Headers/HeaderSignedIn'
-import Home from './Components/Home/Home';
-import SignIn from './Components/Auth/SignIn';
-import SignUp from './Components/Auth/SignUp';
-import ForgotPassword from './Components/Auth/ForgotPwd';
-import { Box, Typography } from '@material-ui/core';
-import HeaderMobile from './Components/Headers/HeaderMobile';
-import UseWindowDimensions from './utils/UseWindowDimensions';
-import Filter from './Components/Search/Filter'
-import Search from './Components/Search/Search';
-import Product from './Components/Product/Product';
-import ChangePwd from './Components/Auth/ChangePwd';
-import Categories from './Components/Categories/Categories';
-import Profile from './Components/Profile/Profile';
-import Cart from './Components/Cart/Cart';
+import "./App.css";
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
+import Header from "./Components/Headers/HeaderSignedIn";
+import Home from "./Components/Home/Home";
+import SignIn from "./Components/Auth/SignIn";
+import SignUp from "./Components/Auth/SignUp";
+import ForgotPassword from "./Components/Auth/ForgotPwd";
+import { Box, Typography } from "@material-ui/core";
+import HeaderMobile from "./Components/Headers/HeaderMobile";
+import UseWindowDimensions from "./utils/UseWindowDimensions";
+import Filter from "./Components/Search/Filter";
+import Search from "./Components/Search/Search";
+import Product from "./Components/Product/Product";
+import ChangePwd from "./Components/Auth/ChangePwd";
+import Categories from "./Components/Categories/Categories";
+import Profile from "./Components/Profile/Profile";
+import Cart from "./Components/Cart/Cart";
 import React from "react";
 
-import Notifs from './Components/Notifs/Notifs';
-import Orders from './Components/Order/Orders';
-import Wallet from './Components/Wallet/Wallet'
-import MyReviews from './Components/MyReview/myReview';
-import Checkout from './Components/Checkout/Checkout';
-import TrackOrder from './Components/Order/TrackOrder';
-import SellerViewOrder from './Components/Order/SellerViewOrder';
-import Pickups from './Components/Home/Pickups';
-import ViewPickup from './Components/Order/ViewPickup';
+import Notifs from "./Components/Notifs/Notifs";
+import Orders from "./Components/Order/Orders";
+import Wallet from "./Components/Wallet/Wallet";
+import MyReviews from "./Components/MyReview/myReview";
+import Checkout from "./Components/Checkout/Checkout";
+import TrackOrder from "./Components/Order/TrackOrder";
+import SellerViewOrder from "./Components/Order/SellerViewOrder";
+import Pickups from "./Components/Home/Pickups";
+import ViewPickup from "./Components/Order/ViewPickup";
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
-  const mobileHeader = screen === 'sm' || screen === 'xs'
+  const mobileHeader = screen === "sm" || screen === "xs";
   const [token, setToken] = React.useState("");
 
   const handleToken = (props) => {
     setToken(props);
-  }
+  };
 
   function getHeader() {
-    return mobileHeader ? <HeaderMobile /> : <Header />
+    return mobileHeader ? <HeaderMobile /> : <Header />;
   }
 
   function Copyright() {
     return (
       <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
-        <span component={Link} to="/" >
+        {"Copyright © "}
+        <span component={Link} to="/">
           LiveMart
-          </span>{' '}
+        </span>{" "}
         {new Date().getFullYear()}
-        {'.'}
+        {"."}
       </Typography>
     );
   }
@@ -57,77 +57,77 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route path='/filter'>
+          <Route path="/filter">
             {getHeader()}
             <Filter />
           </Route>
-          <Route path='/change_pwd'>
+          <Route path="/change_pwd">
             <ChangePwd />
           </Route>
-          <Route path='/myProfile'>
+          <Route path="/myProfile">
             {getHeader()}
             <Profile token={token} />
           </Route>
-          <Route path='/mycart'>
+          <Route path="/mycart">
             {getHeader()}
             <Cart></Cart>
           </Route>
-          <Route path='/notifs'>
+          <Route path="/notifs">
             {getHeader()}
             <Notifs></Notifs>
           </Route>
-          <Route path='/track'>
+          <Route path="/track">
             {getHeader()}
             <TrackOrder></TrackOrder>
           </Route>
-          <Route path='/pickup'>
+          <Route path="/pickup">
             {getHeader()}
             <ViewPickup></ViewPickup>
           </Route>
-          <Route path='/seller_view_order'>
+          <Route path="/seller_view_order">
             {getHeader()}
             <SellerViewOrder></SellerViewOrder>
           </Route>
 
-          <Route path='/orders'>
+          <Route path="/orders">
             {getHeader()}
             <Orders></Orders>
           </Route>
-          <Route path='/reviews'>
+          <Route path="/reviews">
             {getHeader()}
             <MyReviews></MyReviews>
           </Route>
-          <Route path='/wallet'>
+          <Route path="/wallet">
             {getHeader()}
             <Wallet></Wallet>
           </Route>
-          <Route path='/search'>
+          <Route path="/search">
             {getHeader()}
             <Search />
           </Route>
-          <Route path='/categories'>
+          <Route path="/categories">
             {getHeader()}
             <Categories />
           </Route>
 
-          <Route path='/checkout'>
+          <Route path="/checkout">
             <Checkout />
           </Route>
 
-          <Route path='/product'>
+          <Route path="/product">
             {getHeader()}
             <Product />
           </Route>
-          <Route path='/login'>
+          <Route path="/login">
             <SignIn handleToken={handleToken}></SignIn>
           </Route>
-          <Route path='/signup'>
+          <Route path="/signup">
             <SignUp />
           </Route>
-          <Route path='/forgot_pwd'>
+          <Route path="/forgot_pwd">
             <ForgotPassword />
           </Route>
-          <Route path='/'>
+          <Route path="/">
             {getHeader()}
             <Home />
           </Route>
@@ -138,5 +138,5 @@ const App = () => {
       </div>
     </BrowserRouter>
   );
-}
+};
 export default App;

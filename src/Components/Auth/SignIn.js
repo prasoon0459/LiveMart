@@ -12,11 +12,9 @@ import Container from "@material-ui/core/Container";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import serverUrl from "../../serverURL";
-import {
-  validEmail,
-} from './validation';
+import { validEmail } from "./validation";
 
-var FormData = require('form-data');
+var FormData = require("form-data");
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -49,23 +47,23 @@ export default function SignIn(props) {
 
   const [pwdVerified, setPwdVerified] = useState(false);
   const [otpVerified, setOtpVerified] = useState(true);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [otp, setOtp] = useState(0);
   const [recOtp, setRecOtp] = useState(0);
   const [error, setError] = useState({
-    mail: '',
-    password: '',
+    mail: "",
+    password: "",
   });
-  const [otpStatus,setOtpStatus]=useState(false);
+  const [otpStatus, setOtpStatus] = useState(false);
 
   const handleSendOTP = () => {
     var data = new FormData();
-    data.append('email', email);
+    data.append("email", email);
     var config = {
-      method: 'post',
-      url: serverUrl + '/otp/',
-      data: data
+      method: "post",
+      url: serverUrl + "/otp/",
+      data: data,
     };
     axios(config)
       .then(function (response) {
@@ -84,13 +82,13 @@ export default function SignIn(props) {
     if (otp === recOtp) {
       setOtpVerified(true);
       var data2 = new FormData();
-      data2.append('email', email);
-      data2.append('password', password);
+      data2.append("email", email);
+      data2.append("password", password);
       // console.log(data2);
       var config2 = {
-        method: 'post',
-        url: serverUrl + '/account/login/',
-        data: data2
+        method: "post",
+        url: serverUrl + "/account/login/",
+        data: data2,
       };
 
       axios(config2)
@@ -98,35 +96,36 @@ export default function SignIn(props) {
           // console.log(JSON.stringify(response.data));
           // setToken(response.data.token);
           props.handleToken(response.data.token);
-          localStorage.setItem('token',response.data.token);
-          localStorage.setItem('username',response.data.user);
-          localStorage.setItem('usertype', response.data.user_type);
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("username", response.data.user);
+          localStorage.setItem("usertype", response.data.user_type);
           history.push("/");
-        }).catch(function (error) {
+        })
+        .catch(function (error) {
           console.log(error);
           setPwdVerified(true);
         });
     } else {
       setOtpVerified(false);
     }
-  }
+  };
 
   const handleOtp = (e) => {
     setOtp(parseInt(e.target.value));
-  }
+  };
   const handleMail = (e) => {
     setEmail(e.target.value);
-    setError({ ...error, mail: '' })
-  }
+    setError({ ...error, mail: "" });
+  };
   const handlePassword = (e) => {
     setPassword(e.target.value);
-    setError({ ...error, password: '' })
-  }
+    setError({ ...error, password: "" });
+  };
   const handleEmailError = () => {
     if (!email || validEmail(email)) {
-      setError({ ...error, mail: 'Please provide a valid email' });
+      setError({ ...error, mail: "Please provide a valid email" });
     }
-  }
+  };
   // const handlePasswordError = () => {
   //   console.log('asdsad');
   // }
@@ -153,8 +152,8 @@ export default function SignIn(props) {
             name="email"
             onChange={handleMail}
             onBlur={handleEmailError}
-            error={error['mail'] !== ''}
-            helperText={error['mail']}
+            error={error["mail"] !== ""}
+            helperText={error["mail"]}
             InputLabelProps={{
               className: classes.floatingLabelFocusStyle,
             }}
@@ -163,7 +162,7 @@ export default function SignIn(props) {
           />
           <Button
             fullWidth
-            disabled={pwdVerified || error['mail']!==''}
+            disabled={pwdVerified || error["mail"] !== ""}
             variant="contained"
             color="primary"
             onClick={handleSendOTP}
@@ -221,12 +220,16 @@ export default function SignIn(props) {
                 }}
                 onChange={handlePassword}
               />
-              {pwdVerified ? (<Typography align='center' color='secondary'>
-                Password Incorrect
-              </Typography>) : null}
-              {!otpVerified ? (<Typography align='center' color='secondary'>
-                OTP Incorrect
-              </Typography>) : null}
+              {pwdVerified ? (
+                <Typography align="center" color="secondary">
+                  Password Incorrect
+                </Typography>
+              ) : null}
+              {!otpVerified ? (
+                <Typography align="center" color="secondary">
+                  OTP Incorrect
+                </Typography>
+              ) : null}
               <Button
                 // type="submit"
                 fullWidth
@@ -239,10 +242,10 @@ export default function SignIn(props) {
               </Button>
             </Grid>
           ) : (
-              <div />
-            )}
+            <div />
+          )}
         </form>
       </div>
     </Container>
   );
-};
+}

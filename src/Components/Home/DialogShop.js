@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import theme from "../../theme";
 import {
   Box,
@@ -14,19 +14,22 @@ import {
   Menu,
   MenuItem,
   Fab,
-  Radio
+  Radio,
 } from "@material-ui/core";
 import Item from "../../Data/Item";
-import { AddShoppingCartOutlined, RadioButtonUnchecked } from "@material-ui/icons";
-import axios from 'axios';
-import serverUrl from '../../serverURL';
+import {
+  AddShoppingCartOutlined,
+  RadioButtonUnchecked,
+} from "@material-ui/icons";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles({
   root: {
-    flex: 1
+    flex: 1,
   },
   itemImage: {
-    margin: theme.spacing(1, 1, 1)
+    margin: theme.spacing(1, 1, 1),
   },
   card: {
     flexDirection: "column",
@@ -41,45 +44,46 @@ const useStyles = makeStyles({
   shopName: {
     fontWeight: 700,
   },
-})
+});
 
 export default function DialogShop(props) {
-  const [scroll,] = React.useState('paper');
+  const [scroll] = React.useState("paper");
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
-  const handleCancel=()=>{
+  const handleCancel = () => {
     props.handleDialog();
-  }
+  };
 
-  const handleAddtoCart = (url) => {
+  const handleAddtoCart = (id) => {
     var data = JSON.stringify({
-      "productId": url,
-      "quantity": props.qty
+      product_id: id,
+      quantity: props.qty,
+      shopId: {},
     });
-    
+
     var config = {
-      method: 'post',
-      url: serverUrl + '/cart/',
-      headers: { 
-        'Authorization': 'JWT ' + token, 
-        'Content-Type': 'application/json'
+      method: "post",
+      url: serverUrl + "/cart/",
+      headers: {
+        Authorization: "JWT " + token,
+        "Content-Type": "application/json",
       },
-      data : data
+      data: data,
     };
-    
+
     axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-      props.handleDialog();
-    })
-    .catch(function (error) {
-      console.log(error);
-    });    
-  }
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        props.handleDialog();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   console.log(props.wholesellers);
   // let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
   // const items = [a, a, a, a, a, a, a, a, a, a];
@@ -124,11 +128,16 @@ export default function DialogShop(props) {
         fullWidth
       >
         <DialogTitle id="scroll-dialog-title">
-          <Grid container spacing={1} justify="space-between" alignItems='center'>
-            <Grid item xs={3} container justify='flex-start'>
+          <Grid
+            container
+            spacing={1}
+            justify="space-between"
+            alignItems="center"
+          >
+            <Grid item xs={3} container justify="flex-start">
               Available Shops
-                </Grid>
-            <Grid item container xs={6} justify='flex-end'>
+            </Grid>
+            <Grid item container xs={6} justify="flex-end">
               <Button
                 edge="end"
                 aria-label="account of current user"
@@ -138,21 +147,22 @@ export default function DialogShop(props) {
                 color="inherit"
               >
                 Filter
-                  </Button>
+              </Button>
             </Grid>
           </Grid>
         </DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
-          {props.wholesellers.map((wholesaler,index) => (
-            <Grid item key={wholesaler.id} className={classes.item}>
-              <Card variant="outlined" className={classes.card}>
-                <Grid
-                  container
-                  justify="center"
-                  direction="column"
-                  alignItems="flex-start"
-                >
-                  {/* <Box className={classes.itemImage}>
+        <DialogContent dividers={scroll === "paper"}>
+          {props.wholesellers.length > 0 ? (
+            props.wholesellers.map((wholesaler, index) => (
+              <Grid item key={wholesaler.id} className={classes.item}>
+                <Card variant="outlined" className={classes.card}>
+                  <Grid
+                    container
+                    justify="center"
+                    direction="column"
+                    alignItems="flex-start"
+                  >
+                    {/* <Box className={classes.itemImage}>
                         <Imgix
                             src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
                             width='30%'
@@ -162,28 +172,54 @@ export default function DialogShop(props) {
                             }}
                         />
                       </Box> */}
-                  <Grid container direction='row' >
-                    <Box display='flex' width='100%' alignItems='center'>
-                      <Box flexGrow={1}>
-                        <Grid container direction='column' >
-                          <Typography align='left' variant='subtitle1' className={classes.shopName}>{wholesaler.shopName}</Typography>
-                          {/* <Typography align='left' variant='body2' className={classes.location}>{wholesaler.shopAddress}</Typography>
+                    <Grid container direction="row">
+                      <Box display="flex" width="100%" alignItems="center">
+                        <Box flexGrow={1}>
+                          <Grid container direction="column">
+                            <Typography
+                              align="left"
+                              variant="subtitle1"
+                              className={classes.shopName}
+                            >
+                              {wholesaler.shopName}
+                            </Typography>
+                            {/* <Typography align='left' variant='body2' className={classes.location}>{wholesaler.shopAddress}</Typography>
                           <Typography align='left' variant='body2' className={classes.distance}>{wholesaler.shopLong}</Typography> */}
-                          <Typography align='left' variant='body2' className={classes.distance}>$ {wholesaler.wholesale_price}</Typography>
-                        </Grid>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.distance}
+                            >
+                              $ {wholesaler.wholesale_price}
+                            </Typography>
+                          </Grid>
+                        </Box>
+                        <Box>
+                          <Fab
+                            onClick={() => handleAddtoCart(wholesaler.id)}
+                            variant="contained"
+                            size="medium"
+                            color="secondary"
+                          >
+                            <AddShoppingCartOutlined></AddShoppingCartOutlined>
+                            Add to Cart
+                          </Fab>
+                        </Box>
                       </Box>
-                      <Box >
-                      <Fab onClick={() => handleAddtoCart(wholesaler.url)} variant='contained' size='medium' color='secondary'>
-                        <AddShoppingCartOutlined ></AddShoppingCartOutlined>
-                          Add to Cart
-                      </Fab>
-                      </Box>
-                    </Box>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </Card>
-            </Grid>
-          ))}
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Typography
+              align="center"
+              variant="body2"
+              className={classes.distance}
+            >
+              No available shops :(
+            </Typography>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color="primary">
@@ -193,5 +229,5 @@ export default function DialogShop(props) {
       </Dialog>
       {renderMenu}
     </div>
-  )
+  );
 }
