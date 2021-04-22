@@ -6,6 +6,8 @@ import RateReviewIcon from '@material-ui/icons/RateReview';
 import axios from 'axios';
 import serverUrl from "../../serverURL";
 import React from "react";
+import Imgix from "react-imgix";
+import no_data from '../../img/no_data.svg'
 
 const useStyles = makeStyles({
     root: {
@@ -64,6 +66,11 @@ const useStyles = makeStyles({
         margin: (props) => props.mobile ? theme.spacing(2, 1, 2) : theme.spacing(1, 2, 1),
         padding: (props) => props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
     },
+    emptyReviewsText: {
+        letterSpacing: 2,
+        color: theme.palette.text.hint,
+        margin:theme.spacing(4,2,2)
+    }
 
 })
 
@@ -81,40 +88,40 @@ const MyReviews = () => {
     const getReviews = () => {
         var config = {
             method: 'get',
-            url: serverUrl+'/reviews/?u='+username,
-            headers: { 
-            'Authorization': 'JWT '+token
+            url: serverUrl + '/reviews/?u=' + username,
+            headers: {
+                'Authorization': 'JWT ' + token
             }
         };
-        
+
         axios(config)
-        .then(function (response) {
-            // console.log((response.data).length);
-            // console.log(JSON.stringify(response.data));
-            const len = (response.data).length
-            var new_rev = []
-            for (var i=0;i<len;i++) {
-                var temp = [...new_rev];
-                temp = [...temp, {review : response.data[i]}];
-                new_rev = temp;
-            }
-            setReview(new_rev);
-            // response.data.map((rev) => {
-            //     setReview(...review,...rev);
-            // });
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+            .then(function (response) {
+                // console.log((response.data).length);
+                // console.log(JSON.stringify(response.data));
+                const len = (response.data).length
+                var new_rev = []
+                for (var i = 0; i < len; i++) {
+                    var temp = [...new_rev];
+                    temp = [...temp, { review: response.data[i] }];
+                    new_rev = temp;
+                }
+                setReview(new_rev);
+                // response.data.map((rev) => {
+                //     setReview(...review,...rev);
+                // });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
-    React.useEffect(()=>{
-        try{
+    React.useEffect(() => {
+        try {
             getReviews();
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
-    },[])
+    }, [])
 
     return (
         <div className={classes.root}>
@@ -154,6 +161,20 @@ const MyReviews = () => {
 
                         </Paper>
                     ))}
+                    {review.length === 0 &&
+                        <Grid container direction='column' alignItems='center'>
+                            <Imgix
+                                src={no_data}
+                                width="300"
+                                height="300"
+                                imgixParams={{
+                                    fit: "fit",
+                                    fm: "svg",
+                                }}
+                            />
+                            <Typography className={classes.emptyReviewsText} variant='h5'>Your don't have any reviews to show. </Typography>
+                        </Grid>
+                    }
                 </Grid>
             </Grid>
         </div>

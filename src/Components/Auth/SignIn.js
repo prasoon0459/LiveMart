@@ -99,6 +99,7 @@ export default function SignIn(props) {
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("username", response.data.user);
           localStorage.setItem("usertype", response.data.user_type);
+          localStorage.setItem("name", response.data.name);
           history.push("/");
         })
         .catch(function (error) {

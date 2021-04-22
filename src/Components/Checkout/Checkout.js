@@ -25,6 +25,8 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import { minMaxLength } from "../Auth/validation";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -90,6 +92,9 @@ const steps = [
 export default function Checkout(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  // const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+  const [shopNames, setShopNames] = React.useState([]);
   const [address, setAddress] = React.useState({
     firstName: null,
     lastName: null,
@@ -111,6 +116,10 @@ export default function Checkout(props) {
     country: "",
   });
   //console.log(props.location.cartItems);
+
+  const handleShopNames = (props) => {
+    setShopNames(props);
+  };
 
   const [orders, setOrders] = React.useState([
     {
@@ -467,11 +476,48 @@ export default function Checkout(props) {
             delMode={mode}
             delAddress={address}
             totalPrice={props.location.totalPrice}
+            handleShopNames={handleShopNames}
           />
         );
       default:
         throw new Error("Unknown step");
     }
+  };
+
+  const placeOrderRequest = () => {
+    const final_address =
+      address["addressLine1"].toString() +
+      ", " +
+      (address["addressLine2"] !== null
+        ? address["addressLine2"].toString()
+        : "") +
+      ", " +
+      address["city"].toString() +
+      ", " +
+      address["state"].toString() +
+      ", " +
+      address["country"].toString();
+    var data = JSON.stringify({
+      username: username,
+      deliveryAddress: final_address,
+      shops: shopNames,
+    });
+    var config = {
+      method: "post",
+      url: serverUrl + "/create_transaction/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleNext = () => {
@@ -481,6 +527,11 @@ export default function Checkout(props) {
       setMode("Offline");
     }
     if (activeStep < 2) setWallet(false);
+    // console.log(activeStep);
+    console.log(steps.length);
+    if (activeStep === steps.length - 1) {
+      placeOrderRequest();
+    }
     setActiveStep(activeStep + 1);
   };
   const validationCond = () => {
@@ -520,7 +571,6 @@ export default function Checkout(props) {
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-
   return (
     <React.Fragment>
       <main className={classes.layout}>

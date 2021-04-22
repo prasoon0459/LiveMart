@@ -51,11 +51,18 @@ function getDate(date) {
   return dd + "/" + mm + "/" + yyyy + " " + d.getHours() + ":" + d.getMinutes();
 }
 
-export default function Review({ cartItems, delMode, delAddress, totalPrice }) {
+export default function Review({
+  cartItems,
+  delMode,
+  delAddress,
+  totalPrice,
+  handleShopNames,
+}) {
   const classes = useStyles();
   // const [shopSet, setShopSet] = React.useState(new Set());
   const shopSet = new Set();
   const [shopNames, setShopNames] = React.useState([]);
+  var shopTotal = 0;
 
   // React.useEffect(() => {
   //   cartItems.map((cartItem) => {
@@ -76,7 +83,7 @@ export default function Review({ cartItems, delMode, delAddress, totalPrice }) {
   console.log(delMode);
   return (
     <React.Fragment>
-      {console.log(shopNames)}
+      {shopNames.length > 0 ? handleShopNames(shopNames) : null}
       <Grid container direction="column">
         <Typography
           variant="h6"
@@ -85,70 +92,91 @@ export default function Review({ cartItems, delMode, delAddress, totalPrice }) {
         >
           Order Summary
         </Typography>
-        {shopNames.map((shopName) =>
-          cartItems
-            .filter((product) => product.item.shopName === shopName)
-            .map((cartItem) => (
-              <Grid
-                container
-                direction="column"
-                className={classes.indOrdersContainer}
+        {shopNames.map((shopName) => {
+          shopTotal = 0;
+          return (
+            <React.Fragment>
+              <Typography
+                variant="h6"
+                align="left"
+                className={classes.shopNameHeading}
               >
-                <Typography
-                  variant="h6"
-                  align="left"
-                  className={classes.shopNameHeading}
-                >
-                  {cartItem.item.shopName}
-                </Typography>
-                <Grid container direction="column" alignItems="flex-start">
-                  {delMode === "Offline" ? (
-                    <div>
-                      <Typography
-                        align="left"
-                        className={classes.shipmentToHeading}
+                {shopName}
+              </Typography>
+              {cartItems
+                .filter((product) => product.item.shopName === shopName)
+                .map((cartItem) => {
+                  shopTotal +=
+                    cartItem.item.productPrice * cartItem.item.quantity;
+                  return (
+                    <Grid
+                      container
+                      direction="column"
+                      className={classes.indOrdersContainer}
+                    >
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="flex-start"
                       >
-                        {"Pickup From :"}
-                      </Typography>
-                      <Typography align="left">
-                        {cartItem.item.shopId.address}
-                      </Typography>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
-                  <Typography
-                    align="left"
-                    className={classes.shipmentToHeading}
-                  >
-                    {(delMode === "Offline"
-                      ? "Pickup Date: "
-                      : "Expected Delivery :") +
-                      new Date().toLocaleDateString()}{" "}
-                  </Typography>
-                  <Typography align="left"></Typography>
-                </Grid>
-                <Divider></Divider>
-                <List className={classes.list} disablePadding>
-                  <ListItem
-                    className={classes.listItem}
-                    key={cartItem.item.productName}
-                  >
-                    <ListItemText primary={cartItem.item.productName} />
-                    <Typography variant="body2">
-                      {cartItem.item.productPrice}
-                    </Typography>
-                  </ListItem>
-                </List>{" "}
-                <ListItem className={classes.listItem}>
-                  <ListItemText primary="Total" />
-                  <Typography variant="subtitle1" className={classes.total}>
-                    {totalPrice}
-                  </Typography>
-                </ListItem>
-              </Grid>
-            ))
-        )}
+                        {delMode === "Offline" ? (
+                          <div>
+                            <Typography
+                              align="left"
+                              className={classes.shipmentToHeading}
+                            >
+                              {"Pickup From :"}
+                            </Typography>
+                            <Typography align="left">
+                              {cartItem.item.shopId.address}
+                            </Typography>
+                          </div>
+                        ) : (
+                          <div></div>
+                        )}
+                        <Typography
+                          align="left"
+                          className={classes.shipmentToHeading}
+                        >
+                          {(delMode === "Offline"
+                            ? "Pickup Date: "
+                            : "Expected Delivery :") +
+                            new Date().toLocaleDateString()}{" "}
+                        </Typography>
+                        <Typography align="left"></Typography>
+                      </Grid>
+                      <Divider></Divider>
+                      <List className={classes.list} disablePadding>
+                        <ListItem
+                          className={classes.listItem}
+                          key={cartItem.item.productName}
+                        >
+                          <ListItemText
+                            primary={cartItem.item.productName}
+                            secondary={
+                              cartItem.item.quantity +
+                              " " +
+                              cartItem.item.productId.unit
+                            }
+                          />
+                          <Typography variant="body2">
+                            {cartItem.item.productPrice *
+                              cartItem.item.quantity}
+                          </Typography>
+                        </ListItem>
+                      </List>{" "}
+                    </Grid>
+                  );
+                })}
+              <ListItem className={classes.listItem}>
+                <ListItemText primary="Total" />
+                <Typography variant="subtitle1" className={classes.total}>
+                  {shopTotal}
+                </Typography>
+              </ListItem>
+            </React.Fragment>
+          );
+        })}
       </Grid>
     </React.Fragment>
   );
