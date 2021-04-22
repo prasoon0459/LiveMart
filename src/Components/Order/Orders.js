@@ -3,6 +3,8 @@ import { ChevronRight, LocationOn, StoreOutlined } from "@material-ui/icons";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import {useHistory} from 'react-router-dom'
+import Imgix from "react-imgix";
+import no_orders from '../../img/no_orders.svg'
 
 const useStyles = makeStyles({
     root: {
@@ -49,6 +51,12 @@ const useStyles = makeStyles({
         margin: (props) => props.mobile ? theme.spacing(2, 1, 2) : theme.spacing(2, 2, 1),
         padding: (props) => props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
     },
+
+    emptyOrdersText: {
+        letterSpacing: 2,
+        color: theme.palette.text.hint,
+        margin:theme.spacing(4,2,2)
+    }
 
 })
 
@@ -192,6 +200,20 @@ const Orders = () => {
 
                         </Paper>
                     ))}
+                    {orders.length === 0 &&
+                        <Grid container direction='column' alignItems='center'>
+                            <Imgix
+                                src={no_orders}
+                                width="400"
+                                height="400"
+                                imgixParams={{
+                                    fit: "fit",
+                                    fm: "svg",
+                                }}
+                            />
+                            <Typography className={classes.emptyOrdersText} variant='h5'>Your don't have any orders to show. </Typography>
+                        </Grid>
+                    }
                 </Grid>
             </Grid>
         </div>

@@ -63,6 +63,13 @@ const useStyles = makeStyles((theme) => ({
   add: {
     textAlign: "center",
   },
+  btnAdd:{
+    margin:theme.spacing(1,0,0)
+  },
+  hintText:{
+    flexGrow:1,
+    width:'100%'
+  }
 }));
 
 export default function Profile(props) {
@@ -233,11 +240,11 @@ export default function Profile(props) {
                       }}
                     />
                     <Grid container direction="column" alignItems="center">
-                      <Grid item>
+                      <Grid item className={classes.hintText}>
                         <Typography
                           color="secondary"
                           variant="caption"
-                          align="right"
+                          align="left"
                         >
                           *The amount will be added to your LiveMart Wallet
                         </Typography>
@@ -245,16 +252,17 @@ export default function Profile(props) {
                       <Button
                         align="center"
                         color="primary"
+                        className={classes.btnAdd}
                         variant="contained"
                         onClick={handleFinal}
                       >
-                        Add
+                        Add Money
                       </Button>
                     </Grid>
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleDialogClose} color="primary">
-                      Close
+                      Cancel
                     </Button>
                   </DialogActions>
                 </Dialog>
@@ -266,6 +274,7 @@ export default function Profile(props) {
                   aria-describedby="scroll-dialog-description"
                 >
                   <DialogContent>
+                    <Grid container direction='column' alignItems='center'>
                     <Imgix
                       src={check}
                       width="100"
@@ -279,6 +288,7 @@ export default function Profile(props) {
                     <Typography variant="subtitle1">
                       The amount is succesfully added to your LiveMart Wallet
                     </Typography>
+                    </Grid>
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={handleAddClose} color="primary">

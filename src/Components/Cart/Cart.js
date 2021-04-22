@@ -22,6 +22,7 @@ import axios from "axios";
 import serverUrl from "../../serverURL";
 import { useHistory } from "react-router-dom";
 import Imgix from "react-imgix";
+import empty_cart from '../../img/empty_cart.svg'
 
 const useStyles = makeStyles({
   root: {
@@ -136,6 +137,10 @@ const useStyles = makeStyles({
   itemCard: {
     padding: theme.spacing(0, 2, 0),
   },
+  emptyCartText:{
+    letterSpacing:2,
+    color:theme.palette.text.hint
+  }
 });
 
 const Cart = () => {
@@ -516,16 +521,17 @@ const Cart = () => {
             </Grid>
           </Grid>
         ) : (
-          <Grid container alignItem="center" justify="center">
+          <Grid container direction='column' alignItems="center" justify="center">
             <Imgix
-              src="https://vividparts.com/site_assets/images/empty_cart.gif"
+              src={empty_cart}
               width="400"
               height="400"
               imgixParams={{
                 fit: "fit",
-                fm: "gif",
+                fm: "svg",
               }}
             />
+            <Typography className={ classes.emptyCartText} variant='h5'>Your cart is Empty</Typography>
           </Grid>
         )}
       </Grid>
