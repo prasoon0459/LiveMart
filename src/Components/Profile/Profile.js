@@ -23,7 +23,6 @@ import Info from "./info";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";
-import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 import Imgix from "react-imgix";
 import check from "../../img/check.gif";
@@ -74,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(props) {
   const classes = useStyles();
-  const mobile = UseWindowDimensions().mobile;
   const history = useHistory();
   const [wallet, setWallet] = React.useState(300);
   const [open, setOpen] = React.useState(false);

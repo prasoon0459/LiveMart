@@ -9,7 +9,7 @@ import MainSlider from "./MainSlider";
 import CategoryComp from "./CategoryComp";
 import TopBrand from "./TopBrands";
 import ActiveOrders from "./ActiveOrders";
-import PendingOrders from './PendingOrders'
+import PendingOrders from "./PendingOrders";
 import Pickups from "./Pickups";
 
 const useStyles = makeStyles({
@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 const Home = () => {
   // const mobile= useMediaQuery(theme.breakpoints.down('xs'));
   // const user = 'customer'
-  const user = 'retailer'
+  const userRole = localStorage.getItem("usertype");
   // const user = 'wholesaler'
   const classes = useStyles();
   const images = [
@@ -52,7 +52,7 @@ const Home = () => {
     "https://www.grocerysumo.com/media/slider/home/fsfhjllz_vegetables-banner.png",
   ];
   console.log(window);
-  const categories = [1, 2, 3, 4, 5, 6, 7, 8,];
+  const categories = [1, 2, 3, 4, 5, 6, 7, 8];
 
   const settings = {
     arrows: false,
@@ -65,19 +65,23 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
+      {console.log(userRole)}
       <MainSlider images={images} settings={settings}></MainSlider>
-      {user === 'customer' ? <ActiveOrders></ActiveOrders> :
-        user === 'retailer' ?
-          <div>
-            <Pickups></Pickups>
-            <PendingOrders></PendingOrders>
-            <ActiveOrders></ActiveOrders>
-          </div> :
-          <div>
-            <Pickups></Pickups>
-            <PendingOrders></PendingOrders>
-            <ActiveOrders></ActiveOrders>
-          </div>}
+      {userRole === "0" ? (
+        <ActiveOrders></ActiveOrders>
+      ) : userRole === "1" ? (
+        <div>
+          <Pickups></Pickups>
+          <PendingOrders></PendingOrders>
+          <ActiveOrders></ActiveOrders>
+        </div>
+      ) : (
+        <div>
+          <Pickups></Pickups>
+          <PendingOrders></PendingOrders>
+          <ActiveOrders></ActiveOrders>
+        </div>
+      )}
       {/* <MostPurchased ></MostPurchased> */}
       <CategoryComp categories={categories}></CategoryComp>
       <TopBrand categories={categories}></TopBrand>

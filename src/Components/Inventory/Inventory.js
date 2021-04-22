@@ -31,7 +31,7 @@ const columns = [
   },
 
   {
-    id: "price",
+    id: "wholesale_price",
     label: "Price",
     minWidth: 120,
     align: "center",
@@ -246,7 +246,7 @@ export default function Inventory() {
   const [products, setProducts] = React.useState([]);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
-
+  const user_type = localStorage.getItem("usertype");
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -267,8 +267,15 @@ export default function Inventory() {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        const result = response.data[0].products;
+        // console.log(JSON.stringify(response.data));
+        var result = [];
+        if (user_type === "2") {
+          result = response.data[0].products;
+        } else if (user_type === "1") {
+          result = response.data[0].retailProducts;
+          columns[0].id = "productName";
+          columns[4].id = "retail_price";
+        }
         setProducts(result);
       })
       .catch(function (error) {
@@ -319,8 +326,11 @@ export default function Inventory() {
                 .map((row) => {
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
+                      {columns.map((column, index) => {
+                        const value =
+                          index === 1 || index === 2
+                            ? row[column.id].name
+                            : row[column.id];
                         return (
                           <TableCell key={column.id} align={column.align}>
                             {column.format && typeof value === "number"

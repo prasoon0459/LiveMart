@@ -87,10 +87,10 @@ const App = () => {
             {getHeader()}
             <Notifs></Notifs>
           </Route>
-          <Route path="/track">
-            {getHeader()}
-            <TrackOrder></TrackOrder>
-          </Route>
+          <Route path="/track" component={(getHeader(), TrackOrder)} />
+          {/* {getHeader()} */}
+          {/* <TrackOrder></TrackOrder> */}
+          {/* </Route> */}
           <Route path="/pickup">
             {getHeader()}
             <ViewPickup></ViewPickup>
