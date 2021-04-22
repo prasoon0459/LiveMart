@@ -88,6 +88,7 @@ export default function SignUp() {
     mail: mail,
     phno: phone,
     wallet: 0,
+    address: address,
   };
 
   const handleSubmit = () => {
@@ -343,7 +344,7 @@ export default function SignUp() {
                 InputLabelProps={{
                   className: classes.floatingLabelFocusStyle,
                 }}
-                onChange={handleUsername}
+                onChange={handleAddress}
               />
             </Grid>
             <Grid item xs={12}>

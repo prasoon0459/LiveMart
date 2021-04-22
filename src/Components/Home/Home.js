@@ -79,7 +79,7 @@ const Home = () => {
         <div>
           <Pickups></Pickups>
           <PendingOrders></PendingOrders>
-          <ActiveOrders></ActiveOrders>
+          {/* <ActiveOrders></ActiveOrders> */}
         </div>
       )}
       {/* <MostPurchased ></MostPurchased> */}

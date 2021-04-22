@@ -179,7 +179,9 @@ export default function Checkout(props) {
   ]);
 
   const [option, setOption] = React.useState(0);
-  const [mode, setMode] = React.useState("Online");
+  const [mode, setMode] = React.useState("");
+  const [wallet, setWallet] = React.useState(false);
+  const [walletBalance, setWalletBalance] = React.useState(0);
 
   const handleOptionChanged = (event) => {
     setOption(event.target.value);
@@ -247,6 +249,10 @@ export default function Checkout(props) {
     if (minMaxLength(address["addressLine1"], 3)) {
       setError({ ...error, addressLine1: "Must be greater than 3 character" });
     }
+  };
+  const handleWallet = (balance) => {
+    setWallet(true);
+    setWalletBalance(balance);
   };
 
   const getAddressStep = () => {
@@ -462,7 +468,7 @@ export default function Checkout(props) {
       case 1:
         return option === "0" ? getAddressStep() : getPickupDetailsStep();
       case 2:
-        return <PaymentForm />;
+        return <PaymentForm handleWallet={handleWallet} />;
       case 3:
         return (
           <Review
@@ -520,12 +526,46 @@ export default function Checkout(props) {
     } else {
       setMode("Offline");
     }
+    if (activeStep < 2) setWallet(false);
     // console.log(activeStep);
     console.log(steps.length);
     if (activeStep === steps.length - 1) {
       placeOrderRequest();
     }
     setActiveStep(activeStep + 1);
+  };
+  const validationCond = () => {
+    if (
+      error["firstName"] !== "" ||
+      error["lastName"] !== "" ||
+      error["addressLine1"] !== "" ||
+      error["city"] !== "" ||
+      error["state"] !== "" ||
+      error["zip"] !== "" ||
+      error["country"] !== "" ||
+      mode === ""
+      // address["firstName"] === null ||
+      // address["lastName"] === null ||
+      // address["addressLine1"] === null ||
+      // address["city"] === null ||
+      // address["state"] === null ||
+      // address["zip"] === null ||
+      // address["country"] === null
+    )
+      return true;
+    else if (
+      (address["firstName"] === null ||
+        address["lastName"] === null ||
+        address["addressLine1"] === null ||
+        address["city"] === null ||
+        address["state"] === null ||
+        address["zip"] === null ||
+        address["country"] === null) &&
+      activeStep === 1
+    )
+      return true;
+    else if (activeStep === 2 && wallet === false) return true;
+    else return false;
   };
 
   const handleBack = () => {
@@ -591,15 +631,7 @@ export default function Checkout(props) {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
-                    disabled={
-                      error["firstName"] !== "" ||
-                      error["lastName"] !== "" ||
-                      error["addressLine1"] !== "" ||
-                      error["city"] !== "" ||
-                      error["state"] !== "" ||
-                      error["zip"] !== "" ||
-                      error["country"] !== ""
-                    }
+                    disabled={validationCond()}
                   >
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>
