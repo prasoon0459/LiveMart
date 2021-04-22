@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function PaymentForm() {
+export default function PaymentForm(props) {
   const classes = useStyles();
   const [wallet, setWallet] = React.useState(false);
   const token = localStorage.getItem("token");
@@ -38,6 +38,7 @@ export default function PaymentForm() {
 
   const handlePaymentOptionChange = (event) => {
     setWallet(!wallet);
+    props.handleWallet(balance);
   };
 
   const getUserWallet = () => {
