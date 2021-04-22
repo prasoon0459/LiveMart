@@ -2,16 +2,10 @@ import {
   ArrowBackIos,
   ArrowDropDown,
   ArrowForwardIos,
-  Check,
   ChevronRight,
-  Clear,
-  ClearSharp,
-  CloseRounded,
-  Filter1,
   FilterList,
 } from "@material-ui/icons";
 import Imgix from "react-imgix";
-import Item from "../../Data/Item";
 import theme from "../../theme";
 import { NavLink, useLocation } from "react-router-dom";
 import serverUrl from "../../serverURL";
@@ -31,13 +25,7 @@ const {
   Badge,
   Card,
   Dialog,
-  AppBar,
-  Toolbar,
-  ListItem,
-  ListItemText,
-  List,
   Slide,
-  Fab,
 } = require("@material-ui/core");
 const { default: Filter } = require("./Filter");
 
@@ -193,13 +181,13 @@ const Search = () => {
     console.log(filters);
   };
 
-  const handleFilterRemoved = (type, filterRemoved) => {
-    var newFilters = filters;
-    newFilters[type] = filters[type].filter(
-      (filter) => filter !== filterRemoved
-    );
-    setFilters(newFilters);
-  };
+  // const handleFilterRemoved = (type, filterRemoved) => {
+  //   var newFilters = filters;
+  //   newFilters[type] = filters[type].filter(
+  //     (filter) => filter !== filterRemoved
+  //   );
+  //   setFilters(newFilters);
+  // };
 
   const [filterOpen, setFilterOpen] = React.useState(false);
   const handleOpenFilter = () => {

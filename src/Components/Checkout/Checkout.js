@@ -11,7 +11,6 @@ import Review from "./Review";
 import {
   FormControl,
   FormControlLabel,
-  FormLabel,
   Grid,
   Radio,
   RadioGroup,
@@ -25,6 +24,8 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { minMaxLength } from "../Auth/validation";
+
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: "relative",
@@ -99,7 +100,17 @@ export default function Checkout(props) {
     zip: null,
     country: null,
   });
-  console.log(props.location.cartItems);
+  const [error, setError] = React.useState({
+    firstName: "",
+    lastName: "",
+    addressLine1: "",
+    addressLine2: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
+  });
+  //console.log(props.location.cartItems);
 
   const [orders, setOrders] = React.useState([
     {
@@ -173,7 +184,16 @@ export default function Checkout(props) {
     const id = event.target.id;
     const new_address = address;
     new_address[id] = event.target.value;
+    if (id === "firstName") setError({ ...error, firstName: "" });
+    else if (id === "lastName") setError({ ...error, lastName: "" });
+    else if (id === "addressLine1") setError({ ...error, addressLine1: "" });
+    else if (id === "state") setError({ ...error, state: "" });
+    else if (id === "zip") setError({ ...error, zip: "" });
+    else if (id === "city") setError({ ...error, city: "" });
+    else if (id === "country") setError({ ...error, country: "" });
     setAddress(new_address);
+    console.log(id);
+    console.log(address);
   };
 
   const handlePickupDateChange = (index, event) => {
@@ -183,10 +203,47 @@ export default function Checkout(props) {
     console.log(newOrders[index].expected_delivery);
     setOrders(newOrders);
   };
+  const handleLastNameError = () => {
+    if (minMaxLength(address["lastName"], 3)) {
+      setError({ ...error, lastName: "Must be greater than 3 character" });
+    }
+  };
+  const handleFirstNameError = () => {
+    if (minMaxLength(address["firstName"], 3)) {
+      setError({ ...error, firstName: "Must be greater than 3 character" });
+    }
+  };
+  const handleCityError = () => {
+    if (minMaxLength(address["city"], 1)) {
+      setError({ ...error, city: "Must be greater than 1 character" });
+    }
+  };
+  const handleStateError = () => {
+    if (minMaxLength(address["state"], 1)) {
+      setError({ ...error, state: "Must be greater than 1 character" });
+    }
+  };
+  const handleZipError = () => {
+    let reg = new RegExp(/^\d*$/).test(address["zip"]);
+    if (address["zip"].length !== 6)
+      setError({ ...error, zip: "Must be 6 digit" });
+    else if (!reg) setError({ ...error, zip: "Only number permitted" });
+  };
+  const handleCountryError = () => {
+    if (minMaxLength(address["country"], 1)) {
+      setError({ ...error, country: "Must be greater than 1 character" });
+    }
+  };
+  const handleAddressError = () => {
+    if (minMaxLength(address["addressLine1"], 3)) {
+      setError({ ...error, addressLine1: "Must be greater than 3 character" });
+    }
+  };
 
   const getAddressStep = () => {
     return (
       <React.Fragment>
+        {console.log(error)}
         <Typography variant="h6" gutterBottom>
           Shipping address
         </Typography>
@@ -198,6 +255,9 @@ export default function Checkout(props) {
               name="firstName"
               label="First name"
               onChange={handleAddressChange}
+              onBlur={handleFirstNameError}
+              error={error["firstName"] !== ""}
+              helperText={error["firstName"]}
               fullWidth
               value={address.firstName}
               InputLabelProps={{
@@ -213,6 +273,9 @@ export default function Checkout(props) {
               name="lastName"
               label="Last name"
               onChange={handleAddressChange}
+              onBlur={handleLastNameError}
+              error={error["lastName"] !== ""}
+              helperText={error["lastName"]}
               fullWidth
               value={address.lastName}
               InputLabelProps={{
@@ -228,6 +291,9 @@ export default function Checkout(props) {
               name="addressLine1"
               label="Address line 1"
               onChange={handleAddressChange}
+              onBlur={handleAddressError}
+              error={error["addressLine1"] !== ""}
+              helperText={error["addressLine1"]}
               fullWidth
               value={address.addressLine1}
               InputLabelProps={{
@@ -259,6 +325,9 @@ export default function Checkout(props) {
               fullWidth
               value={address.city}
               onChange={handleAddressChange}
+              onBlur={handleCityError}
+              error={error["city"] !== ""}
+              helperText={error["city"]}
               InputLabelProps={{
                 className: classes.floatingLabelFocusStyle,
               }}
@@ -267,6 +336,7 @@ export default function Checkout(props) {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+              required
               id="state"
               InputLabelProps={{
                 className: classes.floatingLabelFocusStyle,
@@ -274,6 +344,9 @@ export default function Checkout(props) {
               name="state"
               value={address.state}
               onChange={handleAddressChange}
+              onBlur={handleStateError}
+              error={error["state"] !== ""}
+              helperText={error["state"]}
               label="State/Province/Region"
               fullWidth
             />
@@ -290,6 +363,9 @@ export default function Checkout(props) {
               fullWidth
               value={address.zip}
               onChange={handleAddressChange}
+              onBlur={handleZipError}
+              error={error["zip"] !== ""}
+              helperText={error["zip"]}
               autoComplete="shipping postal-code"
             />
           </Grid>
@@ -300,6 +376,9 @@ export default function Checkout(props) {
               name="country"
               label="Country"
               value={address.country}
+              onBlur={handleCountryError}
+              error={error["country"] !== ""}
+              helperText={error["country"]}
               InputLabelProps={{
                 className: classes.floatingLabelFocusStyle,
               }}
@@ -346,6 +425,7 @@ export default function Checkout(props) {
       case 0:
         return (
           <React.Fragment>
+            {console.log(error)}
             <Typography variant="h6" gutterBottom>
               Delivery Option
             </Typography>
@@ -461,6 +541,15 @@ export default function Checkout(props) {
                     color="primary"
                     onClick={handleNext}
                     className={classes.button}
+                    disabled={
+                      error["firstName"] !== "" ||
+                      error["lastName"] !== "" ||
+                      error["addressLine1"] !== "" ||
+                      error["city"] !== "" ||
+                      error["state"] !== "" ||
+                      error["zip"] !== "" ||
+                      error["country"] !== ""
+                    }
                   >
                     {activeStep === steps.length - 1 ? "Place order" : "Next"}
                   </Button>

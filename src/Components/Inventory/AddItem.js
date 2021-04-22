@@ -84,7 +84,7 @@ const columns = [
   },
 
   {
-    id: "unit",
+    // id: "url",
     align: "center",
   },
 ];
@@ -293,9 +293,11 @@ const AddItem = () => {
                       >
                         {columns.map((column, index) => {
                           //   console.log(column.id);
-                          //   console.log(row);
-                          const value = row[column.id];
-                          console.log(value);
+                          //console.log(row);
+                          const value =
+                            index === 1 || index === 2
+                              ? row[column.id].name
+                              : row[column.id];
                           return (
                             <TableCell key={column.id} align={column.align}>
                               {index === 3 && (
@@ -307,21 +309,13 @@ const AddItem = () => {
                                   AddItem
                                 </Button>
                               )}
-                              {index === 0 &&
+                              {index !== 3 &&
                               column.format &&
                               typeof value === "number"
                                 ? column.format(value)
                                 : value}
-                              {index === 1 &&
-                              column.format &&
-                              typeof value === "number"
-                                ? column.format(value.name)
-                                : value.name}
-                              {index === 2 &&
-                              column.format &&
-                              typeof value === "number"
-                                ? column.format(value.name)
-                                : value.name}
+                              {/* {index === 1 && column.format && typeof value === "number" ? column.format(value) : value}
+                              {index === 2 && column.format && typeof value === "number" ? column.format(value) : value} */}
                             </TableCell>
                           );
                         })}

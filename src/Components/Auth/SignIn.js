@@ -162,7 +162,7 @@ export default function SignIn(props) {
           />
           <Button
             fullWidth
-            disabled={pwdVerified || error["mail"] !== ""}
+            disabled={otpStatus || error["mail"] !== ""}
             variant="contained"
             color="primary"
             onClick={handleSendOTP}
