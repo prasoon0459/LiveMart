@@ -28,6 +28,7 @@ import Pickups from "./Components/Home/Pickups";
 import ViewPickup from "./Components/Order/ViewPickup";
 import Inventory from "./Components/Inventory/Inventory";
 import AddItem from "./Components/Inventory/AddItem";
+import DeliveryHome from "./Components/Delivery/DeliveryHome";
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -59,6 +60,11 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Switch>
+          <Route path="/delivery_home">
+            {/* {getHeader()} */}
+            <DeliveryHome></DeliveryHome>
+          </Route>
+          
           <Route path="/filter">
             {getHeader()}
             <Filter />

@@ -1,4 +1,4 @@
-const orders = [
+export const dummy_orders = [
   {
     id: "93GD73BDB82H",
     seller_name: "M/s Agarwal General Store",
