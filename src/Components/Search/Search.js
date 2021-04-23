@@ -150,9 +150,7 @@ const Search = () => {
       method: "get",
       url:
         serverUrl +
-        "/default_products/" +
-        (category_recvd !== null ? "?c=" + category_recvd : "")+ // +(product!==null ? '?q='+product : '')
-        (brand_recvd !== null ? "?b=" + brand_recvd : ""),
+        "/default_products/",
       headers: {
         Authorization: "JWT " + token,
       },
@@ -170,7 +168,13 @@ const Search = () => {
           new_items = temp;
         }
         setItems(new_items);
-        setItemsToShow(new_items);
+        var newItemsToShow = filters.categories.length!==0?new_items.filter((val)=> 
+          filters.categories.includes(val.item.category.name)
+        ):new_items;
+        newItemsToShow = filters.brands.length!==0?newItemsToShow.filter((val)=>
+          filters.brands.includes(val.item.brand.name)
+        ):newItemsToShow;
+        setItemsToShow(newItemsToShow);
         setStatus(true);
       })
       .catch(function (error) {
@@ -463,7 +467,7 @@ const Search = () => {
             ) : (
               <div />
             )}
-            <Grid container xs={12} spacing={2}>
+            {/* <Grid container xs={12} spacing={2}>
               <Box
                 display="flex"
                 flexDirection="row-reverse"
@@ -492,7 +496,7 @@ const Search = () => {
                   Page No.
                 </Typography>
               </Box>
-            </Grid>
+            </Grid> */}
           </Paper>
         </Grid>
       </Grid>
