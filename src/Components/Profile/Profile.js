@@ -16,7 +16,6 @@ import {
 } from "@material-ui/core";
 import Order from "../../img/order.jfif";
 import Review from "../../img/review.jfif";
-import Wallet from "../../img/wallet.jfif";
 import Coin from "../../img/coins.jpg";
 import ReactRoundedImage from "react-rounded-image";
 import Info from "./info";
@@ -62,13 +61,13 @@ const useStyles = makeStyles((theme) => ({
   add: {
     textAlign: "center",
   },
-  btnAdd:{
-    margin:theme.spacing(1,0,0)
+  btnAdd: {
+    margin: theme.spacing(1, 0, 0),
   },
-  hintText:{
-    flexGrow:1,
-    width:'100%'
-  }
+  hintText: {
+    flexGrow: 1,
+    width: "100%",
+  },
 }));
 
 export default function Profile(props) {
@@ -272,20 +271,20 @@ export default function Profile(props) {
                   aria-describedby="scroll-dialog-description"
                 >
                   <DialogContent>
-                    <Grid container direction='column' alignItems='center'>
-                    <Imgix
-                      src={check}
-                      width="100"
-                      height="100"
-                      align="center"
-                      imgixParams={{
-                        fit: "fit",
-                        fm: "gif",
-                      }}
-                    ></Imgix>
-                    <Typography variant="subtitle1">
-                      The amount is succesfully added to your LiveMart Wallet
-                    </Typography>
+                    <Grid container direction="column" alignItems="center">
+                      <Imgix
+                        src={check}
+                        width="100"
+                        height="100"
+                        align="center"
+                        imgixParams={{
+                          fit: "fit",
+                          fm: "gif",
+                        }}
+                      ></Imgix>
+                      <Typography variant="subtitle1">
+                        The amount is succesfully added to your LiveMart Wallet
+                      </Typography>
                     </Grid>
                   </DialogContent>
                   <DialogActions>

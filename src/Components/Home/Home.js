@@ -68,12 +68,18 @@ const Home = () => {
       {console.log(userRole)}
       <MainSlider images={images} settings={settings}></MainSlider>
       {userRole === "0" ? (
-        <ActiveOrders></ActiveOrders>
+        <div>
+          <ActiveOrders></ActiveOrders>
+          <CategoryComp categories={categories}></CategoryComp>
+          <TopBrand categories={categories}></TopBrand>
+        </div>
       ) : userRole === "1" ? (
         <div>
           <Pickups></Pickups>
           <PendingOrders></PendingOrders>
           <ActiveOrders></ActiveOrders>
+          <CategoryComp categories={categories}></CategoryComp>
+          <TopBrand categories={categories}></TopBrand>
         </div>
       ) : (
         <div>
@@ -83,8 +89,12 @@ const Home = () => {
         </div>
       )}
       {/* <MostPurchased ></MostPurchased> */}
-      <CategoryComp categories={categories}></CategoryComp>
-      <TopBrand categories={categories}></TopBrand>
+      {/* {userRole === 2 ? null : (
+        <React.Fragment>
+          <CategoryComp categories={categories}></CategoryComp>
+          <TopBrand categories={categories}></TopBrand>
+        </React.Fragment>
+      )} */}
       <Grid container className={classes.featureContainer}>
         <Grid item xs={12} md={4} className={classes.featureItem}>
           <FeatureItem
