@@ -137,6 +137,7 @@ const Header = () => {
   const isMenuOpen = Boolean(anchorEl);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  
   const [cartNo, setCartNo] = React.useState(0);
 
   // React.useEffect(() => {
@@ -188,7 +189,7 @@ const Header = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
         if (response.data.length > 0) {
           setCartNo(response.data.length);
         }

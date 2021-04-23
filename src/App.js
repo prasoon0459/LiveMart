@@ -34,6 +34,7 @@ const App = () => {
   const screen = UseWindowDimensions().screen;
   const mobileHeader = screen === "sm" || screen === "xs";
   const [token, setToken] = React.useState("");
+  const [signedIn, setSignedIn] =React.useState(false);
 
   const handleToken = (props) => {
     setToken(props);
@@ -42,6 +43,12 @@ const App = () => {
   function getHeader() {
     return mobileHeader ? <HeaderMobile /> : <Header />;
   }
+
+  React.useEffect(() => {
+    const user = localStorage.getItem('token')
+    if (user)
+      setSignedIn(true);
+  }, []);
 
   function Copyright() {
     return (
@@ -60,81 +67,7 @@ const App = () => {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route path="/delivery_home">
-            {/* {getHeader()} */}
-            <DeliveryHome></DeliveryHome>
-          </Route>
-          
-          <Route path="/filter">
-            {getHeader()}
-            <Filter />
-          </Route>
-          <Route path="/add_item">
-            {getHeader()}
-            <AddItem></AddItem>
-          </Route>
-
-          <Route path="/change_pwd">
-            <ChangePwd />
-          </Route>
-          <Route path="/my_inventory">
-            {getHeader()}
-            <Inventory></Inventory>
-          </Route>
-          <Route path="/myProfile">
-            {getHeader()}
-            <Profile token={token} />
-          </Route>
-          <Route path="/mycart">
-            {getHeader()}
-            <Cart></Cart>
-          </Route>
-          <Route path="/notifs">
-            {getHeader()}
-            <Notifs></Notifs>
-          </Route>
-          <Route path="/track" component={(getHeader(), TrackOrder)} />
-          {/* {getHeader()} */}
-          {/* <TrackOrder></TrackOrder> */}
-          {/* </Route> */}
-          <Route path="/pickup">
-            {getHeader()}
-            <ViewPickup></ViewPickup>
-          </Route>
-          <Route path="/seller_view_order">
-            {getHeader()}
-            <SellerViewOrder></SellerViewOrder>
-          </Route>
-
-          <Route path="/orders">
-            {getHeader()}
-            <Orders></Orders>
-          </Route>
-          <Route path="/reviews">
-            {getHeader()}
-            <MyReviews></MyReviews>
-          </Route>
-          <Route path="/wallet">
-            {getHeader()}
-            <Wallet></Wallet>
-          </Route>
-          <Route path="/search">
-            {getHeader()}
-            <Search />
-          </Route>
-          <Route path="/categories">
-            {getHeader()}
-            <Categories />
-          </Route>
-
-          <Route path="/checkout" component={Checkout} />
-          {/* <Checkout /> */}
-          {/* </Route> */}
-
-          <Route path="/product">
-            {getHeader()}
-            <Product />
-          </Route>
+          {/* AUTH */}
           <Route path="/login">
             <SignIn handleToken={handleToken}></SignIn>
           </Route>
@@ -145,9 +78,76 @@ const App = () => {
             <ForgotPassword />
           </Route>
           <Route path="/">
-            {getHeader()}
-            <Home />
+            {signedIn&& getHeader()}
+            {signedIn?<Home />:<SignIn/>}
           </Route>
+
+          {signedIn&&<Route path="/delivery_home">
+            <DeliveryHome></DeliveryHome>
+          </Route>}
+          {signedIn&&<Route path="/add_item">
+            {getHeader()}
+            <AddItem></AddItem>
+          </Route>}
+          {signedIn&&<Route path="/change_pwd">
+            <ChangePwd />
+          </Route>}
+          {signedIn&&<Route path="/my_inventory">
+            {getHeader()}
+            <Inventory></Inventory>
+          </Route>}
+          {signedIn&&<Route path="/myProfile">
+            {getHeader()}
+            <Profile token={token} />
+          </Route>}
+          {signedIn&&<Route path="/mycart">
+            {getHeader()}
+            <Cart></Cart>
+          </Route>}
+          {signedIn&&<Route path="/notifs">
+            {getHeader()}
+            <Notifs></Notifs>
+          </Route>}
+          {signedIn&&<Route path="/track">
+            {getHeader()}
+            <TrackOrder></TrackOrder>
+          </Route>}
+          {signedIn&&<Route path="/pickup">
+            {getHeader()}
+            <ViewPickup></ViewPickup>
+          </Route>}
+          {signedIn&&<Route path="/seller_view_order">
+            {getHeader()}
+            <SellerViewOrder></SellerViewOrder>
+          </Route>}
+          {signedIn&&<Route path="/orders">
+            {getHeader()}
+            <Orders></Orders>
+          </Route>}
+          {signedIn&&<Route path="/reviews">
+            {getHeader()}
+            <MyReviews></MyReviews>
+          </Route>}
+          {signedIn&&<Route path="/wallet">
+            {getHeader()}
+            <Wallet></Wallet>
+          </Route>}
+          {signedIn&&<Route path="/search">
+            {getHeader()}
+            <Search />
+          </Route>}
+          {signedIn&&<Route path="/categories">
+            {getHeader()}
+            <Categories />
+          </Route>}
+          {signedIn&&<Route path="/checkout">
+            <Checkout /> 
+          </Route>}
+          {signedIn&&<Route path="/product">
+            {getHeader()}
+            <Product />
+          </Route>}
+          
         </Switch>
         <Box pt={3} pb={3}>
           <Copyright />
