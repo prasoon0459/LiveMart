@@ -98,10 +98,6 @@ const App = () => {
               <SignIn handleToken={handleToken}></SignIn>
             )}
           </Route>
-          <Route path="/filter">
-            {getHeader()}
-            <Filter />
-          </Route>
           <Route path="/signup">{UnauthenticatedComponent(<SignUp />)}</Route>
           <Route path="/forgot_pwd">
             {UnauthenticatedComponent(<ForgotPassword />)}
