@@ -12,6 +12,8 @@ import {
 import theme from "../../theme";
 import React from "react";
 import { Check } from "@material-ui/icons";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 const useStyles = makeStyles({
   root: {
@@ -63,21 +65,22 @@ const useStyles = makeStyles({
 
 const Filter = ({ changeFilter, filters, handleCloseFilter }) => {
   const classes = useStyles();
-
+  const [token,setToken]=React.useState(localStorage.getItem('token'))
   const [filter_price, setFilter_price] = React.useState(null);
   const [filter_categories, setFilter_categories] = React.useState(null);
   const [filter_discounts, setFilter_discount] = React.useState(null);
   const [filter_brands, setFilter_Brand] = React.useState(null);
 
-  React.useEffect(() => {
-    console.log(filters)
-    setFilter_price(filters.price)
-    setFilter_Brand(filters.brands)
-    setFilter_categories(filters.categories)
-    setFilter_discount(filters.discounts)
-  }, [])
-
-  const marks = [
+  const [categories, setCategories] =React.useState([])
+  const [brands, setBrands] = React.useState([]);
+  const [discounts,]=React.useState([
+    "0-20%",
+    "20-40%",
+    "40-60%",
+    "60-80%",
+    "80-100%",
+  ])
+  const [price_marks,] = React.useState([
     {
       value: 0,
       label: 'Rs.0',
@@ -86,8 +89,69 @@ const Filter = ({ changeFilter, filters, handleCloseFilter }) => {
       value: 4999,
       label: 'Rs.4999',
     },
-  ];
+  ])
 
+  React.useEffect(() => {
+    try{
+      getCategories()
+      getBrands()
+    }
+    catch(e){
+      console.log(e)
+    }  
+    
+    console.log(filters)
+    setFilter_price(filters.price)
+    setFilter_Brand(filters.brands)
+    setFilter_categories(filters.categories)
+    setFilter_discount(filters.discounts)
+  }, [])
+
+  const getCategories = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/category/",
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        var cat = []
+        for(var i=0;i<response.data.length;i++){
+          cat.push(response.data[i].name)
+        }
+        setCategories(cat);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getBrands = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/brands/",
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        var bra = []
+        for(var i=0;i<response.data.length;i++){
+          bra.push(response.data[i].name)
+        }
+        setBrands(bra);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const handlePriceSliderChange = (event, newPriceRange) => {
     setFilter_price(newPriceRange);
@@ -123,32 +187,6 @@ const Filter = ({ changeFilter, filters, handleCloseFilter }) => {
     changeFilter('price', filter_price)
     handleCloseFilter()
   }
-
-
-  const categories = [
-    "Personal Care",
-    "Bevereges",
-    "Cleaning and Household",
-    "Bakery and Dairy",
-    "Kitchen and Garden",
-    "Pets",
-  ];
-  const brands = [
-    "Amul",
-    "Nestle",
-    "Parag",
-    "Mother Dairy",
-    "Parle",
-    "Kissan",
-  ];
-
-  const discounts = [
-    "0-20%",
-    "20-40%",
-    "40-60%",
-    "60-80%",
-    "80-100%",
-  ];
 
   return (
     <div className={classes.root}>
@@ -215,7 +253,7 @@ const Filter = ({ changeFilter, filters, handleCloseFilter }) => {
                 min={0}
                 max={4999}
                 step={100}
-                marks={marks}
+                marks={price_marks}
                 aria-labelledby="Price">
               </Slider>
             </Grid>

@@ -109,10 +109,20 @@ const Search = () => {
   const location = useLocation();
   const screen = UseWindowDimensions().screen;
   // const search_query = new URLSearchParams(location.search);
+
+  const [filters, setFilters] = React.useState({
+    categories: [],
+    brands: [],
+    discounts: [],
+    price: [0, 4999],
+  });
+
   const search_query = location.search.toString().substr(3);
   console.log(search_query);
   const params = new URLSearchParams(location.search);
-  const category = params.get("c");
+  const category_recvd = params.get("c");
+  const brand_recvd = params.get("b");
+
   var product = params.get("q");
   if (product === null) {
     product = "";
@@ -128,23 +138,21 @@ const Search = () => {
   // const items = [a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
   const [items, setItems] = React.useState([]);
   const [status, setStatus] = React.useState(false);
-  // const [data, setData] = React.useState([]);
-  //const items = [];
-
-  const [filters, setFilters] = React.useState({
-    categories: [],
-    brands: [],
-    discounts: [],
-    price: [0, 4999],
-  });
+  const [itemsToShow, setItemsToShow] =React.useState([])
 
   const handleSearch = () => {
+
+    const newFilters=filters;
+    if(category_recvd)newFilters.categories.push(category_recvd);
+    if(brand_recvd) newFilters.brands.push(brand_recvd)
+    setFilters(newFilters)
     var config = {
       method: "get",
       url:
         serverUrl +
         "/default_products/" +
-        (category !== null ? "?c=" + category : ""), // +(product!==null ? '?q='+product : '')
+        (category_recvd !== null ? "?c=" + category_recvd : "")+ // +(product!==null ? '?q='+product : '')
+        (brand_recvd !== null ? "?b=" + brand_recvd : ""),
       headers: {
         Authorization: "JWT " + token,
       },
@@ -162,6 +170,7 @@ const Search = () => {
           new_items = temp;
         }
         setItems(new_items);
+        setItemsToShow(new_items);
         setStatus(true);
       })
       .catch(function (error) {
@@ -178,16 +187,21 @@ const Search = () => {
     var newFilters = filters;
     newFilters[type] = filter;
     setFilters(newFilters);
+    
     console.log(filters);
+    console.log(items)
+
+    var newItemsToShow = filters.categories.length!==0?items.filter((val)=> 
+      filters.categories.includes(val.item.category.name)
+    ):items;
+    console.log(newItemsToShow)
+    newItemsToShow = filters.brands.length!==0?newItemsToShow.filter((val)=>
+      filters.brands.includes(val.item.brand.name)
+    ):newItemsToShow;
+    console.log(newItemsToShow)
+    setItemsToShow(newItemsToShow);
   };
 
-  // const handleFilterRemoved = (type, filterRemoved) => {
-  //   var newFilters = filters;
-  //   newFilters[type] = filters[type].filter(
-  //     (filter) => filter !== filterRemoved
-  //   );
-  //   setFilters(newFilters);
-  // };
 
   const [filterOpen, setFilterOpen] = React.useState(false);
   const handleOpenFilter = () => {
@@ -227,12 +241,12 @@ const Search = () => {
                   variant="subtitle1"
                   className={classes.searchNavigation}
                 >
-                  Home / Products / Milk
+                  Home / Products / {product}
                 </Typography>
               </Grid>
               <Grid item>
                 <Typography variant="h6" className={classes.searchTitle}>
-                  Milk
+                  {product}
                 </Typography>
               </Grid>
             </Grid>
@@ -361,7 +375,7 @@ const Search = () => {
                 alignItems="center"
                 className={classes.itemsContainer}
               >
-                {items
+                {itemsToShow
                   .filter((val) =>
                     val.item.name.toLowerCase().includes(product.toLowerCase())
                   )
