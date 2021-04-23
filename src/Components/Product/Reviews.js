@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Grid,
+  MenuItem,
   TextField,
   makeStyles,
   Paper,
@@ -82,18 +83,59 @@ const useStyles = makeStyles({
 });
 
 const Reviews = (props) => {
-  const rating = 4;
+  const [rating, setRating] = React.useState(0);
+  const [review, setReview] = React.useState("");
 
   const mobile = UseWindowDimensions().screen === "xs";
+  const [shops, setShops] = React.useState([]);
 
+  console.log(props);
+  const [shopIndex, setShopIndex] = React.useState(0);
   const classes = useStyles(mobile);
   // const reveiws = [1, 1, 1, 1]
   const [reviews, setReviews] = React.useState([]);
 
   const token = localStorage.getItem("token");
-  //const productUrl = localStorage.getItem('product');
   const productName = localStorage.getItem("productName");
   const name = localStorage.getItem("name");
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [wholesaler, setWholesaler] = React.useState({});
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setShopIndex(index);
+    setWholesaler(shops[index]);
+  };
+
+  const setProductReview = (e) => {
+    setReview(e.target.value);
+  };
+
+  const handlePostReview = () => {
+    var data = JSON.stringify({
+      productId: wholesaler.url,
+      stars: rating,
+      review: review,
+    });
+
+    var config = {
+      method: "post",
+      url: serverUrl + "/reviews/",
+      headers: {
+        Authorization: "JWT " + token,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const getReviews = () => {
     var config = {
@@ -131,6 +173,7 @@ const Reviews = (props) => {
 
   return (
     <div className={classes.root}>
+      {console.log(rating)}
       <Grid container direction="column" alignItems="flex-start">
         <Grid item className={classes.reviewHead}>
           <Grid container direction="column" alignItems="flex-start">
@@ -138,7 +181,7 @@ const Reviews = (props) => {
             <Divider className={classes.divider}></Divider>
           </Grid>
         </Grid>
-        <Grid item className={classes.rating}>
+        {/* <Grid item className={classes.rating}>
           <Grid container direction="column" alignItems="flex-start">
             <Rating
               name="simple-controlled"
@@ -212,8 +255,7 @@ const Reviews = (props) => {
               </Box>
             </Box>
           </Grid>
-        </Grid>
-
+        </Grid> */}
         <Paper elevation={3} className={classes.customerRvwPaper}>
           <Grid
             container
@@ -231,14 +273,53 @@ const Reviews = (props) => {
                     {name}
                   </Typography>
                 </Box>
+                <Grid container item xs={6}>
+                  <TextField
+                    id="wholesaler"
+                    fullWidth
+                    select
+                    label="Select Wholesaler"
+                    onClick={() => setShops(props.shops)}
+                    InputLabelProps={{
+                      className: classes.floatingLabelFocusStyle,
+                    }}
+                    variant="outlined"
+                  >
+                    {shops.length > 0
+                      ? shops.map((option, index) => {
+                          return (
+                            <MenuItem
+                              key={option.id}
+                              value={option.shopName}
+                              selected={index === shopIndex}
+                              onClick={(event) =>
+                                handleMenuItemClick(event, index)
+                              }
+                            >
+                              {option.shopName}
+                            </MenuItem>
+                          );
+                        })
+                      : null}
+                  </TextField>
+                </Grid>
                 <Box className={classes.new_postButtonBox}>
                   <Grid container direction="row-reverse">
-                    <Button variant="outlined">POST </Button>
+                    <Button variant="outlined" onClick={handlePostReview}>
+                      POST{" "}
+                    </Button>
                   </Grid>
                 </Box>
               </Box>
               <Box display="flex" mt={2} alignItems="center">
-                <Rating name="simple-controlled" className={classes.rating} />
+                <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  className={classes.rating}
+                  onChange={(event, newValue) => {
+                    setRating(newValue);
+                  }}
+                />
               </Box>
             </div>
             <Box width="100%" className={classes.new_textfieldContainer}>
@@ -249,6 +330,7 @@ const Reviews = (props) => {
                 name="add_review"
                 label="Write something (optional)"
                 type="text"
+                onChange={setProductReview}
                 InputLabelProps={{
                   className: classes.floatingLabelFocusStyle,
                 }}
@@ -287,4 +369,5 @@ const Reviews = (props) => {
     </div>
   );
 };
+
 export default Reviews;

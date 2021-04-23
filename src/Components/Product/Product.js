@@ -105,13 +105,7 @@ const Product = (props) => {
   const classes = useStyles(mobile);
   //const variants = ["100mg", "200mg", "300mg", "400mg"];
   const [quantity, setQuantity] = React.useState(1);
-  const [product, setProduct] = React.useState({
-    name: "",
-    wholesale_price: 0,
-    unit: "kg",
-    details: "",
-    rating: 0,
-  });
+  const [product, setProduct] = React.useState([]);
 
   const token = localStorage.getItem("token");
   const productUrl = localStorage.getItem("product");
@@ -248,14 +242,14 @@ const Product = (props) => {
                 {product.shopName}
               </Typography>
             </Grid>
-            <Box component="fieldset" borderColor="transparent">
+            {/* <Box component="fieldset" borderColor="transparent">
               <Rating
                 name="read-only"
                 value={product.rating}
                 precision={0.1}
                 readOnly
               />
-            </Box>
+            </Box> */}
             {/* <Typography variant='body1' className={classes.priceText}>$ {product.wholesale_price} / {product.unit}</Typography> */}
             <Divider width="100%" className={classes.Divider}></Divider>
             <Grid
@@ -362,7 +356,7 @@ const Product = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Reviews></Reviews>
+      <Reviews shops={product.wholesellers}></Reviews>
 
       {showDialog ? (
         <DialogShop

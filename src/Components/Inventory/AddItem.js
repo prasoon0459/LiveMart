@@ -21,6 +21,7 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
+  TextField,
 } from "@material-ui/core";
 import { AddSharp, RemoveSharp } from "@material-ui/icons";
 import React from "react";
@@ -217,15 +218,43 @@ const AddItem = () => {
       });
   };
 
+  const handleAddItem = (url) => {
+    var data = JSON.stringify({
+      defaultProductId: url,
+      wholesale_price: price,
+      wholesale_mrp: price * 1.1,
+      quantity: quantity,
+      shopId: {},
+      category: {},
+      brand: {},
+    });
+
+    var config = {
+      method: "post",
+      url: serverUrl + "/products/",
+      headers: {
+        Authorization: "JWT " + token,
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setDialogOpen(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
 
-  const handleQuantityIncrease = () => {
-    setQuantity(quantity + 1);
-  };
-  const handleQuantityDecrease = () => {
-    setQuantity(quantity - 1);
+  const handleQuantityChange = (e) => {
+    setQuantity(e.target.value);
   };
 
   const handleDialogClose = () => {
@@ -284,6 +313,7 @@ const AddItem = () => {
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index_item) => {
+                    console.log(row);
                     return (
                       <TableRow
                         hover
@@ -336,7 +366,7 @@ const AddItem = () => {
           />
         </Paper>
       </Grid>
-      {/* <Dialog
+      <Dialog
         open={dialogOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -346,10 +376,10 @@ const AddItem = () => {
       >
         <Grid container direction="column" className={classes.dialog}>
           <Typography variant="h5" className={classes.dialogTitle}>
-            {rows[selectedItem].name}
+            {rows.length > 0 ? rows[selectedItem].name : null}
           </Typography>
           <Typography className={classes.dialogSubtitle}>
-            {rows[selectedItem].category}
+            {rows.length > 0 ? rows[selectedItem].category.name : null}
           </Typography>
           <DialogContent>
             <Grid container direction="column">
@@ -360,27 +390,36 @@ const AddItem = () => {
                 direction="row"
                 alignItems="center"
               >
-                <Button
-                  xs={4}
-                  className={classes.btn}
-                  onClick={handleQuantityDecrease}
+                <FormControl
+                  className={classes.form}
+                  fullWidth
                   variant="outlined"
                 >
-                  <RemoveSharp></RemoveSharp>
-                </Button>
-                <span xs={4} className={classes.span}>
-                  {quantity}
-                </span>
-                <Button
-                  xs={4}
-                  className={classes.btn}
-                  onClick={handleQuantityIncrease}
-                  variant="outlined"
-                >
-                  <AddSharp></AddSharp>
-                </Button>
+                  <InputLabel
+                    style={{ fontSize: 18, color: theme.palette.text.primary }}
+                    htmlFor="outlined-adornment-amount"
+                  >
+                    Quantity
+                  </InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-amount"
+                    value={quantity}
+                    onChange={handleQuantityChange}
+                    endAdornment={
+                      <InputAdornment
+                        className={classes.inputAdorement}
+                        position="end"
+                      >
+                        <div style={{ color: theme.palette.text.primary }}>
+                          {rows.length > 0 ? rows[selectedItem].unit : null}
+                        </div>
+                      </InputAdornment>
+                    }
+                    labelWidth={140}
+                  />
+                </FormControl>
                 <Typography className={classes.unitText}>
-                  X {rows[selectedItem].unit}
+                  {rows.length > 0 ? rows[selectedItem].unit : null}
                 </Typography>
               </Grid>
               <FormControl
@@ -409,7 +448,9 @@ const AddItem = () => {
                       position="end"
                     >
                       <div style={{ color: theme.palette.text.primary }}>
-                        {"/ " + rows[selectedItem].unit}
+                        {rows.length > 0
+                          ? "/ " + rows[selectedItem].unit
+                          : null}
                       </div>
                     </InputAdornment>
                   }
@@ -422,12 +463,15 @@ const AddItem = () => {
             <Button onClick={handleDialogClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={handleDialogClose} color="primary">
+            <Button
+              onClick={() => handleAddItem(rows[selectedItem].url)}
+              color="primary"
+            >
               Add
             </Button>
           </DialogActions>
         </Grid>
-      </Dialog> */}
+      </Dialog>
     </React.Fragment>
   );
 };

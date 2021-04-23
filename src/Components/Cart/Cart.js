@@ -22,7 +22,7 @@ import axios from "axios";
 import serverUrl from "../../serverURL";
 import { useHistory } from "react-router-dom";
 import Imgix from "react-imgix";
-import empty_cart from '../../img/empty_cart.svg'
+import empty_cart from "../../img/empty_cart.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -137,10 +137,10 @@ const useStyles = makeStyles({
   itemCard: {
     padding: theme.spacing(0, 2, 0),
   },
-  emptyCartText:{
-    letterSpacing:2,
-    color:theme.palette.text.hint
-  }
+  emptyCartText: {
+    letterSpacing: 2,
+    color: theme.palette.text.hint,
+  },
 });
 
 const Cart = () => {
@@ -153,6 +153,7 @@ const Cart = () => {
 
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  const user_type = localStorage.getItem("usertype");
 
   const [items, setItems] = React.useState([]);
   const [products, setProducts] = React.useState([]);
@@ -164,53 +165,33 @@ const Cart = () => {
     setCouponExpanded(!couponExpanded);
   };
 
-  // const getProduct = async() => {
-  //     var len = (items).length;
-  //     var new_products = [];
-  //     console.log(items);
-  //     // api_calls = [];
-  //     for (var i=0;i<len;i++) {
-  //         var config2 = {
-  //             method: 'get',
-  //             url: items[i].productId,
-  //             headers: {
-  //                 'Authorization': 'JWT ' + token
-  //             }
-  //         };
-  //         var temp = [...new_products];
-  //         // api_calls.concat(axios.then(config2))
-  //         await axios(config2)
-  //         .then(function (response2) {
-  //             console.log(JSON.stringify(response2.data));
-  //             temp = [...temp, {product : response2.data}];
-  //             new_products = temp;
-  //             setProducts(new_products);
-  //             if (i == len-1) {
-  //                 setStatus(true);
-  //             }
-  //         })
-  //             .catch(function (error) {
-  //             console.log(error);
-  //         });
-  //     }
-  // }
-  // const handleClick = () => {
-  //   setClick(!click);
-  // };
   const handleDelete = (id) => {
-    var config = {
-      method: "delete",
-      url: serverUrl + "/cart/" + id + "/",
-      headers: {
-        Authorization: "JWT " + token,
-      },
-    };
+    if (user_type === "1") {
+      var config = {
+        method: "delete",
+        url: serverUrl + "/cart/" + id + "/",
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    } else {
+      var config = {
+        method: "delete",
+        url: serverUrl + "/retail_cart/" + id + "/",
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    }
 
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         var new_items = items.filter((product) => product.item.id !== id);
         setItems(new_items);
+        if (items.length === 0) {
+          setStatus(false);
+        }
       })
       .catch(function (error) {
         console.log(error);
@@ -226,14 +207,23 @@ const Cart = () => {
   };
 
   const getCartItems = () => {
-    var config = {
-      method: "get",
-      url: serverUrl + "/cart/?u=" + username + "&a=Active",
-      headers: {
-        Authorization: "JWT " + token,
-      },
-    };
-
+    if (user_type === "1") {
+      var config = {
+        method: "get",
+        url: serverUrl + "/cart/?u=" + username + "&a=Active",
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    } else {
+      var config = {
+        method: "get",
+        url: serverUrl + "/retail_cart/?u=" + username + "&a=Active",
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    }
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
@@ -244,8 +234,13 @@ const Cart = () => {
           for (var i = 0; i < len; i++) {
             var temp = [...new_items];
             temp = [...temp, { item: response.data[i] }];
-            totalCost +=
-              response.data[i].productPrice * response.data[i].quantity;
+            if (user_type === "1") {
+              totalCost +=
+                response.data[i].productPrice * response.data[i].quantity;
+            } else {
+              totalCost +=
+                response.data[i].retailProductPrice * response.data[i].quantity;
+            }
             new_items = temp;
           }
           setItems(new_items);
@@ -326,25 +321,44 @@ const Cart = () => {
                               alignItems="flex-start"
                               className={classes.itemDetails}
                             >
-                              <Typography
-                                variant="h5"
-                                align="left"
-                                className={classes.cartItemTitle}
-                              >
-                                {product.item.productId.name}
-                              </Typography>
+                              {user_type === "1" ? (
+                                <Typography
+                                  variant="h5"
+                                  align="left"
+                                  className={classes.cartItemTitle}
+                                >
+                                  {product.item.productId.name}
+                                </Typography>
+                              ) : (
+                                <Typography
+                                  variant="h5"
+                                  align="left"
+                                  className={classes.cartItemTitle}
+                                >
+                                  {product.item.retailProductId.name}
+                                </Typography>
+                              )}
                               {/* <Typography
                                 variant="subtitle1"
                                 className={classes.cartItemVariant}
                               >
                                 100g
                               </Typography> */}
-                              <Typography
-                                variant="subtitle1"
-                                className={classes.cartItemSellerName}
-                              >
-                                {product.item.shopId.name}
-                              </Typography>
+                              {user_type === "1" ? (
+                                <Typography
+                                  variant="subtitle1"
+                                  className={classes.cartItemSellerName}
+                                >
+                                  {product.item.shopId.name}
+                                </Typography>
+                              ) : (
+                                <Typography
+                                  variant="subtitle1"
+                                  className={classes.cartItemSellerName}
+                                >
+                                  {product.item.shopId.name}
+                                </Typography>
+                              )}
                               <Grid
                                 container
                                 direction="row"
@@ -365,7 +379,9 @@ const Cart = () => {
                                 className={classes.cartItemPrice}
                               >
                                 Price: ${" "}
-                                {product.item.productId.wholesale_price}
+                                {user_type === "1"
+                                  ? product.item.productId.wholesale_price
+                                  : product.item.retailProductId.retail_price}
                               </Typography>
                               <Typography
                                 variant="body2"
@@ -378,8 +394,11 @@ const Cart = () => {
                                 className={classes.cartItemPrice}
                               >
                                 Total Product Cost: ${" "}
-                                {product.item.quantity *
-                                  product.item.productId.wholesale_price}
+                                {user_type === "1"
+                                  ? product.item.quantity *
+                                    product.item.productId.wholesale_price
+                                  : product.item.retailProductId.retail_price *
+                                    product.item.quantity}
                               </Typography>
                             </Grid>
                           </Grid>
@@ -521,7 +540,12 @@ const Cart = () => {
             </Grid>
           </Grid>
         ) : (
-          <Grid container direction='column' alignItems="center" justify="center">
+          <Grid
+            container
+            direction="column"
+            alignItems="center"
+            justify="center"
+          >
             <Imgix
               src={empty_cart}
               width="400"
@@ -531,7 +555,9 @@ const Cart = () => {
                 fm: "svg",
               }}
             />
-            <Typography className={ classes.emptyCartText} variant='h5'>Your cart is Empty</Typography>
+            <Typography className={classes.emptyCartText} variant="h5">
+              Your cart is Empty
+            </Typography>
           </Grid>
         )}
       </Grid>

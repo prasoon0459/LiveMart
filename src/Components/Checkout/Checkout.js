@@ -98,7 +98,7 @@ export default function Checkout(props) {
   const products = props.location.cartItems;
   const [shopNames, setShopNames] = React.useState([]);
   const [shops, setShops] = React.useState([]);
-  const [order_id, setOrderId] = React.useState(0);
+  const [order_id, setOrderId] = React.useState("Getting your orderID");
   const [pickUpDates, setPickupDates] = React.useState([]);
   const [pickUpDatesReq, setPickupDatesReq] = React.useState([]);
   const [address, setAddress] = React.useState({
@@ -705,10 +705,12 @@ export default function Checkout(props) {
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
                 </Typography>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Order No: #{order_id}
+                </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #{order_id}. We have emailed your order
-                  confirmation, and will send you an update when your order has
-                  shipped.
+                  We have emailed your order confirmation, and will send you an
+                  update when your order has shipped.
                 </Typography>
               </React.Fragment>
             ) : (

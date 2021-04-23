@@ -95,6 +95,10 @@ export default function SignUp() {
     JSON.stringify(payload);
     var data = new FormData();
     data.append("username", username);
+    const handleMenuItemClick = (event, index) => {
+      setSelectedIndex(index);
+      setRole(index);
+    };
     data.append("password", password);
     data.append("password2", password2);
     var config = {

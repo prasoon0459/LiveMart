@@ -138,20 +138,19 @@ const Search = () => {
   // const items = [a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a];
   const [items, setItems] = React.useState([]);
   const [status, setStatus] = React.useState(false);
-  const [itemsToShow, setItemsToShow] =React.useState([])
+  const [itemsToShow, setItemsToShow] = React.useState([]);
 
   const handleSearch = () => {
-
-    const newFilters=filters;
-    if(category_recvd)newFilters.categories.push(category_recvd);
-    if(brand_recvd) newFilters.brands.push(brand_recvd)
-    setFilters(newFilters)
+    const newFilters = filters;
+    if (category_recvd) newFilters.categories.push(category_recvd);
+    if (brand_recvd) newFilters.brands.push(brand_recvd);
+    setFilters(newFilters);
     var config = {
       method: "get",
       url:
         serverUrl +
         "/default_products/" +
-        (category_recvd !== null ? "?c=" + category_recvd : "")+ // +(product!==null ? '?q='+product : '')
+        (category_recvd !== null ? "?c=" + category_recvd : "") + // +(product!==null ? '?q='+product : '')
         (brand_recvd !== null ? "?b=" + brand_recvd : ""),
       headers: {
         Authorization: "JWT " + token,
@@ -187,21 +186,26 @@ const Search = () => {
     var newFilters = filters;
     newFilters[type] = filter;
     setFilters(newFilters);
-    
-    console.log(filters);
-    console.log(items)
 
-    var newItemsToShow = filters.categories.length!==0?items.filter((val)=> 
-      filters.categories.includes(val.item.category.name)
-    ):items;
-    console.log(newItemsToShow)
-    newItemsToShow = filters.brands.length!==0?newItemsToShow.filter((val)=>
-      filters.brands.includes(val.item.brand.name)
-    ):newItemsToShow;
-    console.log(newItemsToShow)
+    console.log(filters);
+    console.log(items);
+
+    var newItemsToShow =
+      filters.categories.length !== 0
+        ? items.filter((val) =>
+            filters.categories.includes(val.item.category.name)
+          )
+        : items;
+    console.log(newItemsToShow);
+    newItemsToShow =
+      filters.brands.length !== 0
+        ? newItemsToShow.filter((val) =>
+            filters.brands.includes(val.item.brand.name)
+          )
+        : newItemsToShow;
+    console.log(newItemsToShow);
     setItemsToShow(newItemsToShow);
   };
-
 
   const [filterOpen, setFilterOpen] = React.useState(false);
   const handleOpenFilter = () => {
@@ -393,7 +397,7 @@ const Search = () => {
                       <Card
                         variant="outlined"
                         className={classes.card}
-                        onClick={setProduct(product)}
+                        onClick={() => setProduct(product)}
                       >
                         <Grid
                           container

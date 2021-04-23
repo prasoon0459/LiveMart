@@ -15,6 +15,7 @@ import {
   MenuItem,
   Fab,
 } from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
 import { AddShoppingCartOutlined } from "@material-ui/icons";
 import axios from "axios";
 import serverUrl from "../../serverURL";
@@ -191,8 +192,20 @@ export default function DialogShop(props) {
                               >
                                 {wholesaler.shopName}
                               </Typography>
-                              {/* <Typography align='left' variant='body2' className={classes.location}>{wholesaler.shopAddress}</Typography>
-                          <Typography align='left' variant='body2' className={classes.distance}>{wholesaler.shopLong}</Typography> */}
+                              <Typography
+                                align="left"
+                                variant="body2"
+                                className={classes.location}
+                              >
+                                {wholesaler.shopId.address}
+                              </Typography>
+                              <Typography
+                                align="left"
+                                variant="body2"
+                                className={classes.distance}
+                              >
+                                {wholesaler.shopLong}
+                              </Typography>
                               <Typography
                                 align="left"
                                 variant="body2"
@@ -200,6 +213,12 @@ export default function DialogShop(props) {
                               >
                                 $ {wholesaler.wholesale_price}
                               </Typography>
+                              <Rating
+                                name="read-only"
+                                readOnly
+                                value={wholesaler.rating}
+                                //className={classes.rating}
+                              />
                             </Grid>
                           </Box>
                           <Box>
@@ -262,8 +281,20 @@ export default function DialogShop(props) {
                               >
                                 {retailer.shopName}
                               </Typography>
-                              {/* <Typography align='left' variant='body2' className={classes.location}>{wholesaler.shopAddress}</Typography>
-                          <Typography align='left' variant='body2' className={classes.distance}>{wholesaler.shopLong}</Typography> */}
+                              <Typography
+                                align="left"
+                                variant="body2"
+                                className={classes.location}
+                              >
+                                {retailer.shopId.address}
+                              </Typography>
+                              {/* <Typography
+                                align="left"
+                                variant="body2"
+                                className={classes.distance}
+                              >
+                                {retailer.shopId.shop_long}
+                              </Typography> */}
                               <Typography
                                 align="left"
                                 variant="body2"
@@ -271,6 +302,12 @@ export default function DialogShop(props) {
                               >
                                 $ {retailer.retail_price}
                               </Typography>
+                              <Rating
+                                name="read-only"
+                                readOnly
+                                value={retailer.rating}
+                                //className={classes.rating}
+                              />
                             </Grid>
                           </Box>
                           <Box>

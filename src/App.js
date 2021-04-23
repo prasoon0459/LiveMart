@@ -32,6 +32,7 @@ import ViewPickup from "./Components/Order/ViewPickup";
 import Inventory from "./Components/Inventory/Inventory";
 import AddItem from "./Components/Inventory/AddItem";
 import DeliveryHome from "./Components/Delivery/DeliveryHome";
+import Filter from "./Components/Search/Filter";
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -42,6 +43,7 @@ const App = () => {
   const handleToken = (props) => {
     setToken(props);
     setUser(props);
+    console.log(props);
   };
 
   function getHeader() {
@@ -126,6 +128,7 @@ const App = () => {
             {AuthenticatedComponent(<Profile token={token} />)}
           </Route>
           <Route path="/mycart">
+            {/* components={(getHeader(), AuthenticatedComponent(Cart))} */}
             {getHeader()}
             {AuthenticatedComponent(<Cart></Cart>)}
           </Route>
@@ -133,10 +136,13 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Notifs></Notifs>)}
           </Route>
-          <Route path="/track">
-            {getHeader()}
+          <Route
+            path="/track"
+            component={(getHeader(), AuthenticatedComponent(TrackOrder))}
+          />
+          {/* {getHeader()}
             {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
-          </Route>
+          </Route> */}
           <Route path="/track" component={(getHeader(), TrackOrder)} />
           {/* {getHeader()} */}
           {/* <TrackOrder></TrackOrder> */}
@@ -173,7 +179,10 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Categories />)}
           </Route>
-          <Route path="/checkout">{AuthenticatedComponent(<Checkout />)}</Route>
+          <Route
+            path="/checkout"
+            component={AuthenticatedComponent(Checkout)}
+          />
           <Route path="/product">
             {getHeader()}
             {AuthenticatedComponent(<Product />)}
