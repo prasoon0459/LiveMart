@@ -82,7 +82,6 @@ function getSteps() {
 const TrackOrder = (props) => {
   const steps = getSteps();
   const classes = useStyles();
-  const name = localStorage.getItem("name");
   //   const address = {
   //     firstName: "Prasoon",
   //     lastName: "Baghel",
@@ -95,6 +94,8 @@ const TrackOrder = (props) => {
   //   };
   const address = props.location.order.deliveryAddress;
   const order = props.location.order;
+  const name = order.name;
+  const phno = order.phno;
   //   const order = {
   //     id: "93GD73BDB82H",
   //     seller_name: "M/s Agarwal General Store",
@@ -201,6 +202,7 @@ const TrackOrder = (props) => {
                   Shipment to:
                 </Typography>
                 <Typography align="left">{name}</Typography>
+                <Typography align="left">{phno}</Typography>
                 <Typography align="left">{address}</Typography>
                 {/* <Typography align="left">{address.addressLine2}</Typography>
                 <Typography align="left">
@@ -210,7 +212,8 @@ const TrackOrder = (props) => {
                   {address.zip + ", " + address.country}
                 </Typography> */}
                 <Typography align="left" className={classes.expDeliveryText}>
-                  Expected Delivery : {order.expectedDate}
+                  Expected Delivery :{" "}
+                  {new Date(order.expectedDate).toLocaleDateString()}
                 </Typography>
               </Grid>
 

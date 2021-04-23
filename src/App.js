@@ -64,7 +64,7 @@ const App = () => {
             {/* {getHeader()} */}
             <DeliveryHome></DeliveryHome>
           </Route>
-          
+
           <Route path="/filter">
             {getHeader()}
             <Filter />
@@ -97,10 +97,10 @@ const App = () => {
           {/* {getHeader()} */}
           {/* <TrackOrder></TrackOrder> */}
           {/* </Route> */}
-          <Route path="/pickup">
-            {getHeader()}
+          <Route path="/pickup" component={(getHeader(), ViewPickup)} />
+          {/* {getHeader()}
             <ViewPickup></ViewPickup>
-          </Route>
+          </Route> */}
           <Route path="/seller_view_order">
             {getHeader()}
             <SellerViewOrder></SellerViewOrder>

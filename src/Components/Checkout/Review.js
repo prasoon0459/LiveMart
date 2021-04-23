@@ -57,6 +57,7 @@ export default function Review({
   delAddress,
   totalPrice,
   handleShopNames,
+  pickUpDates,
 }) {
   const classes = useStyles();
   // const [shopSet, setShopSet] = React.useState(new Set());
@@ -92,7 +93,7 @@ export default function Review({
         >
           Order Summary
         </Typography>
-        {shopNames.map((shopName) => {
+        {shopNames.map((shopName, index) => {
           shopTotal = 0;
           return (
             <React.Fragment>
@@ -138,10 +139,11 @@ export default function Review({
                           align="left"
                           className={classes.shipmentToHeading}
                         >
-                          {(delMode === "Offline"
-                            ? "Pickup Date: "
-                            : "Expected Delivery :") +
-                            new Date().toLocaleDateString()}{" "}
+                          {delMode === "Offline"
+                            ? "Pickup Date: " +
+                              pickUpDates[index].toLocaleDateString()
+                            : "Expected Delivery : " +
+                              new Date().toLocaleDateString()}{" "}
                         </Typography>
                         <Typography align="left"></Typography>
                       </Grid>
