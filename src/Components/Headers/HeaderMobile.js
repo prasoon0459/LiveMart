@@ -14,6 +14,7 @@ import {
   SwipeableDrawer,
 } from "@material-ui/core";
 
+import serverUrl from "../../serverURL";
 import clsx from 'clsx';
 import logo from "../../img/logo.png";
 import React from "react";
@@ -31,6 +32,7 @@ import {
   AssignmentSharp,
 } from "@material-ui/icons";
 import theme from "../../theme";
+import axios from "axios";
 
 const useStyles = makeStyles({
   headerLogo: {
@@ -73,8 +75,8 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
   },
-  toolbar:{
-    padding:theme.spacing(0,0,0)
+  toolbar: {
+    padding: theme.spacing(0, 0, 0)
   },
   locationIcon: {
     padding: theme.spacing(0, 1, 0),
@@ -122,10 +124,39 @@ const useStyles = makeStyles({
   }
 });
 
-const HeaderMobile = () => {
+const HeaderMobile = ({ handleLogout }) => {
   const history = useHistory();
   const classes = useStyles();
   const [drawerState, setState] = React.useState(false);
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+  const [cartNo, setCartNo] = React.useState(0);
+
+  const getCartItems = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/cart/?u=" + username + "&a=Active",
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        if (response.data.length > 0) {
+          setCartNo(response.data.length);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  React.useEffect(() => {
+    getCartItems();
+  }, []);
+
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -170,7 +201,7 @@ const HeaderMobile = () => {
           <ListItemIcon><AssignmentSharp color='primary'></AssignmentSharp></ListItemIcon>
           <ListItemText primary='My Inventory' />
         </ListItem>
-        <ListItem button key='logout' >
+        <ListItem onClick={() => handleLogout(history)} button key='logout' >
           <ListItemIcon><ExitToApp color='primary'></ExitToApp></ListItemIcon>
           <ListItemText primary='Logout' />
         </ListItem>
@@ -245,7 +276,7 @@ const HeaderMobile = () => {
                       <IconButton
                         component={NavLink}
                         to="/notifs"
-                        aria-label="show 4 cart Items"
+                        aria-label="show notifs"
                         color="inherit"
                       >
                         <Badge badgeContent={17} color="secondary">
@@ -257,10 +288,10 @@ const HeaderMobile = () => {
                       <IconButton
                         component={NavLink}
                         to="/mycart"
-                        aria-label="show 4 cart Items"
+                        aria-label="show cart Items"
                         color="inherit"
                       >
-                        <Badge badgeContent={4} color="secondary">
+                        <Badge badgeContent={cartNo > 0 ? cartNo : null} color="secondary">
                           <ShoppingCartOutlined />
                         </Badge>
                       </IconButton>
