@@ -1,5 +1,11 @@
 import "./App.css";
-import { BrowserRouter, Link, Route, Switch, useHistory } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Switch,
+  useHistory,
+} from "react-router-dom";
 import Header from "./Components/Headers/HeaderSignedIn";
 import Home from "./Components/Home/Home";
 import SignIn from "./Components/Auth/SignIn";
@@ -31,33 +37,43 @@ const App = () => {
   const screen = UseWindowDimensions().screen;
   const mobileHeader = screen === "sm" || screen === "xs";
   const [token, setToken] = React.useState("");
-  const [user, setUser] =React.useState(localStorage.getItem('token'))
+  const [user, setUser] = React.useState(localStorage.getItem("token"));
 
   const handleToken = (props) => {
     setToken(props);
-    setUser(props)
+    setUser(props);
   };
 
   function getHeader() {
-    return user ?( mobileHeader ? <HeaderMobile handleLogout={handleLogout} /> : <Header handleLogout={handleLogout} />) : <div></div> ;
+    return user ? (
+      mobileHeader ? (
+        <HeaderMobile handleLogout={handleLogout} />
+      ) : (
+        <Header handleLogout={handleLogout} />
+      )
+    ) : (
+      <div></div>
+    );
   }
 
-  const handleLogout = ( history) =>{
-    localStorage.clear()
-    setUser(null)
-    history.push('/login')
-  }
+  const handleLogout = (history) => {
+    localStorage.clear();
+    setUser(null);
+    history.push("/login");
+  };
 
-  function AuthenticatedComponent ( component) {
-    return user ? component: <SignIn handleToken={handleToken}></SignIn>
+  function AuthenticatedComponent(component) {
+    return user ? component : <SignIn handleToken={handleToken}></SignIn>;
   }
-  function UnauthenticatedComponent ( component) {
+  function UnauthenticatedComponent(component) {
     return user ? (
       <div>
         {getHeader()}
         <Home></Home>
       </div>
-    ): component
+    ) : (
+      component
+    );
   }
 
   function Copyright() {
@@ -78,11 +94,15 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route path="/login">
-            {UnauthenticatedComponent(<SignIn handleToken={handleToken}></SignIn>)}
+            {UnauthenticatedComponent(
+              <SignIn handleToken={handleToken}></SignIn>
+            )}
           </Route>
-          <Route path="/signup">
-            {UnauthenticatedComponent(<SignUp />)}
+          <Route path="/filter">
+            {getHeader()}
+            <Filter />
           </Route>
+          <Route path="/signup">{UnauthenticatedComponent(<SignUp />)}</Route>
           <Route path="/forgot_pwd">
             {UnauthenticatedComponent(<ForgotPassword />)}
           </Route>
@@ -117,10 +137,17 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
           </Route>
-          <Route path="/pickup">
-            {getHeader()}
-            {AuthenticatedComponent(<ViewPickup></ViewPickup>)}
-          </Route>
+          <Route path="/track" component={(getHeader(), TrackOrder)} />
+          {/* {getHeader()} */}
+          {/* <TrackOrder></TrackOrder> */}
+          {/* </Route> */}
+          <Route
+            path="/pickup"
+            component={(getHeader(), AuthenticatedComponent(ViewPickup))}
+          />
+          {/* {getHeader()}
+            <ViewPickup></ViewPickup>
+          </Route> */}
           <Route path="/seller_view_order">
             {getHeader()}
             {AuthenticatedComponent(<SellerViewOrder></SellerViewOrder>)}
@@ -146,9 +173,7 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Categories />)}
           </Route>
-          <Route path="/checkout" >
-            {AuthenticatedComponent(<Checkout />)}
-          </Route>
+          <Route path="/checkout">{AuthenticatedComponent(<Checkout />)}</Route>
           <Route path="/product">
             {getHeader()}
             {AuthenticatedComponent(<Product />)}

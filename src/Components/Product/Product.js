@@ -115,6 +115,7 @@ const Product = (props) => {
 
   const token = localStorage.getItem("token");
   const productUrl = localStorage.getItem("product");
+  const user_type = localStorage.getItem("usertype");
 
   const handleQuantityIncrease = () => {
     setQuantity(quantity + 1);
@@ -343,7 +344,7 @@ const Product = (props) => {
                   endIcon={<LocalMall />}
                 >
                   <Typography className={classes.textAddtoCart}>
-                    Select Wholesaler
+                    Select {user_type === "1" ? "Wholesaler" : "Retailer"}
                   </Typography>
                 </Button>
               </Grid>
@@ -367,6 +368,7 @@ const Product = (props) => {
         <DialogShop
           handleDialog={handleDialog}
           wholesellers={product.wholesellers}
+          retailers={product.retailers}
           qty={quantity}
         />
       ) : null}

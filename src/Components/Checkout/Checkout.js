@@ -94,7 +94,13 @@ export default function Checkout(props) {
   const [activeStep, setActiveStep] = React.useState(0);
   // const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  const shopSet = new Set();
+  const products = props.location.cartItems;
   const [shopNames, setShopNames] = React.useState([]);
+  const [shops, setShops] = React.useState([]);
+  const [order_id, setOrderId] = React.useState(0);
+  const [pickUpDates, setPickupDates] = React.useState([]);
+  const [pickUpDatesReq, setPickupDatesReq] = React.useState([]);
   const [address, setAddress] = React.useState({
     firstName: null,
     lastName: null,
@@ -104,6 +110,7 @@ export default function Checkout(props) {
     state: null,
     zip: null,
     country: null,
+    phone: null,
   });
   const [error, setError] = React.useState({
     firstName: "",
@@ -114,11 +121,23 @@ export default function Checkout(props) {
     state: "",
     zip: "",
     country: "",
+    phone: "",
   });
-  //console.log(props.location.cartItems);
+  console.log(props.location.cartItems);
 
   const handleShopNames = (props) => {
     setShopNames(props);
+  };
+
+  const handlePickups = () => {
+    products.map((product) => {
+      shopSet.add(product.item.shopName);
+    });
+    setShops(Array.from(shopSet));
+    // for (var i =0;i<arr.length;i++) {
+    //   const shopName = arr[i].name;
+    //   const item_num = (products.filter()).length
+    // }
   };
 
   const [orders, setOrders] = React.useState([
@@ -202,6 +221,7 @@ export default function Checkout(props) {
     else if (id === "zip") setError({ ...error, zip: "" });
     else if (id === "city") setError({ ...error, city: "" });
     else if (id === "country") setError({ ...error, country: "" });
+    else if (id === "phone") setError({ ...error, phone: "" });
     setAddress(new_address);
     console.log(id);
     console.log(address);
@@ -239,6 +259,12 @@ export default function Checkout(props) {
     if (address["zip"].length !== 6)
       setError({ ...error, zip: "Must be 6 digit" });
     else if (!reg) setError({ ...error, zip: "Only number permitted" });
+  };
+  const handlePhoneError = () => {
+    let reg = new RegExp(/^\d*$/).test(address["phone"]);
+    if (address["phone"].length !== 10)
+      setError({ ...error, phone: "Must be 10 digit" });
+    else if (!reg) setError({ ...error, phone: "Only number permitted" });
   };
   const handleCountryError = () => {
     if (minMaxLength(address["country"], 1)) {
@@ -334,6 +360,24 @@ export default function Checkout(props) {
           <Grid item xs={12} sm={6}>
             <TextField
               required
+              id="phone"
+              name="phone"
+              InputLabelProps={{
+                className: classes.floatingLabelFocusStyle,
+              }}
+              label="Phone No"
+              fullWidth
+              value={address.phone}
+              onChange={handleAddressChange}
+              onBlur={handlePhoneError}
+              error={error["phone"] !== ""}
+              helperText={error["phone"]}
+              autoComplete="phone-no"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
               id="city"
               name="city"
               label="City"
@@ -408,29 +452,57 @@ export default function Checkout(props) {
   };
 
   const getPickupDetailsStep = () => {
+    const handleExpectedPickUpDate = (index, e, len) => {
+      var new_arr = pickUpDates;
+      var new_arr2 = pickUpDatesReq;
+      if (new_arr.length < len) {
+        new_arr = [...new_arr, e];
+        new_arr2 = [...new_arr2, e.toLocaleDateString()];
+      } else {
+        new_arr[index] = e;
+        new_arr[index] = e.toLocaleDateString();
+      }
+      setPickupDates(new_arr);
+      setPickupDatesReq(new_arr2);
+      console.log(new_arr2);
+    };
     return (
       <React.Fragment>
-        {orders.map((order, index) => (
-          <Grid container direction="column" alignItems="flex-start">
-            <Typography align="left" className={classes.shipmentToHeading}>
-              Pickup of {order.items.length} item(s) from:
-            </Typography>
-            <Typography align="left">{order.seller_address}</Typography>
-            <form className={classes.container} noValidate>
-              <TextField
-                id="datetime-local"
-                label="Pickup Time"
-                type="datetime-local"
-                className={classes.date}
-                onChange={(e) => handlePickupDateChange(index, e)}
-                InputLabelProps={{
-                  shrink: true,
-                  className: classes.floatingLabelFocusStyle,
-                }}
-              />
-            </form>
-          </Grid>
-        ))}
+        {console.log(pickUpDates)}
+        {shops.map((shopName, index) => {
+          const item_num = products.filter(
+            (product) => product.item.shopName === shopName
+          ).length;
+
+          return (
+            <Grid container direction="column" alignItems="flex-start">
+              <Typography align="left" className={classes.shipmentToHeading}>
+                Pickup of {item_num} item(s) from:
+              </Typography>
+              <Typography align="left">{shopName}</Typography>
+              <form className={classes.container} noValidate>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    margin="normal"
+                    id="pickup-date"
+                    label="Expected Pickup Date"
+                    format="dd/MM/yyyy"
+                    value={pickUpDates[index]}
+                    InputLabelProps={{
+                      className: classes.floatingLabelFocusStyle,
+                    }}
+                    onChange={(e) =>
+                      handleExpectedPickUpDate(index, e, shops.length)
+                    }
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </form>
+            </Grid>
+          );
+        })}
       </React.Fragment>
     );
   };
@@ -477,6 +549,7 @@ export default function Checkout(props) {
             delAddress={address}
             totalPrice={props.location.totalPrice}
             handleShopNames={handleShopNames}
+            pickUpDates={pickUpDates}
           />
         );
       default:
@@ -485,23 +558,39 @@ export default function Checkout(props) {
   };
 
   const placeOrderRequest = () => {
-    const final_address =
-      address["addressLine1"].toString() +
-      ", " +
-      (address["addressLine2"] !== null
-        ? address["addressLine2"].toString()
-        : "") +
-      ", " +
-      address["city"].toString() +
-      ", " +
-      address["state"].toString() +
-      ", " +
-      address["country"].toString();
-    var data = JSON.stringify({
-      username: username,
-      deliveryAddress: final_address,
-      shops: shopNames,
-    });
+    var data = JSON.stringify({});
+    if (mode === "Online") {
+      const final_address =
+        address["addressLine1"].toString() +
+        ", " +
+        (address["addressLine2"] !== null
+          ? address["addressLine2"].toString()
+          : "") +
+        ", " +
+        address["city"].toString() +
+        ", " +
+        address["state"].toString() +
+        ", " +
+        address["country"].toString();
+      data = JSON.stringify({
+        username: username,
+        deliveryAddress: final_address,
+        shops: shopNames,
+        name:
+          address["firstName"].toString() +
+          " " +
+          address["lastName"].toString(),
+        phno: address["phone"],
+        mode: mode,
+      });
+    } else {
+      data = JSON.stringify({
+        username: username,
+        shops: shopNames,
+        delDate: pickUpDatesReq,
+        mode: mode,
+      });
+    }
     var config = {
       method: "post",
       url: serverUrl + "/create_transaction/",
@@ -514,6 +603,7 @@ export default function Checkout(props) {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        setOrderId(response.data.order_num);
       })
       .catch(function (error) {
         console.log(error);
@@ -525,6 +615,7 @@ export default function Checkout(props) {
       setMode("Online");
     } else {
       setMode("Offline");
+      handlePickups();
     }
     if (activeStep < 2) setWallet(false);
     // console.log(activeStep);
@@ -543,6 +634,7 @@ export default function Checkout(props) {
       error["state"] !== "" ||
       error["zip"] !== "" ||
       error["country"] !== "" ||
+      error["phone"] !== "" ||
       mode === ""
       // address["firstName"] === null ||
       // address["lastName"] === null ||
@@ -560,8 +652,10 @@ export default function Checkout(props) {
         address["city"] === null ||
         address["state"] === null ||
         address["zip"] === null ||
-        address["country"] === null) &&
-      activeStep === 1
+        address["country"] === null ||
+        address["phone"] === null) &&
+      activeStep === 1 &&
+      mode == "Online"
     )
       return true;
     else if (activeStep === 2 && wallet === false) return true;
@@ -612,7 +706,7 @@ export default function Checkout(props) {
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1">
-                  Your order number is #2001539. We have emailed your order
+                  Your order number is #{order_id}. We have emailed your order
                   confirmation, and will send you an update when your order has
                   shipped.
                 </Typography>

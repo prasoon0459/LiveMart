@@ -74,48 +74,11 @@ const useStyles = makeStyles({
   },
 });
 
-const ViewPickup = () => {
+const ViewPickup = (props) => {
   const classes = useStyles();
-  const address = {
-    firstName: "Prasoon",
-    lastName: "Baghel",
-    addressLine1: "D1103 Daljit Vihar, AWHO",
-    addressLine2: "Vrindawan Awas Yojna Sector 6A, Telibagh",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    zip: "226029",
-    country: "INDIA",
-  };
-  const order = {
-    id: "93GD73BDB82H",
-    seller_name: "M/s Agarwal General Store",
-    seller_address:
-      "Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India",
-    items: [
-      { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
-      {
-        name: "Kurkure Masala Munch",
-        variant: "200gm",
-        quantity: 4,
-        price: 3.45,
-      },
-      {
-        name: "Dettol Hand Sanitizer",
-        quantity: 2,
-        variant: "50ml",
-        price: 6.51,
-      },
-    ],
-    mode: "offline",
-    total_price: 342.64,
-    customer_name: "Prasoon Baghel",
-    customer_mobile: "9133260431",
-    delivery_address:
-      "D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India",
-    order_date: "18th March 2021",
-    expected_delivery: "23/04/2021 05:00PM",
-    status: 2,
-  };
+  const order = props.location.order;
+  const address = order.shopId.address;
+  const shopName = order.shopId.name;
 
   return (
     <Grid
@@ -137,17 +100,16 @@ const ViewPickup = () => {
                     >
                       Pickup From :
                     </Typography>
-                    <Typography align="left">{order.seller_name}</Typography>
-                    <Typography align="left">{order.seller_address}</Typography>
+                    <Typography align="left">{shopName}</Typography>
+                    <Typography align="left">{address}</Typography>
                     <Typography
                       align="left"
                       className={classes.expDeliveryText}
                     >
                       Pickup Date :{" "}
                     </Typography>
-                    <Typography align="left">
-                      {order.expected_delivery}
-                    </Typography>
+                    <Typography align="left">{order.delDate}</Typography>
+                    5:00PM
                   </Grid>
                 </Grid>
                 <Grid item sm={6} xs={12}>
@@ -161,7 +123,7 @@ const ViewPickup = () => {
                         fm: "gif",
                       }}
                     ></Imgix>
-                    <Typography>Order Picked Up</Typography>
+                    <Typography>Order Placed</Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -187,14 +149,21 @@ const ViewPickup = () => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {order.items.map((product) => (
-                    <ListItem className={classes.listItem} key={product.name}>
+                  {order.cartItems.map((cartItem) => (
+                    <ListItem className={classes.listItem} key={cartItem.id}>
                       <ListItemText
-                        primary={product.name + " (" + product.variant + ")"}
-                        secondary={product.quantity + " Nos."}
+                        primary={
+                          cartItem.productName +
+                          " (" +
+                          cartItem.quantity +
+                          " " +
+                          cartItem.productId.unit +
+                          " )"
+                        }
+                        // secondary={product.quantity + " Nos."}
                       />
                       <Typography variant="body2">
-                        $ {product.price * product.quantity}
+                        $ {cartItem.productPrice * cartItem.quantity}
                       </Typography>
                     </ListItem>
                   ))}
@@ -202,7 +171,7 @@ const ViewPickup = () => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_price}
+                    $ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>
