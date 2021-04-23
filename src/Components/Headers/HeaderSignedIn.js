@@ -128,7 +128,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = () => {
+const Header = ({handleLogout}) => {
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -156,10 +156,6 @@ const Header = () => {
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
-  };
-  const handleLogout = () => {
-    localStorage.clear();
-    history.push("/login");
   };
 
   const handleMenuClose = () => {
@@ -232,7 +228,7 @@ const Header = () => {
         <Assignment className={classes.menuIcon} />
         <Typography>My Inventory</Typography>
       </MenuItem>
-      <MenuItem onClick={handleLogout}>
+      <MenuItem onClick={() => handleLogout(history)}>
         <ExitToApp className={classes.menuIcon}></ExitToApp>
         <Typography>Logout</Typography>
       </MenuItem>
@@ -333,7 +329,7 @@ const Header = () => {
                     paddingLeft={3}
                   >
                     <Badge
-                      badgeContent={cartNo > 0 ? cartNo : "0"}
+                      badgeContent={cartNo > 0 ? cartNo : null}
                       color="secondary"
                     >
                       <ShoppingCartOutlined />
