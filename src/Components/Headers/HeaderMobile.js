@@ -30,6 +30,7 @@ import {
   PersonSharp,
   CategorySharp,
   AssignmentSharp,
+  PostAdd,
 } from "@material-ui/icons";
 import theme from "../../theme";
 import axios from "axios";
@@ -130,6 +131,7 @@ const HeaderMobile = ({ handleLogout }) => {
   const [drawerState, setState] = React.useState(false);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  const user_type=localStorage.getItem('usertype');
   const [cartNo, setCartNo] = React.useState(0);
 
   const getCartItems = () => {
@@ -154,7 +156,8 @@ const HeaderMobile = ({ handleLogout }) => {
   };
 
   React.useEffect(() => {
-    getCartItems();
+    if(user_type==='0'||user_type==='1')
+      getCartItems();
   }, []);
 
 
@@ -189,18 +192,26 @@ const HeaderMobile = ({ handleLogout }) => {
           <ListItemIcon><PersonSharp color='primary' /> </ListItemIcon>
           <ListItemText primary='My Profile' />
         </ListItem>
-        <ListItem button key='categories' component={NavLink} to="/categories">
+        {(user_type==='0'||user_type==='1')&&<ListItem button key='categories' component={NavLink} to="/categories">
           <ListItemIcon><CategorySharp color='primary'></CategorySharp></ListItemIcon>
           <ListItemText primary='Categories' />
-        </ListItem>
-        <ListItem button key='my_orders' component={NavLink} to="/orders">
+        </ListItem>}
+        {(user_type==='0'||user_type==='1')&&<ListItem button key='my_orders' component={NavLink} to="/orders">
           <ListItemIcon><FolderSharp color='primary'></FolderSharp></ListItemIcon>
           <ListItemText primary='My Orders' />
-        </ListItem>
-        <ListItem button key='my_inventory' component={NavLink} to="/my_inventory">
+        </ListItem>}
+        {(user_type==='1'||user_type==='2')&&<ListItem button key='my_inventory' component={NavLink} to="/my_inventory">
           <ListItemIcon><AssignmentSharp color='primary'></AssignmentSharp></ListItemIcon>
           <ListItemText primary='My Inventory' />
-        </ListItem>
+        </ListItem>}
+        {(user_type==='1'||user_type==='2')&&<ListItem button key='orders_from_me' component={NavLink} to="/orders_from_me">
+          <ListItemIcon><FolderSharp color='primary'></FolderSharp></ListItemIcon>
+          <ListItemText primary='Orders from Me' />
+        </ListItem>}
+        {(user_type==='2')&&<ListItem button key='add' component={NavLink} to="/add_item">
+          <ListItemIcon><PostAdd color='primary'/></ListItemIcon>
+          <ListItemText primary='Add to Inventory' />
+        </ListItem>}
         <ListItem onClick={() => handleLogout(history)} button key='logout' >
           <ListItemIcon><ExitToApp color='primary'></ExitToApp></ListItemIcon>
           <ListItemText primary='Logout' />
@@ -272,19 +283,8 @@ const HeaderMobile = ({ handleLogout }) => {
                         />
                       </div>
                     </Grid>
-                    <Grid item className={classes.headerLinks}>
-                      <IconButton
-                        component={NavLink}
-                        to="/notifs"
-                        aria-label="show notifs"
-                        color="inherit"
-                      >
-                        <Badge badgeContent={17} color="secondary">
-                          <Notifications />
-                        </Badge>
-                      </IconButton>
-                    </Grid>
-                    <Grid item className={classes.headerLinks}>
+                    
+                    {(user_type==='0'||user_type==='1')&&<Grid item className={classes.headerLinks}>
                       <IconButton
                         component={NavLink}
                         to="/mycart"
@@ -295,12 +295,12 @@ const HeaderMobile = ({ handleLogout }) => {
                           <ShoppingCartOutlined />
                         </Badge>
                       </IconButton>
-                    </Grid>
+                    </Grid>}
                   </Grid>
                 </Box>
               </Grid>
             </Grid>
-            <Grid container>
+            {(user_type==='0'||user_type==='1')&&<Grid container>
               <Grid item className={classes.bar}>
                 <Grid container alignItems='center' className={classes.search}>
                   <div className={classes.searchIcon}>
@@ -318,7 +318,7 @@ const HeaderMobile = ({ handleLogout }) => {
                   />
                 </Grid>
               </Grid>
-            </Grid>
+            </Grid>}
           </Grid>
         </Toolbar>
       </AppBar>
