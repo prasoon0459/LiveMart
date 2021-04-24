@@ -130,28 +130,18 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Notifs></Notifs>)}
           </Route>
-          <Route path="/track">
-            {getHeader()}
-            {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
-          </Route>
-          {/* {getHeader()}
-            {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
-          </Route> */}
+          <Route
+            path="/track"
+            component={(getHeader(), AuthenticatedComponent(TrackOrder))}
+          />
           <Route
             path="/pickup"
             component={(getHeader(), AuthenticatedComponent(ViewPickup))}
           />
-          {/* {getHeader()}
-            <ViewPickup></ViewPickup>
-          </Route> */}
           <Route
             path="/seller_view_order"
             component={(getHeader(), AuthenticatedComponent(SellerViewOrder))}
           />
-          {/* {getHeader()}
-            {AuthenticatedComponent(<SellerViewOrder></SellerViewOrder>)}
-          </Route> */}
-
           <Route path="/orders">
             {getHeader()}
             {AuthenticatedComponent(<Orders></Orders>)}
@@ -174,7 +164,7 @@ const App = () => {
           </Route>
           <Route
             path="/checkout"
-            component={AuthenticatedComponent(Checkout)}
+            component={(getHeader(), AuthenticatedComponent(Checkout))}
           />
           <Route path="/product">
             {getHeader()}

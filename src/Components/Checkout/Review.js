@@ -159,14 +159,25 @@ export default function Review({
                           className={classes.listItem}
                           key={cartItem.item.id}
                         >
-                          <ListItemText
-                            primary={cartItem.item.retailProductName}
-                            secondary={
-                              cartItem.item.quantity +
-                              " " +
-                              cartItem.item.retailProductId.productId.unit
-                            }
-                          />
+                          {user_type === "2" ? (
+                            <ListItemText
+                              primary={cartItem.item.retailProductName}
+                              secondary={
+                                cartItem.item.quantity +
+                                " " +
+                                cartItem.item.retailProductId.productId.unit
+                              }
+                            />
+                          ) : (
+                            <ListItemText
+                              primary={cartItem.item.productName}
+                              secondary={
+                                cartItem.item.quantity +
+                                " " +
+                                cartItem.item.productId.unit
+                              }
+                            />
+                          )}
                           <Typography variant="body2">
                             {user_type === "1"
                               ? cartItem.item.productPrice *

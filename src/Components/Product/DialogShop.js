@@ -40,11 +40,11 @@ const useStyles = makeStyles({
   shopName: {
     fontWeight: 700,
   },
-  wholesale_price:{
-    fontWeight:600,
-    fontSize:18,
-    margin:theme.spacing(1,0,1)
-  }
+  wholesale_price: {
+    fontWeight: 600,
+    fontSize: 18,
+    margin: theme.spacing(1, 0, 1),
+  },
 });
 
 export default function DialogShop(props) {
@@ -68,6 +68,7 @@ export default function DialogShop(props) {
       data = JSON.stringify({
         product_id: id,
         quantity: props.qty,
+        shopId: {},
       });
     } else if (user_type == "0") {
       address = serverUrl + "/retail_cart/";

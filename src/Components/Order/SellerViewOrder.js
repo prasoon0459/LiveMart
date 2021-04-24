@@ -410,17 +410,29 @@ const SellerViewOrder = (props) => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {order.retailCartItems.map((product) => (
-                    <ListItem className={classes.listItem} key={product.id}>
-                      <ListItemText
-                        primary={product.retailProductName}
-                        secondary={product.quantity + " Nos."}
-                      />
-                      <Typography variant="body2">
-                        $ {product.retailProductPrice * product.quantity}
-                      </Typography>
-                    </ListItem>
-                  ))}
+                  {user_type === "1"
+                    ? order.retailCartItems.map((product) => (
+                        <ListItem className={classes.listItem} key={product.id}>
+                          <ListItemText
+                            primary={product.retailProductName}
+                            secondary={product.quantity + " Nos."}
+                          />
+                          <Typography variant="body2">
+                            $ {product.retailProductPrice * product.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))
+                    : order.cartItems.map((product) => (
+                        <ListItem className={classes.listItem} key={product.id}>
+                          <ListItemText
+                            primary={product.productName}
+                            secondary={product.quantity + " Nos."}
+                          />
+                          <Typography variant="body2">
+                            $ {product.productPrice * product.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))}
                 </List>
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />

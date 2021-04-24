@@ -150,7 +150,7 @@ const ViewPickup = (props) => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {user_type === "1"
+                  {user_type === "2"
                     ? order.cartItems.map((cartItem) => (
                         <ListItem
                           className={classes.listItem}

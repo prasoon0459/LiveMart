@@ -123,6 +123,7 @@ const PendingOrders = () => {
 
   return (
     <div className={classes.root}>
+      {console.log(transactions)}
       <Typography
         variant={mobile ? "h6" : "h5"}
         align="left"
@@ -138,18 +139,33 @@ const PendingOrders = () => {
               <Grid item lg={3} md={4} sm={6} xs={12}>
                 <Paper elevation={3} className={classes.itemRoot}>
                   <Grid container direction="column">
-                    <Typography
-                      variant="h6"
-                      align="left"
-                      className={classes.itemTitle}
-                    >
-                      {order.item.retailCartItems[0].retailProductName}
-                      {order.item.retailCartItems.length - 1 !== 0
-                        ? " and " +
-                          (order.item.retailCartItems.length - 1).toString() +
-                          " item(s) more"
-                        : " "}
-                    </Typography>
+                    {user_type === "2" ? (
+                      <Typography
+                        variant="h6"
+                        align="left"
+                        className={classes.itemTitle}
+                      >
+                        {order.item.cartItems[0].productName}
+                        {order.item.cartItems.length - 1 !== 0
+                          ? " and " +
+                            (order.item.cartItems.length - 1).toString() +
+                            " item(s) more"
+                          : " "}
+                      </Typography>
+                    ) : (
+                      <Typography
+                        variant="h6"
+                        align="left"
+                        className={classes.itemTitle}
+                      >
+                        {order.item.retailCartItems[0].retailProductName}
+                        {order.item.retailCartItems.length - 1 !== 0
+                          ? " and " +
+                            (order.item.retailCartItems.length - 1).toString() +
+                            " item(s) more"
+                          : " "}
+                      </Typography>
+                    )}
                     <Typography
                       align="left"
                       className={classes.itemOrderedDate}
@@ -177,33 +193,36 @@ const PendingOrders = () => {
                       Expected Delivery:{" "}
                       {new Date(order.item.expectedDate).toLocaleDateString()}
                     </Typography>
-                    <Grid
-                      className={classes.deliveryPersonDetails}
-                      container
-                      direction="row"
-                      alignItems="center"
-                    >
-                      {/* <ReactRoundedImage
-                      image={deliveryBoyAvatar}
-                      imageWidth="40"
-                      imageHeight="40"
-                      roundedSize={1}
-                    ></ReactRoundedImage>
-                    <Grid item>
+                    {order.item.delStatus === "Out for Delivery" && (
                       <Grid
+                        className={classes.deliveryPersonDetails}
                         container
-                        direction="column"
-                        className={classes.deliveryPersonContact}
+                        direction="row"
+                        alignItems="center"
                       >
-                        <Typography className={classes.DeliveryBoyName}>
-                          Ramesh Pawar
-                        </Typography>
-                        <Typography className={classes.DeliveryBoyMobile}>
-                          +919567289930
-                        </Typography>
+                        {console.log("Asdasd")}
+                        <ReactRoundedImage
+                          image={deliveryBoyAvatar}
+                          imageWidth="40"
+                          imageHeight="40"
+                          roundedSize={1}
+                        ></ReactRoundedImage>
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="column"
+                            className={classes.deliveryPersonContact}
+                          >
+                            <Typography className={classes.DeliveryBoyName}>
+                              {order.item.delName}
+                            </Typography>
+                            <Typography className={classes.DeliveryBoyMobile}>
+                              +91 {order.item.delPhno}
+                            </Typography>
+                          </Grid>
+                        </Grid>
                       </Grid>
-                    </Grid> */}
-                    </Grid>
+                    )}
                     <Button
                       variant="outlined"
                       onClick={() => handleOrderOpen(order)}
