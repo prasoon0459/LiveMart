@@ -28,6 +28,7 @@ import {
 import { minMaxLength } from "../Auth/validation";
 import axios from "axios";
 import serverUrl from "../../serverURL";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -90,7 +91,7 @@ const steps = [
   "Review your order",
 ];
 
-export default function Checkout(props) {
+function Checkout(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   // const token = localStorage.getItem("token");
@@ -758,3 +759,4 @@ export default function Checkout(props) {
     </React.Fragment>
   );
 }
+export default withRouter(Checkout)

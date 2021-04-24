@@ -30,12 +30,13 @@ const useStyles = makeStyles({
   title: {
     fontWeight: 800,
     margin: (props) =>
-      props.mobile ? theme.spacing(2, 0, 2) : theme.spacing(2, 0, 3),
+      props.mobile ? theme.spacing(1, 0, 1) : theme.spacing(1, 0, 1),
     padding: (props) =>
       props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
   },
   itemTitle: {
     fontWeight: 600,
+    fontSize:18
   },
   itemOrderedDate: {
     color: theme.palette.text.hint,
@@ -55,6 +56,13 @@ const useStyles = makeStyles({
   deliveryPersonContact: {
     margin: theme.spacing(0, 1, 0),
   },
+  btn:{
+    margin:theme.spacing(2,0,0)
+  },
+  itemOrderedID:{
+    fontSize:16,
+    margin:theme.spacing(0,1,0)
+  }
 });
 
 const PendingOrders = () => {
@@ -75,6 +83,7 @@ const PendingOrders = () => {
     //   cartItems: items,
     //   totalPrice: total_cost + 50,
     // });
+    console.log('order',order)
     history.push({ pathname: "/seller_view_order", order: order.item });
   };
   const getPendingTransactions = () => {
@@ -127,15 +136,15 @@ const PendingOrders = () => {
     }
   }, []);
 
-  return (
+  return transactions.length>0? (
     <div className={classes.root}>
       {console.log(transactions)}
       <Typography
         variant={mobile ? "h6" : "h5"}
-        align="left"
+        align="center"
         className={classes.title}
       >
-        PENDING ORDERS
+        Pending Orders
       </Typography>
       <Grid container direction="row">
         {transactions.length > 0 ? (
@@ -147,7 +156,7 @@ const PendingOrders = () => {
                   <Grid container direction="column">
                     {user_type === "2" ? (
                       <Typography
-                        variant="h6"
+                        variant="body1"
                         align="left"
                         className={classes.itemTitle}
                       >
@@ -155,12 +164,12 @@ const PendingOrders = () => {
                         {order.item.cartItems.length - 1 !== 0
                           ? " and " +
                             (order.item.cartItems.length - 1).toString() +
-                            " item(s) more"
+                            " more item(s)"
                           : " "}
                       </Typography>
                     ) : (
                       <Typography
-                        variant="h6"
+                        variant="body1"
                         align="left"
                         className={classes.itemTitle}
                       >
@@ -168,7 +177,7 @@ const PendingOrders = () => {
                         {order.item.retailCartItems.length - 1 !== 0
                           ? " and " +
                             (order.item.retailCartItems.length - 1).toString() +
-                            " item(s) more"
+                            " more item(s)"
                           : " "}
                       </Typography>
                     )}
@@ -182,7 +191,7 @@ const PendingOrders = () => {
                     <Typography
                       align="left"
                       variant="caption"
-                      className={classes.itemOrderedStatus}
+                      className={classes.itemOrderedID}
                     >
                       Order ID : {order.item.id}
                     </Typography>
@@ -234,6 +243,7 @@ const PendingOrders = () => {
                       onClick={() => handleOrderOpen(order)}
                       color="secondary"
                       fullWidth
+                      className={classes.btn}
                       endIcon={<ChevronRight></ChevronRight>}
                     >
                       View Order
@@ -247,6 +257,6 @@ const PendingOrders = () => {
         )}
       </Grid>
     </div>
-  );
+  ):(<div></div>);
 };
 export default PendingOrders;

@@ -60,7 +60,7 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <MainSlider images={images} settings={settings}></MainSlider>
+      {(user_type==='0'||user_type==='1') && <MainSlider images={images} settings={settings}></MainSlider>}
       {user_type === "0" ? (
         <div>
           <ActiveOrders></ActiveOrders>
