@@ -1,4 +1,5 @@
 import {
+  Button,
   Divider,
   Grid,
   List,
@@ -12,6 +13,7 @@ import React from "react";
 import theme from "../../theme";
 import Check from "../../img/check.gif";
 import Imgix from "react-imgix";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -72,6 +74,9 @@ const useStyles = makeStyles({
     margin: theme.spacing(1, 0, 0),
     fontWeight: 600,
   },
+  btnMark:{
+    margin:theme.spacing(2,0,0)
+  }
 });
 
 const ViewPickup = (props) => {
@@ -80,6 +85,11 @@ const ViewPickup = (props) => {
   const address = order.shopId.address;
   const shopName = order.shopId.name;
   const user_type = localStorage.getItem("usertype");
+  const [collected, setCollected]=React.useState(false)
+
+  const handleMarkCollected = (order) =>{
+    setCollected(true);
+  }
 
   return (
     <Grid
@@ -125,6 +135,7 @@ const ViewPickup = (props) => {
                       }}
                     ></Imgix>
                     <Typography>Order Placed</Typography>
+                    {order.delStatus==='Order Placed'&&<Button variant='contained' disabled={collected} onClick={()=>handleMarkCollected(order)} color='secondary' className={classes.btnMark}>Mark Collected</Button>}
                   </Grid>
                 </Grid>
               </Grid>
@@ -211,4 +222,4 @@ const ViewPickup = (props) => {
   );
 };
 
-export default ViewPickup;
+export default withRouter(ViewPickup);

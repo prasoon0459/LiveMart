@@ -33,6 +33,7 @@ import Inventory from "./Components/Inventory/Inventory";
 import AddItem from "./Components/Inventory/AddItem";
 import DeliveryHome from "./Components/Delivery/DeliveryHome";
 import Filter from "./Components/Search/Filter";
+import MyPickups from "./Components/Order/MyPickups";
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -106,7 +107,6 @@ const App = () => {
           <Route path="/change_pwd">
             {UnauthenticatedComponent(<ChangePwd />)}
           </Route>
-
           <Route path="/delivery_home">
             {AuthenticatedComponent(<DeliveryHome></DeliveryHome>)}
           </Route>
@@ -130,18 +130,22 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Notifs></Notifs>)}
           </Route>
-          <Route
-            path="/track"
-            component={(getHeader(), AuthenticatedComponent(TrackOrder))}
-          />
-          <Route
-            path="/pickup"
-            component={(getHeader(), AuthenticatedComponent(ViewPickup))}
-          />
-          <Route
-            path="/seller_view_order"
-            component={(getHeader(), AuthenticatedComponent(SellerViewOrder))}
-          />
+          <Route path="/track">
+            {getHeader()}
+            {AuthenticatedComponent(<TrackOrder/>)}
+          </Route>
+          <Route path="/pickup">
+            {getHeader()} 
+            {AuthenticatedComponent(<ViewPickup></ViewPickup>)}
+          </Route>
+          <Route path="/my_pickup">
+            {getHeader()} 
+            {AuthenticatedComponent(<MyPickups></MyPickups>)}
+          </Route>
+          <Route path="/seller_view_order" >
+            {getHeader()}
+            {AuthenticatedComponent(<SellerViewOrder></SellerViewOrder>)}
+          </Route>
           <Route path="/orders">
             {getHeader()}
             {AuthenticatedComponent(<Orders></Orders>)}
@@ -162,10 +166,10 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Categories />)}
           </Route>
-          <Route
-            path="/checkout"
-            component={(getHeader(), AuthenticatedComponent(Checkout))}
-          />
+          <Route path="/checkout" >
+            {getHeader()}
+            {AuthenticatedComponent(<Checkout></Checkout>)}
+          </Route>
           <Route path="/product">
             {getHeader()}
             {AuthenticatedComponent(<Product />)}

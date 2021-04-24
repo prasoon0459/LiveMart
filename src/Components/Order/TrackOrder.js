@@ -16,6 +16,7 @@ import React from "react";
 import theme from "../../theme";
 import ReactRoundedImage from "react-rounded-image";
 import deliveryBoyAvatar from "../../img/deliveryBoyAvatar.svg";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles({
   listItem: {
@@ -289,4 +290,4 @@ const TrackOrder = (props) => {
   );
 };
 
-export default TrackOrder;
+export default withRouter(TrackOrder);

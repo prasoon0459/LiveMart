@@ -26,6 +26,7 @@ import {
 } from "@material-ui/pickers";
 import axios from "axios";
 import serverUrl from "../../serverURL";
+import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles({
   listItem: {
@@ -114,6 +115,7 @@ const SellerViewOrder = (props) => {
   const classes = useStyles();
 
   const order = props.location.order;
+  // console.log(order)
   const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState(
     new Date(order.expectedDate)
   );
@@ -132,37 +134,7 @@ const SellerViewOrder = (props) => {
   const handleMenuItemClick = (event, order_id) => {
     setDelId(order_id);
   };
-  // const address = {
-  //   firstName: "Prasoon",
-  //   lastName: "Baghel",
-  //   addressLine1: "D1103 Daljit Vihar, AWHO",
-  //   addressLine2: "Vrindawan Awas Yojna Sector 6A, Telibagh",
-  //   city: "Lucknow",
-  //   state: "Uttar Pradesh",
-  //   zip: "226029",
-  //   country: "INDIA",
-  // };
-  // const order = {
-  //   seller_name: "M/s Agarwal General Store",
-  //   items: [
-  //     { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
-  //     {
-  //       name: "Kurkure Masala Munch",
-  //       variant: "200gm",
-  //       quantity: 4,
-  //       price: 3.45,
-  //     },
-  //     {
-  //       name: "Dettol Hand Sanitizer",
-  //       quantity: 2,
-  //       variant: "50ml",
-  //       price: 6.51,
-  //     },
-  //   ],
-  //   total_price: 342.64,
-  //   expected_delivery: "23rd March 2021",
-  //   status: 2,
-  // };
+  
 
   const handlePackedClicked = () => {
     setOrderStatus(orderStatus + 1);
@@ -497,4 +469,4 @@ const SellerViewOrder = (props) => {
   );
 };
 
-export default SellerViewOrder;
+export default withRouter(SellerViewOrder);

@@ -140,17 +140,16 @@ const Orders = () => {
   }, []);
 
   const handleTrackClick = (order) => {
-    if (order.item.mode === "Online") {
       history.push({
         pathname: "/track",
         order: order.item,
-      });
-    } else {
+      })
+  };
+  const handleViewClick = (order) => {
       history.push({
-        pathname: "/pickup",
+        pathname: "/my_pickup",
         order: order.item,
       });
-    }
   };
 
   return (
@@ -187,7 +186,7 @@ const Orders = () => {
                 </Grid>
                 <Button
                   color="secondary"
-                  onClick={() => handleTrackClick(order)}
+                  onClick={order.mode==='Online'? () => handleTrackClick(order) : ()=> handleViewClick(order)}
                   endIcon={
                     order.item.mode === "Online" ? (
                       <LocationOn></LocationOn>
@@ -244,7 +243,9 @@ const Orders = () => {
                       {new Date(order.item.expectedDate).toLocaleDateString()}
                     </Typography>
                   </Grid>
-                ) : null}
+                ) : <Grid item xs={6}>
+                  <div></div>
+                  </Grid>}
                 <Grid item xs={12} sm={6}>
                   <Typography className={classes.orderTotalPrice} align="right">
                     Total Price: $ {order.item.total_amount}

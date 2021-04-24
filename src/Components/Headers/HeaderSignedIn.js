@@ -187,7 +187,7 @@ const Header = ({handleLogout}) => {
 
     axios(config)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data));
         if (response.data.length > 0) {
           setCartNo(response.data.length);
         }

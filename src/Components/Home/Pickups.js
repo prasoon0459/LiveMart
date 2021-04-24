@@ -30,12 +30,16 @@ const useStyles = makeStyles({
   title: {
     fontWeight: 800,
     margin: (props) =>
-      props.mobile ? theme.spacing(2, 0, 2) : theme.spacing(2, 0, 3),
+      props.mobile ? theme.spacing(1,0,1) : theme.spacing(1,0,1),
     padding: (props) =>
       props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
   },
+  btn:{
+    margin:theme.spacing(2,0,0)
+  },
   itemTitle: {
     fontWeight: 600,
+    fontSize: 18
   },
   itemOrderedDate: {
     color: theme.palette.text.hint,
@@ -103,13 +107,15 @@ const Pickups = () => {
 
     axios(config)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log('pickups',JSON.stringify(response.data));
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          var temp = [...new_items];
-          temp = [...temp, { item: response.data[i] }];
-          new_items = temp;
+          if(response.data[i].mode==='Offline'){
+            if(response.data[i].delStatus==='Order Placed'){
+              new_items.push(response.data[i])
+            }
+          }
         }
         setTransactions(new_items);
       })
@@ -128,7 +134,7 @@ const Pickups = () => {
   const handlePickupClick = (order) => {
     history.push({
       pathname: "/pickup",
-      order: order.item,
+      order: order,
     });
   };
 
@@ -136,7 +142,7 @@ const Pickups = () => {
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
-        align="left"
+        align="center"
         className={classes.title}
       >
         Pickups Scheduled for Today
@@ -144,12 +150,13 @@ const Pickups = () => {
       <Grid container direction="row">
         {transactions.length > 0 ? (
           transactions
-            .filter((transaction) => "Offline" === transaction.item.mode)
             .map((order) => (
               <Grid item lg={3} md={4} sm={6} xs={12}>
+
+                {console.log('orderpickup', order)}
                 <Paper elevation={3} className={classes.itemRoot}>
                   <Grid container direction="column">
-                    {user_type === "1" ? (
+                  {user_type === "1" ? (
                       <Typography
                         variant="h6"
                         align="left"
@@ -168,10 +175,10 @@ const Pickups = () => {
                         align="left"
                         className={classes.itemTitle}
                       >
-                        {order.item.cartItems[0].productName}
-                        {order.item.cartItems.length - 1 !== 0
+                        {order.cartItems[0].productName}
+                        {order.cartItems.length - 1 !== 0
                           ? " and " +
-                            (order.item.cartItems.length - 1).toString() +
+                            (order.cartItems.length - 1).toString() +
                             " item(s) more"
                           : " "}
                       </Typography>
@@ -181,16 +188,17 @@ const Pickups = () => {
                       className={classes.itemOrderedDate}
                     >
                       Ordered on :{" "}
-                      {new Date(order.item.date).toLocaleDateString()}
+                      {new Date(order.date).toLocaleDateString()}
                     </Typography>
                     <Typography align="left" className={classes.itemOrderID}>
-                      Order ID : {order.item.id}
+                      Order ID : {order.id}
                     </Typography>
                     <Button
                       variant="outlined"
                       color="secondary"
                       onClick={() => handlePickupClick(order)}
                       fullWidth
+                      className={classes.btn}
                       endIcon={<ChevronRight></ChevronRight>}
                     >
                       View Order
