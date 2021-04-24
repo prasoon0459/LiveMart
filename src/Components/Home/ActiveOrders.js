@@ -84,6 +84,7 @@ const ActiveOrders = () => {
     } else {
       config = {
         method: "get",
+
         url: serverUrl + "/retail_transactions/?b=" + username,
         headers: {
           Authorization: "JWT " + token,
