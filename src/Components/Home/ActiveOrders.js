@@ -130,7 +130,7 @@ const ActiveOrders = () => {
     return d.toDateString();
   };
 
-  return (
+  return activeOrders.length>0?(
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -231,6 +231,6 @@ const ActiveOrders = () => {
         ))}
       </Grid>
     </div>
-  );
+  ):(<div></div>);
 };
 export default ActiveOrders;

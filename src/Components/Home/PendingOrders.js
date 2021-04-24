@@ -121,7 +121,7 @@ const PendingOrders = () => {
     }
   }, []);
 
-  return (
+  return transactions.length>0? (
     <div className={classes.root}>
       {console.log(transactions)}
       <Typography
@@ -241,6 +241,6 @@ const PendingOrders = () => {
         )}
       </Grid>
     </div>
-  );
+  ):(<div></div>);
 };
 export default PendingOrders;

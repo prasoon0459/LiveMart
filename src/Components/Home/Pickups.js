@@ -125,74 +125,6 @@ const Pickups = () => {
     }
   }, []);
 
-  // const orders = [
-  //     {
-  //         id:'93GD73BDB82H',
-  //         seller_name: 'M/s Agarwal General Store',
-  //         items: [
-  //             { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-  //             { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
-  //             { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
-  //         ],
-  //         total_price: 342.64,
-  //         customer_name:'Prasoon Baghel',
-  //         customer_mobile:'9133260431',
-  //         delivery_address:'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-  //         order_date: '18th March 2021',
-  //         expected_delivery: '23rd March 2021',
-  //         status: 2
-  //     },
-  //     {
-  //         id:'93GD73BDB82H',
-  //         seller_name: 'M/s Agarwal General Store',
-  //         items: [
-  //             { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-  //             { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
-  //             { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
-  //         ],
-  //         total_price: 342.64,
-  //         customer_name:'Prasoon Baghel',
-  //         customer_mobile:'9133260431',
-  //         delivery_address:'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-  //         order_date: '18th March 2021',
-  //         expected_delivery: '23rd March 2021',
-  //         status: 2
-  //     },
-  //     {
-  //         id:'93GD73BDB82H',
-  //         seller_name: 'M/s Agarwal General Store',
-  //         items: [
-  //             { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-  //             { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
-  //             { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
-  //         ],
-  //         total_price: 342.64,
-  //         customer_name:'Prasoon Baghel',
-  //         customer_mobile:'+919133260431',
-  //         delivery_address:'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-  //         order_date: '18th March 2021',
-  //         expected_delivery: '23rd March 2021',
-  //         status: 2
-  //     },
-  //     {
-  //         id:'93GD73BDB82H',
-  //         seller_name: 'M/s Agarwal General Store',
-  //         items: [
-  //             { name: "Lifeboy Soap", variant: '100gm', quantity: 6, price: 9.99 },
-  //             { name: "Kurkure Masala Munch", variant: '200gm', quantity: 4, price: 3.45 },
-  //             { name: "Dettol Hand Sanitizer", quantity: 2, variant: '50ml', price: 6.51 },
-  //         ],
-  //         total_price: 342.64,
-  //         customer_name:'Prasoon Baghel',
-  //         customer_mobile:'9133260431',
-  //         delivery_address:'D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India',
-  //         order_date: '18th March 2021',
-  //         expected_delivery: '23rd March 2021',
-  //         status: 2
-  //     },
-
-  // ]
-
   const handlePickupClick = (order) => {
     history.push({
       pathname: "/pickup",
@@ -200,7 +132,7 @@ const Pickups = () => {
     });
   };
 
-  return (
+  return transactions.length>0?(
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -254,49 +186,6 @@ const Pickups = () => {
                     <Typography align="left" className={classes.itemOrderID}>
                       Order ID : {order.item.id}
                     </Typography>
-                    {/* <Typography align="left" className={classes.itemPickupTime}>
-                      Pickup : {order.expected_delivery}
-                    </Typography> */}
-                    {/* <Typography
-                      variant="subtitle1"
-                      align="left"
-                      className={classes.CustomerDetailsHeading}
-                    >
-                      Customer Details
-                    </Typography> */}
-                    {/* <Grid
-                      className={classes.customerDetailsContainer}
-                      container
-                      direction="row"
-                      alignItems="center"
-                    >
-                      <ReactRoundedImage
-                        image={Avatar}
-                        imageWidth="40"
-                        imageHeight="40"
-                        roundedSize={1}
-                      ></ReactRoundedImage>
-                      <Grid item>
-                        <Grid
-                          container
-                          direction="column"
-                          className={classes.customerContact}
-                        >
-                          <Typography
-                            align="left"
-                            className={classes.CustomerName}
-                          >
-                            {order.customer_name}
-                          </Typography>
-                          <Typography
-                            align="left"
-                            className={classes.CustomerMobile}
-                          >
-                            {order.customer_mobile}
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Grid> */}
                     <Button
                       variant="outlined"
                       color="secondary"
@@ -315,6 +204,6 @@ const Pickups = () => {
         )}
       </Grid>
     </div>
-  );
+  ): (<div></div>);
 };
 export default Pickups;
