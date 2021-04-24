@@ -159,7 +159,7 @@ export default function Review({
                           className={classes.listItem}
                           key={cartItem.item.id}
                         >
-                          {user_type === "2" ? (
+                          {user_type === "0" ? (
                             <ListItemText
                               primary={cartItem.item.retailProductName}
                               secondary={

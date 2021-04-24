@@ -129,7 +129,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Header = ({handleLogout}) => {
+const Header = ({ handleLogout }) => {
   const history = useHistory();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -138,19 +138,9 @@ const Header = ({handleLogout}) => {
   const isMenuOpen = Boolean(anchorEl);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
-  const user_type = localStorage.getItem('usertype');
-  
-  const [cartNo, setCartNo] = React.useState(0);
+  const user_type = localStorage.getItem("usertype");
 
-  // React.useEffect(() => {
-  //   try{
-  //   fetch('http://api.ipstack.com/check?access_key=bcfa1bf099d004351030d32ab043f865')
-  //   .then(res=>res.json()).then(json=>setLocData(json));
-  //   }catch(error){
-  //     console.log(error);
-  //   }
-  // },[]);
-  //   console.log(locData);
+  const [cartNo, setCartNo] = React.useState(0);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -198,8 +188,7 @@ const Header = ({handleLogout}) => {
   };
 
   React.useEffect(() => {
-    if(user_type==='0' ||user_type==='1')
-      getCartItems();
+    if (user_type === "0" || user_type === "1") getCartItems();
   }, []);
 
   const menuId = "primary-search-account-menu";
@@ -219,22 +208,38 @@ const Header = ({handleLogout}) => {
         <Person className={classes.menuIcon} />
         <Typography>My Profile</Typography>
       </MenuItem>
-      {(user_type==='0'||user_type==='1')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
-        <Folder className={classes.menuIcon}></Folder>
-        <Typography>My Orders</Typography>
-      </MenuItem>}
-      {(user_type==='1'||user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/orders_from_me">
-        <Folder className={classes.menuIcon}></Folder>
-        <Typography>Orders from Me</Typography>
-      </MenuItem>}
-      {(user_type==='1'||user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/my_inventory" >
-        <Assignment className={classes.menuIcon} />
-        <Typography>My Inventory</Typography>
-      </MenuItem>}
-      {(user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/add_item" >
-        <PostAdd className={classes.menuIcon} />
-        <Typography>Add to Inventory</Typography>
-      </MenuItem>}
+      {(user_type === "0" || user_type === "1") && (
+        <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
+          <Folder className={classes.menuIcon}></Folder>
+          <Typography>My Orders</Typography>
+        </MenuItem>
+      )}
+      {(user_type === "1" || user_type === "2") && (
+        <MenuItem
+          onClick={handleMenuClose}
+          component={NavLink}
+          to="/orders_from_me"
+        >
+          <Folder className={classes.menuIcon}></Folder>
+          <Typography>Orders from Me</Typography>
+        </MenuItem>
+      )}
+      {(user_type === "1" || user_type === "2") && (
+        <MenuItem
+          onClick={handleMenuClose}
+          component={NavLink}
+          to="/my_inventory"
+        >
+          <Assignment className={classes.menuIcon} />
+          <Typography>My Inventory</Typography>
+        </MenuItem>
+      )}
+      {user_type === "2" && (
+        <MenuItem onClick={handleMenuClose} component={NavLink} to="/add_item">
+          <PostAdd className={classes.menuIcon} />
+          <Typography>Add to Inventory</Typography>
+        </MenuItem>
+      )}
       <MenuItem onClick={() => handleLogout(history)}>
         <ExitToApp className={classes.menuIcon}></ExitToApp>
         <Typography>Logout</Typography>
@@ -274,12 +279,22 @@ const Header = ({handleLogout}) => {
                 <Grid item className={classes.headerLinks}>
                   <Button
                     component={NavLink}
-                    to={user_type==='0'||user_type==='1'?"/categories":user_type==='2'?'/my_inventory':'/'}
+                    to={
+                      user_type === "0" || user_type === "1"
+                        ? "/categories"
+                        : user_type === "2"
+                        ? "/my_inventory"
+                        : "/"
+                    }
                     color="inherit"
                     paddingLeft={3}
                   >
                     <Typography className={classes.navButton}>
-                      {user_type==='0'||user_type==='1'?'Categories':user_type==='2'?'My Inventory':'/'}
+                      {user_type === "0" || user_type === "1"
+                        ? "Categories"
+                        : user_type === "2"
+                        ? "My Inventory"
+                        : "/"}
                     </Typography>
                   </Button>
                 </Grid>
@@ -293,43 +308,47 @@ const Header = ({handleLogout}) => {
                 direction="row"
                 className={classes.container}
               >
-                {(user_type==='0'||user_type==='1')&&<Grid item className={classes.bar}>
-                  <Grid
-                    container
-                    alignItems="center"
-                    className={classes.search}
-                  >
-                    <div className={classes.searchIcon}>
-                      <SearchOutlined />
-                    </div>
-                    <InputBase
-                      placeholder="Search…"
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                      }}
-                      inputProps={{ "aria-label": "search" }}
-                      onKeyPress={handleSearchSubmit}
-                    />
-                  </Grid>
-                </Grid>}
-                
-                {(user_type==='0'||user_type==='1')&&<Grid item className={classes.headerLinks}>
-                  <IconButton
-                    component={NavLink}
-                    to="/mycart"
-                    aria-label="show cart Items"
-                    color="inherit"
-                    paddingLeft={3}
-                  >
-                    <Badge
-                      badgeContent={cartNo > 0 ? cartNo : null}
-                      color="secondary"
+                {(user_type === "0" || user_type === "1") && (
+                  <Grid item className={classes.bar}>
+                    <Grid
+                      container
+                      alignItems="center"
+                      className={classes.search}
                     >
-                      <ShoppingCartOutlined />
-                    </Badge>
-                  </IconButton>
-                </Grid>}
+                      <div className={classes.searchIcon}>
+                        <SearchOutlined />
+                      </div>
+                      <InputBase
+                        placeholder="Search…"
+                        classes={{
+                          root: classes.inputRoot,
+                          input: classes.inputInput,
+                        }}
+                        inputProps={{ "aria-label": "search" }}
+                        onKeyPress={handleSearchSubmit}
+                      />
+                    </Grid>
+                  </Grid>
+                )}
+
+                {(user_type === "0" || user_type === "1") && (
+                  <Grid item className={classes.headerLinks}>
+                    <IconButton
+                      component={NavLink}
+                      to="/mycart"
+                      aria-label="show cart Items"
+                      color="inherit"
+                      paddingLeft={3}
+                    >
+                      <Badge
+                        badgeContent={cartNo > 0 ? cartNo : null}
+                        color="secondary"
+                      >
+                        <ShoppingCartOutlined />
+                      </Badge>
+                    </IconButton>
+                  </Grid>
+                )}
                 <Grid item className={classes.headerLinks}>
                   <IconButton
                     edge="end"

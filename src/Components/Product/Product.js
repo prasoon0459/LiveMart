@@ -6,6 +6,7 @@ import {
   makeStyles,
   Paper,
   Typography,
+  CircularProgress,
 } from "@material-ui/core";
 import { AddSharp, LocalMall, RemoveSharp } from "@material-ui/icons";
 import Rating from "@material-ui/lab/Rating";
@@ -156,7 +157,7 @@ const Product = (props) => {
   const images = ["#a0e0ff", "red", "orange", "blue", "green"];
   return (
     <div className={classes.root}>
-      {console.log(product)}
+      {console.log("product:", product)}
       <Grid
         container
         direction="column"
@@ -188,7 +189,7 @@ const Product = (props) => {
             }
             justify="center"
           >
-            <Grid item>
+            {/* <Grid item>
               <Grid
                 container
                 direction={
@@ -204,18 +205,22 @@ const Product = (props) => {
                   </Button>
                 ))}
               </Grid>
-            </Grid>
+            </Grid> */}
             <Grid item>
               <Paper elevation={2} className={classes.mainImagePaper}>
-                <Imgix
-                  className={classes.mainImage}
-                  src={kurkure}
-                  imgixParams={{
-                    fit: "fit",
-                    fm: "svg",
-                  }}
-                  height="100%"
-                ></Imgix>
+                {product.length === 0 ? (
+                  <CircularProgress />
+                ) : (
+                  <Imgix
+                    className={classes.mainImage}
+                    src={product.image}
+                    imgixParams={{
+                      fit: "fit",
+                      fm: "svg",
+                    }}
+                    height="100%"
+                  ></Imgix>
+                )}
               </Paper>
             </Grid>
           </Grid>

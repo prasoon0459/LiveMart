@@ -308,7 +308,7 @@ const Cart = () => {
                                 <CardContent>
                                   <CardMedia
                                     className={classes.media}
-                                    image={kurkure}
+                                    image={product.item.image}
                                   />
                                 </CardContent>
                               </CardActionArea>

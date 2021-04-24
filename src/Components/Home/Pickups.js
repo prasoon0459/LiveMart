@@ -30,16 +30,16 @@ const useStyles = makeStyles({
   title: {
     fontWeight: 800,
     margin: (props) =>
-      props.mobile ? theme.spacing(1,0,1) : theme.spacing(1,0,1),
+      props.mobile ? theme.spacing(1, 0, 1) : theme.spacing(1, 0, 1),
     padding: (props) =>
       props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
   },
-  btn:{
-    margin:theme.spacing(2,0,0)
+  btn: {
+    margin: theme.spacing(2, 0, 0),
   },
   itemTitle: {
     fontWeight: 600,
-    fontSize: 18
+    fontSize: 18,
   },
   itemOrderedDate: {
     color: theme.palette.text.hint,
@@ -107,13 +107,13 @@ const Pickups = () => {
 
     axios(config)
       .then(function (response) {
-        console.log('pickups',JSON.stringify(response.data));
+        console.log("pickups", JSON.stringify(response.data));
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          if(response.data[i].mode==='Offline'){
-            if(response.data[i].delStatus==='Order Placed'){
-              new_items.push(response.data[i])
+          if (response.data[i].mode === "Offline") {
+            if (response.data[i].delStatus === "Order Placed") {
+              new_items.push(response.data[i]);
             }
           }
         }
@@ -138,7 +138,7 @@ const Pickups = () => {
     });
   };
 
-  return transactions.length>0?(
+  return transactions.length > 0 ? (
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -149,69 +149,65 @@ const Pickups = () => {
       </Typography>
       <Grid container direction="row">
         {transactions.length > 0 ? (
-          transactions
-            .map((order) => (
-              <Grid item lg={3} md={4} sm={6} xs={12}>
-
-                {console.log('orderpickup', order)}
-                <Paper elevation={3} className={classes.itemRoot}>
-                  <Grid container direction="column">
+          transactions.map((order) => (
+            <Grid item lg={3} md={4} sm={6} xs={12}>
+              {console.log("orderpickup", order)}
+              <Paper elevation={3} className={classes.itemRoot}>
+                <Grid container direction="column">
                   {user_type === "1" ? (
-                      <Typography
-                        variant="h6"
-                        align="left"
-                        className={classes.itemTitle}
-                      >
-                        {order.item.retailCartItems[0].retailProductName}
-                        {order.item.retailCartItems.length - 1 !== 0
-                          ? " and " +
-                            (order.item.retailCartItems.length - 1).toString() +
-                            " item(s) more"
-                          : " "}
-                      </Typography>
-                    ) : (
-                      <Typography
-                        variant="h6"
-                        align="left"
-                        className={classes.itemTitle}
-                      >
-                        {order.cartItems[0].productName}
-                        {order.cartItems.length - 1 !== 0
-                          ? " and " +
-                            (order.cartItems.length - 1).toString() +
-                            " item(s) more"
-                          : " "}
-                      </Typography>
-                    )}
                     <Typography
+                      variant="h6"
                       align="left"
-                      className={classes.itemOrderedDate}
+                      className={classes.itemTitle}
                     >
-                      Ordered on :{" "}
-                      {new Date(order.date).toLocaleDateString()}
+                      {order.retailCartItems[0].retailProductName}
+                      {order.retailCartItems.length - 1 !== 0
+                        ? " and " +
+                          (order.retailCartItems.length - 1).toString() +
+                          " item(s) more"
+                        : " "}
                     </Typography>
-                    <Typography align="left" className={classes.itemOrderID}>
-                      Order ID : {order.id}
-                    </Typography>
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={() => handlePickupClick(order)}
-                      fullWidth
-                      className={classes.btn}
-                      endIcon={<ChevronRight></ChevronRight>}
+                  ) : (
+                    <Typography
+                      variant="h6"
+                      align="left"
+                      className={classes.itemTitle}
                     >
-                      View Order
-                    </Button>
-                  </Grid>
-                </Paper>
-              </Grid>
-            ))
+                      {order.cartItems[0].productName}
+                      {order.cartItems.length - 1 !== 0
+                        ? " and " +
+                          (order.cartItems.length - 1).toString() +
+                          " item(s) more"
+                        : " "}
+                    </Typography>
+                  )}
+                  <Typography align="left" className={classes.itemOrderedDate}>
+                    Ordered on : {new Date(order.date).toLocaleDateString()}
+                  </Typography>
+                  <Typography align="left" className={classes.itemOrderID}>
+                    Order ID : {order.id}
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    onClick={() => handlePickupClick(order)}
+                    fullWidth
+                    className={classes.btn}
+                    endIcon={<ChevronRight></ChevronRight>}
+                  >
+                    View Order
+                  </Button>
+                </Grid>
+              </Paper>
+            </Grid>
+          ))
         ) : (
           <CircularProgress />
         )}
       </Grid>
     </div>
-  ): (<div></div>);
+  ) : (
+    <div></div>
+  );
 };
 export default Pickups;

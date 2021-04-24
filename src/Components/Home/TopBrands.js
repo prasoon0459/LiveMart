@@ -111,7 +111,7 @@ const TopBrand = (props) => {
                 >
                   <Grid item xs={12}>
                     <Imgix
-                      src={amul}
+                      src={brand.image}
                       width="150"
                       height="150"
                       imgixParams={{

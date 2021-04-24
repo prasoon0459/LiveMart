@@ -73,6 +73,8 @@ export default function SignUp() {
   const [mail, setMail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [long, setLong] = useState(0.0);
+  const [lat, setLat] = useState(0.0);
   const [error, setError] = useState({
     name: "",
     mob: "",
@@ -249,11 +251,26 @@ export default function SignUp() {
         confirmPassword: "",
       });
   }
+  React.useEffect(() => {
+    try {
+      fetch(
+        "http://api.ipstack.com/check?access_key=bcfa1bf099d004351030d32ab043f865"
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          setLong(json.longitude);
+          setLat(json.latitude);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   return (
     <Container component="main" maxWidth="xs">
       {/* {console.log(typeof error)} */}
       <CssBaseline />
       <div className={classes.paper}>
+        {/* {console.log(lat)} */}
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>

@@ -425,8 +425,8 @@ const Search = () => {
                               color="secondary"
                             >
                               <Imgix
-                                src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
-                                // src  = {product.item.image}
+                                // src="https://images-na.ssl-images-amazon.com/images/I/716AgMpTqhL._SL1400_.jpg"
+                                src={product.item.image}
                                 width="100%"
                                 imgixParams={{
                                   fit: "fit",

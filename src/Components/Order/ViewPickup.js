@@ -14,6 +14,8 @@ import theme from "../../theme";
 import Check from "../../img/check.gif";
 import Imgix from "react-imgix";
 import { withRouter } from "react-router-dom";
+import serverUrl from "../../serverURL";
+import axios from "axios";
 
 const useStyles = makeStyles({
   root: {
@@ -74,9 +76,9 @@ const useStyles = makeStyles({
     margin: theme.spacing(1, 0, 0),
     fontWeight: 600,
   },
-  btnMark:{
-    margin:theme.spacing(2,0,0)
-  }
+  btnMark: {
+    margin: theme.spacing(2, 0, 0),
+  },
 });
 
 const ViewPickup = (props) => {
@@ -85,11 +87,42 @@ const ViewPickup = (props) => {
   const address = order.shopId.address;
   const shopName = order.shopId.name;
   const user_type = localStorage.getItem("usertype");
-  const [collected, setCollected]=React.useState(false)
+  const [collected, setCollected] = React.useState(false);
 
-  const handleMarkCollected = (order) =>{
-    setCollected(true);
-  }
+  const handleMarkCollected = (order) => {
+    var data = JSON.stringify({
+      id: order.id,
+    });
+    var config = {};
+    if (user_type === "2") {
+      config = {
+        method: "post",
+        url: serverUrl + "/pickup_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    } else if (user_type === "1") {
+      config = {
+        method: "post",
+        url: serverUrl + "/pickup_retail_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    }
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setCollected(true);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <Grid
@@ -135,7 +168,17 @@ const ViewPickup = (props) => {
                       }}
                     ></Imgix>
                     <Typography>Order Placed</Typography>
-                    {order.delStatus==='Order Placed'&&<Button variant='contained' disabled={collected} onClick={()=>handleMarkCollected(order)} color='secondary' className={classes.btnMark}>Mark Collected</Button>}
+                    {order.delStatus === "Order Placed" && (
+                      <Button
+                        variant="contained"
+                        disabled={collected}
+                        onClick={() => handleMarkCollected(order)}
+                        color="secondary"
+                        className={classes.btnMark}
+                      >
+                        Mark Collected
+                      </Button>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

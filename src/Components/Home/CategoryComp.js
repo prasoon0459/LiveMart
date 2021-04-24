@@ -103,7 +103,7 @@ const CategoryComp = () => {
                 >
                   <Grid item>
                     <ReactRoundedImage
-                      image={fruits}
+                      image={category.image}
                       imageWidth="160"
                       imageHeight="160"
                       roundedColor={theme.palette.primary.main}
