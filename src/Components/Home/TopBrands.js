@@ -56,7 +56,7 @@ const TopBrand = (props) => {
   const [brands, setBrands] = React.useState([]);
   const classes = useStyles({ mobile: mobile, sm: sm });
 
-  const getCategories = () => {
+  const getBrands = () => {
     var config = {
       method: "get",
       url: serverUrl + "/brands/",
@@ -67,7 +67,6 @@ const TopBrand = (props) => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         setBrands(response.data);
       })
       .catch(function (error) {
@@ -79,7 +78,7 @@ const TopBrand = (props) => {
   };
   React.useEffect(() => {
     try {
-      getCategories();
+      getBrands();
     } catch (error) {
       console.log(error);
     }
