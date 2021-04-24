@@ -62,6 +62,7 @@ const Categories = () => {
     axios(config)
     .then(function (response) {
         console.log(JSON.stringify(response.data));
+        // console.log('cat', response.data)
         setCategories(response.data);
     })
     .catch(function (error) {
@@ -91,12 +92,12 @@ const Categories = () => {
                 <Divider></Divider>
                 <Grid container className={classes.itemsContainer} >
                     {categories.map((category) => (
-                        <Grid item key={category.id} xs={6} sm={4} md={3} xl={6}>
+                        <Grid item key={category.id} xs={6} sm={4} md={4} lg={4}>
                             <CardActionArea onClick={() => handleClick(category.name)}>
                                 <Grid container direction='column' justify='center' alignItems='center' className={classes.categoryItem}>
                                     <Grid item>
                                         <ReactRoundedImage
-                                            image={fruits}
+                                            image={category.image}
                                             imageWidth='160'
                                             imageHeight='160'
                                             roundedColor={theme.palette.primary.main}

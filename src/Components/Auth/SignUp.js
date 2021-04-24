@@ -124,6 +124,7 @@ export default function SignUp() {
           },
           data: payload,
         };
+
         axios(config2)
           .then(function (response2) {
             console.log(JSON.stringify(response2.data));
@@ -132,23 +133,28 @@ export default function SignUp() {
               address: address,
               username: username,
             };
-            var config3 = {
-              method: "post",
-              url: serverUrl + "/create_shop/",
-              headers: {
-                Authorization: `JWT ${response.data.token}`,
-                "Content-Type": "application/json",
-              },
-              data: data3,
-            };
-            axios(config3)
-              .then(function (response3) {
-                console.log(JSON.stringify(response3.data));
-                history.push("/login");
-              })
-              .catch(function (error) {
-                console.log(error);
-              });
+            if (role === 1 || role === 2) {
+              var config3 = {
+                method: "post",
+                url: serverUrl + "/create_shop/",
+                headers: {
+                  Authorization: `JWT ${response.data.token}`,
+                  "Content-Type": "application/json",
+                },
+                data: data3,
+              };
+              axios(config3)
+                .then(function (response3) {
+                  console.log(JSON.stringify(response3.data));
+                  history.push("/login");
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            }
+            else{
+              history.push("/login");
+            }
           })
           .catch(function (error) {
             console.log(error);
