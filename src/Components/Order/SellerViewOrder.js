@@ -13,8 +13,9 @@ import {
   Stepper,
   TextField,
   Typography,
+  MenuItem,
 } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import theme from "../../theme";
 import ReactRoundedImage from "react-rounded-image";
 import deliveryBoyAvatar from "../../img/deliveryBoyAvatar.svg";
@@ -23,6 +24,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import axios from "axios";
+import serverUrl from "../../serverURL";
+
 const useStyles = makeStyles({
   listItem: {
     padding: theme.spacing(0, 2),
@@ -105,49 +109,130 @@ function getSteps() {
   ];
 }
 
-const SellerViewOrder = () => {
+const SellerViewOrder = (props) => {
   const steps = getSteps();
   const classes = useStyles();
-  const [orderStatus, setOrderStatus] = React.useState(1);
-  const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState();
 
-  const address = {
-    firstName: "Prasoon",
-    lastName: "Baghel",
-    addressLine1: "D1103 Daljit Vihar, AWHO",
-    addressLine2: "Vrindawan Awas Yojna Sector 6A, Telibagh",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    zip: "226029",
-    country: "INDIA",
+  const order = props.location.order;
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState(
+    new Date(order.expectedDate)
+  );
+  const [orderStatus, setOrderStatus] = React.useState(
+    order.delStatus === "Packed"
+      ? 2
+      : order.delStatus === "Out for Delivery"
+      ? 3
+      : 1
+  );
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [delId, setDelId] = useState(0);
+  const user_type = localStorage.getItem("usertype");
+  const [selectedId, setSelectedId] = useState(0);
+
+  const handleMenuItemClick = (event, order_id) => {
+    setDelId(order_id);
   };
-  const order = {
-    seller_name: "M/s Agarwal General Store",
-    items: [
-      { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
-      {
-        name: "Kurkure Masala Munch",
-        variant: "200gm",
-        quantity: 4,
-        price: 3.45,
-      },
-      {
-        name: "Dettol Hand Sanitizer",
-        quantity: 2,
-        variant: "50ml",
-        price: 6.51,
-      },
-    ],
-    total_price: 342.64,
-    expected_delivery: "23rd March 2021",
-    status: 2,
-  };
+  // const address = {
+  //   firstName: "Prasoon",
+  //   lastName: "Baghel",
+  //   addressLine1: "D1103 Daljit Vihar, AWHO",
+  //   addressLine2: "Vrindawan Awas Yojna Sector 6A, Telibagh",
+  //   city: "Lucknow",
+  //   state: "Uttar Pradesh",
+  //   zip: "226029",
+  //   country: "INDIA",
+  // };
+  // const order = {
+  //   seller_name: "M/s Agarwal General Store",
+  //   items: [
+  //     { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
+  //     {
+  //       name: "Kurkure Masala Munch",
+  //       variant: "200gm",
+  //       quantity: 4,
+  //       price: 3.45,
+  //     },
+  //     {
+  //       name: "Dettol Hand Sanitizer",
+  //       quantity: 2,
+  //       variant: "50ml",
+  //       price: 6.51,
+  //     },
+  //   ],
+  //   total_price: 342.64,
+  //   expected_delivery: "23rd March 2021",
+  //   status: 2,
+  // };
 
   const handlePackedClicked = () => {
     setOrderStatus(orderStatus + 1);
+    var data = JSON.stringify({
+      id: order.id,
+    });
+    var config = {};
+    if (user_type === "2") {
+      config = {
+        method: "post",
+        url: serverUrl + "/packed_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    } else if (user_type === "1") {
+      config = {
+        method: "post",
+        url: serverUrl + "/packed_retail_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    }
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
-  const handleAssignDelivery = () => {
-    setOrderStatus(orderStatus + 1);
+
+  const handleAssignDelivery = (order_id) => {
+    var data = JSON.stringify({
+      id: order.id,
+      delId: order_id,
+    });
+    var config = {};
+    if (user_type === "2") {
+      config = {
+        method: "post",
+        url: serverUrl + "/assigned_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    } else if (user_type === "1") {
+      config = {
+        method: "post",
+        url: serverUrl + "/assigned_retail_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    }
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setOrderStatus(orderStatus + 1);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleExpectedDeliveryDateChange = (date) => {
@@ -155,6 +240,13 @@ const SellerViewOrder = () => {
   };
 
   const getStepContent = (step) => {
+    if (order.delStatus === "Packed") {
+      step = 2;
+    }
+    if (order.delStatus === "Out for Delivery") {
+      step = 3;
+    }
+    console.log(order);
     switch (step) {
       case 0:
         return <Typography>on 16th April 2021</Typography>;
@@ -181,36 +273,43 @@ const SellerViewOrder = () => {
             >
               <Grid item>
                 <TextField
-                  autoComplete="name"
-                  name="name"
-                  // variant="outlined"
-                  required
+                  id="delivery"
+                  select
                   fullWidth
-                  id="name"
-                  label="Name"
+                  label="Select Delivery Person"
                   InputLabelProps={{
                     className: classes.floatingLabelFocusStyle,
                   }}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  name="mobile"
-                  // variant="outlined"
-                  required
-                  fullWidth
-                  id="mobile"
-                  label="Mobile No."
-                  InputLabelProps={{
-                    className: classes.floatingLabelFocusStyle,
-                  }}
-                />
+                  variant="outlined"
+                >
+                  {order.shopId.delIds.map((option, index) => {
+                    var order_id = "";
+                    for (var i = option.length - 2; i >= 0; i--) {
+                      if (option[i] === "/") break;
+                      else order_id += option[i];
+                    }
+                    order_id = order_id.split("").reverse().join("");
+                    console.log(order_id);
+                    return (
+                      <MenuItem
+                        key={order_id}
+                        value={order_id}
+                        selected={index === selectedIndex}
+                        onClick={(event) =>
+                          handleMenuItemClick(event, order_id)
+                        }
+                      >
+                        ID - {order_id}
+                      </MenuItem>
+                    );
+                  })}
+                </TextField>
               </Grid>
               <Grid item>
                 <Button
                   className={classes.assignDeliveryBtn}
                   fullWidth
-                  onClick={handleAssignDelivery}
+                  onClick={() => handleAssignDelivery(delId)}
                   color="secondary"
                   variant="contained"
                 >
@@ -228,12 +327,6 @@ const SellerViewOrder = () => {
               direction="column"
               className={classes.deliveryStepContent}
             >
-              <Typography align="left" className={classes.statusDate}>
-                on 18th April 2021{" "}
-              </Typography>
-              <Typography align="left" className={classes.statusTime}>
-                03:36 PM
-              </Typography>
               <Grid
                 className={classes.deliveryPersonDetails}
                 container
@@ -247,18 +340,22 @@ const SellerViewOrder = () => {
                   roundedSize={1}
                 ></ReactRoundedImage>
                 <Grid item>
-                  <Grid
-                    container
-                    direction="column"
-                    className={classes.deliveryPersonContact}
-                  >
-                    <Typography className={classes.DeliveryBoyName}>
-                      Ramesh Pawar
-                    </Typography>
-                    <Typography className={classes.DeliveryBoyMobile}>
-                      +919567289930
-                    </Typography>
-                  </Grid>
+                  {order.delName !== null ? (
+                    <Grid
+                      container
+                      direction="column"
+                      className={classes.deliveryPersonContact}
+                    >
+                      <Typography className={classes.DeliveryBoyName}>
+                        {order.delName}
+                      </Typography>
+                      <Typography className={classes.DeliveryBoyMobile}>
+                        +91 {order.delPhno}
+                      </Typography>
+                    </Grid>
+                  ) : (
+                    "Please Refresh"
+                  )}
                 </Grid>
               </Grid>
             </Grid>
@@ -281,17 +378,15 @@ const SellerViewOrder = () => {
                 <Typography align="left" className={classes.shipmentToHeading}>
                   Shipment to:
                 </Typography>
-                <Typography align="left">
-                  {address.firstName + " " + address.lastName}
-                </Typography>
-                <Typography align="left">{address.addressLine1}</Typography>
-                <Typography align="left">{address.addressLine2}</Typography>
+                <Typography align="left">{order.name}</Typography>
+                <Typography align="left">{order.deliveryAddress}</Typography>
+                {/* <Typography align="left">{address.addressLine2}</Typography>
                 <Typography align="left">
                   {address.city + ", " + address.state}
                 </Typography>
                 <Typography align="left">
                   {address.zip + ", " + address.country}
-                </Typography>
+                </Typography> */}
               </Grid>
 
               <Typography
@@ -315,14 +410,14 @@ const SellerViewOrder = () => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {order.items.map((product) => (
-                    <ListItem className={classes.listItem} key={product.name}>
+                  {order.retailCartItems.map((product) => (
+                    <ListItem className={classes.listItem} key={product.id}>
                       <ListItemText
-                        primary={product.name + " (" + product.variant + ")"}
+                        primary={product.retailProductName}
                         secondary={product.quantity + " Nos."}
                       />
                       <Typography variant="body2">
-                        $ {product.price * product.quantity}
+                        $ {product.retailProductPrice * product.quantity}
                       </Typography>
                     </ListItem>
                   ))}
@@ -330,7 +425,7 @@ const SellerViewOrder = () => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_price}
+                    $ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>

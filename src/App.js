@@ -150,10 +150,13 @@ const App = () => {
           {/* {getHeader()}
             <ViewPickup></ViewPickup>
           </Route> */}
-          <Route path="/seller_view_order">
-            {getHeader()}
+          <Route
+            path="/seller_view_order"
+            component={(getHeader(), AuthenticatedComponent(SellerViewOrder))}
+          />
+          {/* {getHeader()}
             {AuthenticatedComponent(<SellerViewOrder></SellerViewOrder>)}
-          </Route>
+          </Route> */}
 
           <Route path="/orders">
             {getHeader()}

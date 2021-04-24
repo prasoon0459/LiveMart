@@ -76,61 +76,35 @@ const useStyles = makeStyles({
 });
 
 function getSteps() {
-  return ["Ordered", "Packed", "Out for Delivery", "Delivered"];
+  return ["Order Placed", "Packed", "Out for Delivery", "Delivered"];
 }
 
 const TrackOrder = (props) => {
   const steps = getSteps();
   const classes = useStyles();
-  //   const address = {
-  //     firstName: "Prasoon",
-  //     lastName: "Baghel",
-  //     addressLine1: "D1103 Daljit Vihar, AWHO",
-  //     addressLine2: "Vrindawan Awas Yojna Sector 6A, Telibagh",
-  //     city: "Lucknow",
-  //     state: "Uttar Pradesh",
-  //     zip: "226029",
-  //     country: "INDIA",
-  //   };
   const address = props.location.order.deliveryAddress;
   const order = props.location.order;
   const name = order.name;
   const phno = order.phno;
-  //   const order = {
-  //     id: "93GD73BDB82H",
-  //     seller_name: "M/s Agarwal General Store",
-  //     seller_address:
-  //       "Shop no 12, Anand Plaza, Kalindipuram, Lucknow, UP 226029, India",
-  //     items: [
-  //       { name: "Lifeboy Soap", variant: "100gm", quantity: 6, price: 9.99 },
-  //       {
-  //         name: "Kurkure Masala Munch",
-  //         variant: "200gm",
-  //         quantity: 4,
-  //         price: 3.45,
-  //       },
-  //       {
-  //         name: "Dettol Hand Sanitizer",
-  //         quantity: 2,
-  //         variant: "50ml",
-  //         price: 6.51,
-  //       },
-  //     ],
-  //     total_price: 342.64,
-  //     mode: "online",
-  //     customer_name: "Prasoon Baghel",
-  //     customer_mobile: "9133260431",
-  //     delivery_address:
-  //       "D1103 Daljit Vihar, AWHO Vrindawan Awas Yojna Sector 6A, Telibagh, Lucknow, UP - 226029 India",
-  //     order_date: "18th March 2021",
-  //     expected_delivery: "23rd March 2021",
-  //     status: 2,
-  //   };
+  const user_type = localStorage.getItem("usertype");
+
+  const getOrderStatus = (c) => {
+    if (c === "Order Placed") {
+      return 0;
+    } else if (c === "Packed") {
+      return 1;
+    } else if (c === "Out for Delivery") {
+      return 2;
+    } else if (c === "Delivered") {
+      return 3;
+    }
+  };
+
   const getStepContent = (step) => {
     switch (step) {
-      case 0:
+      case "Order Placed":
         return <Typography>{order.date.slice(0, 10)}</Typography>;
-      case 1:
+      case "Packed":
         return (
           <div>
             <Typography className={classes.statusDate}>
@@ -139,7 +113,7 @@ const TrackOrder = (props) => {
             <Typography className={classes.statusTime}>03:36 PM</Typography>
           </div>
         );
-      case 2:
+      case "Out for Delivery":
         return (
           <div>
             <Grid
@@ -147,12 +121,12 @@ const TrackOrder = (props) => {
               direction="column"
               className={classes.deliveryStepContent}
             >
-              <Typography align="left" className={classes.statusDate}>
+              {/* <Typography align="left" className={classes.statusDate}>
                 on 18th April 2021{" "}
               </Typography>
               <Typography align="left" className={classes.statusTime}>
                 03:36 PM
-              </Typography>
+              </Typography> */}
               <Grid
                 className={classes.deliveryPersonDetails}
                 container
@@ -172,10 +146,10 @@ const TrackOrder = (props) => {
                     className={classes.deliveryPersonContact}
                   >
                     <Typography className={classes.DeliveryBoyName}>
-                      Ramesh Pawar
+                      {order.delName}
                     </Typography>
                     <Typography className={classes.DeliveryBoyMobile}>
-                      +919567289930
+                      {order.delPhno}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -183,7 +157,7 @@ const TrackOrder = (props) => {
             </Grid>
           </div>
         );
-      case 3:
+      case "Delivered":
         return "The product was delivered successfully";
       default:
         return "UNKNOWN_STATUS";
@@ -238,19 +212,40 @@ const TrackOrder = (props) => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {order.cartItems.map((product) => (
-                    <ListItem className={classes.listItem} key={product.id}>
-                      <ListItemText
-                        primary={product.productName}
-                        secondary={
-                          product.quantity + " " + product.productId.unit
-                        }
-                      />
-                      <Typography variant="body2">
-                        $ {product.productPrice * product.quantity}
-                      </Typography>
-                    </ListItem>
-                  ))}
+                  {user_type === "0"
+                    ? order.retailCartItems.map((retailCartItem) => (
+                        <ListItem
+                          className={classes.listItem}
+                          key={retailCartItem.id}
+                        >
+                          <ListItemText
+                            primary={retailCartItem.retailProductName}
+                            secondary={
+                              retailCartItem.quantity +
+                              " " +
+                              retailCartItem.retailProductId.productId.unit
+                            }
+                          />
+                          <Typography variant="body2">
+                            ${" "}
+                            {retailCartItem.retailProductPrice *
+                              retailCartItem.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))
+                    : order.cartItems.map((product) => (
+                        <ListItem className={classes.listItem} key={product.id}>
+                          <ListItemText
+                            primary={product.productName}
+                            secondary={
+                              product.quantity + " " + product.productId.unit
+                            }
+                          />
+                          <Typography variant="body2">
+                            $ {product.productPrice * product.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))}
                 </List>
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
@@ -270,7 +265,7 @@ const TrackOrder = (props) => {
                 <Grid item xs={8}>
                   <Stepper
                     className={classes.stepper}
-                    activeStep={order.status}
+                    activeStep={getOrderStatus(order.delStatus)}
                     orientation="vertical"
                   >
                     {steps.map((label, index) => (
@@ -278,7 +273,9 @@ const TrackOrder = (props) => {
                         <StepLabel classes={{ label: classes.label }}>
                           {label}
                         </StepLabel>
-                        <StepContent>{getStepContent(index)}</StepContent>
+                        <StepContent>
+                          {getStepContent(order.delStatus)}
+                        </StepContent>
                       </Step>
                     ))}
                   </Stepper>

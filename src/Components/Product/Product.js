@@ -356,7 +356,11 @@ const Product = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Reviews shops={product.wholesellers}></Reviews>
+      {user_type === "1" ? (
+        <Reviews shops={product.wholesellers}></Reviews>
+      ) : (
+        <Reviews shops={product.retailers}></Reviews>
+      )}
 
       {showDialog ? (
         <DialogShop

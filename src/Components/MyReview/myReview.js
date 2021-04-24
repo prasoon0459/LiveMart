@@ -1,4 +1,10 @@
-import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import Rating from "@material-ui/lab/Rating";
@@ -88,16 +94,27 @@ const MyReviews = () => {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   const [review, setReview] = React.useState([]);
+  const user_type = localStorage.getItem("usertype");
 
   const getReviews = () => {
-    var config = {
-      method: "get",
-      url: serverUrl + "/reviews/?u=" + username,
-      headers: {
-        Authorization: "JWT " + token,
-      },
-    };
-
+    var config = {};
+    if (user_type === "1") {
+      config = {
+        method: "get",
+        url: serverUrl + "/reviews/?u=" + username,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    } else {
+      config = {
+        method: "get",
+        url: serverUrl + "/retail_reviews/?u=" + username,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    }
     axios(config)
       .then(function (response) {
         // console.log((response.data).length);
@@ -152,45 +169,59 @@ const MyReviews = () => {
           alignItems="center"
           className={classes.ordersContainer}
         >
-          {review.map((rev) => (
-            <Paper className={classes.orderPaper}>
-              <Grid container alignItems="center" direction="row">
-                <Grid item className={classes.orderStatusItem}>
-                  <Typography className={classes.orderStatus} align="left">
-                    {rev.review.shopName}
-                  </Typography>
-                  <Typography className={classes.orderStatus} align="left">
-                    {rev.review.productName}
-                  </Typography>
+          {review !== null ? (
+            review.map((rev) => (
+              <Paper className={classes.orderPaper}>
+                <Grid container alignItems="center" direction="row">
+                  <Grid item className={classes.orderStatusItem}>
+                    <Typography className={classes.orderStatus} align="left">
+                      {rev.review.shopName}
+                    </Typography>
+                    {user_type === "1" ? (
+                      <Typography className={classes.orderStatus} align="left">
+                        {rev.review.productName}
+                      </Typography>
+                    ) : (
+                      <Typography className={classes.orderStatus} align="left">
+                        {rev.review.retailProductName}
+                      </Typography>
+                    )}
+                  </Grid>
+                  <Rating
+                    name="simple-controlled"
+                    value={rev.review.stars}
+                    readOnly
+                    className={classes.rating}
+                  />
                 </Grid>
-                <Rating
-                  name="simple-controlled"
-                  value={rev.review.stars}
-                  readOnly
-                  className={classes.rating}
-                />
-              </Grid>
-              <Grid container className={classes.orderItems} direction="column">
-                <Grid item>
-                  <Typography className={classes.reviewText} align="left">
-                    {rev.review.review}
-                  </Typography>
+                <Grid
+                  container
+                  className={classes.orderItems}
+                  direction="column"
+                >
+                  <Grid item>
+                    <Typography className={classes.reviewText} align="left">
+                      {rev.review.review}
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-              <Grid container direction="row" alignItems="center">
-                <Grid item xs={12} sm={6}>
-                  <Typography
-                    variant="caption"
-                    display="block"
-                    gutterBottom
-                    align="left"
-                  >
-                    {new Date(rev.review.date).toLocaleDateString()}
-                  </Typography>
+                <Grid container direction="row" alignItems="center">
+                  <Grid item xs={12} sm={6}>
+                    <Typography
+                      variant="caption"
+                      display="block"
+                      gutterBottom
+                      align="left"
+                    >
+                      {new Date(rev.review.date).toLocaleDateString()}
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Paper>
-          ))}
+              </Paper>
+            ))
+          ) : (
+            <CircularProgress />
+          )}
           {review.length === 0 && (
             <Grid container direction="column" alignItems="center">
               <Imgix

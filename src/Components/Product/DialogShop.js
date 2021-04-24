@@ -63,14 +63,12 @@ export default function DialogShop(props) {
       data = JSON.stringify({
         product_id: id,
         quantity: props.qty,
-        shopId: {},
       });
     } else if (user_type == "0") {
       address = serverUrl + "/retail_cart/";
       data = JSON.stringify({
         retail_product_id: id,
         quantity: props.qty,
-        shopId: {},
       });
     }
     var config = {
@@ -93,6 +91,7 @@ export default function DialogShop(props) {
       });
   };
   console.log(props.wholesellers);
+  console.log(props.retailers);
   // let a = new Item("Lays and Nachos", "snacks", "", 128, 10);
   // const items = [a, a, a, a, a, a, a, a, a, a];
 
@@ -217,6 +216,7 @@ export default function DialogShop(props) {
                                 name="read-only"
                                 readOnly
                                 value={wholesaler.rating}
+                                precision={0.1}
                                 //className={classes.rating}
                               />
                             </Grid>
@@ -306,6 +306,7 @@ export default function DialogShop(props) {
                                 name="read-only"
                                 readOnly
                                 value={retailer.rating}
+                                precision={0.1}
                                 //className={classes.rating}
                               />
                             </Grid>

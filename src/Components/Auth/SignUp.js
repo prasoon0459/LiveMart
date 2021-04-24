@@ -30,6 +30,10 @@ const roles = [
     value: "wholesaler",
     label: "Wholesaler",
   },
+  {
+    value: "delivery",
+    label: "Delivery Person",
+  },
 ];
 
 const useStyles = makeStyles((theme) => ({

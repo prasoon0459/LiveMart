@@ -335,7 +335,7 @@ const Cart = () => {
                                   align="left"
                                   className={classes.cartItemTitle}
                                 >
-                                  {product.item.retailProductId.name}
+                                  {product.item.retailProductName}
                                 </Typography>
                               )}
                               {/* <Typography

@@ -7,6 +7,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import PaymentForm from "./PaymentForm";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Review from "./Review";
 import {
   FormControl,
@@ -98,9 +99,10 @@ export default function Checkout(props) {
   const products = props.location.cartItems;
   const [shopNames, setShopNames] = React.useState([]);
   const [shops, setShops] = React.useState([]);
-  const [order_id, setOrderId] = React.useState("Getting your orderID");
+  const [order_id, setOrderId] = React.useState("Getting your orderId");
   const [pickUpDates, setPickupDates] = React.useState([]);
   const [pickUpDatesReq, setPickupDatesReq] = React.useState([]);
+  const user_type = localStorage.getItem("usertype");
   const [address, setAddress] = React.useState({
     firstName: null,
     lastName: null,
@@ -591,14 +593,26 @@ export default function Checkout(props) {
         mode: mode,
       });
     }
-    var config = {
-      method: "post",
-      url: serverUrl + "/create_transaction/",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
+    var config = {};
+    if (user_type === "1") {
+      config = {
+        method: "post",
+        url: serverUrl + "/create_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    } else {
+      config = {
+        method: "post",
+        url: serverUrl + "/create_retail_transaction/",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    }
 
     axios(config)
       .then(function (response) {
@@ -693,20 +707,24 @@ export default function Checkout(props) {
           <React.Fragment>
             {activeStep === steps.length ? (
               <React.Fragment>
-                <Imgix
-                  src={check}
-                  width="100"
-                  height="100"
-                  imgixParams={{
-                    fit: "fit",
-                    fm: "gif",
-                  }}
-                ></Imgix>
+                {order_id === "Getting your orderId" ? (
+                  <CircularProgress />
+                ) : (
+                  <Imgix
+                    src={check}
+                    width="100"
+                    height="100"
+                    imgixParams={{
+                      fit: "fit",
+                      fm: "gif",
+                    }}
+                  ></Imgix>
+                )}
                 <Typography variant="h5" gutterBottom>
                   Thank you for your order.
                 </Typography>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Order No: #{order_id}
+                  Order No#: {order_id}
                 </Typography>
                 <Typography variant="subtitle1">
                   We have emailed your order confirmation, and will send you an

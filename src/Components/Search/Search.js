@@ -26,6 +26,7 @@ const {
   Card,
   Dialog,
   Slide,
+  CircularProgress,
 } = require("@material-ui/core");
 const { default: Filter } = require("./Filter");
 

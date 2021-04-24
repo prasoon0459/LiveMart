@@ -36,20 +36,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getDate(date) {
-  var d = new Date(date);
-  var dd = d.getDate();
+// function getDate(date) {
+//   var d = new Date(date);
+//   var dd = d.getDate();
 
-  var mm = d.getMonth() + 1;
-  var yyyy = d.getFullYear();
-  if (dd < 10) {
-    dd = "0" + dd;
-  }
-  if (mm < 10) {
-    mm = "0" + mm;
-  }
-  return dd + "/" + mm + "/" + yyyy + " " + d.getHours() + ":" + d.getMinutes();
-}
+//   var mm = d.getMonth() + 1;
+//   var yyyy = d.getFullYear();
+//   if (dd < 10) {
+//     dd = "0" + dd;
+//   }
+//   if (mm < 10) {
+//     mm = "0" + mm;
+//   }
+//   return dd + "/" + mm + "/" + yyyy + " " + d.getHours() + ":" + d.getMinutes();
+// }
 
 export default function Review({
   cartItems,
@@ -64,6 +64,9 @@ export default function Review({
   const shopSet = new Set();
   const [shopNames, setShopNames] = React.useState([]);
   var shopTotal = 0;
+  const user_type = localStorage.getItem("usertype");
+  var date = new Date();
+  date.setDate(date.getDate() + 3);
 
   // React.useEffect(() => {
   //   cartItems.map((cartItem) => {
@@ -108,7 +111,10 @@ export default function Review({
                 .filter((product) => product.item.shopName === shopName)
                 .map((cartItem) => {
                   shopTotal +=
-                    cartItem.item.productPrice * cartItem.item.quantity;
+                    user_type === "1"
+                      ? cartItem.item.productPrice * cartItem.item.quantity
+                      : cartItem.item.retailProductPrice *
+                        cartItem.item.quantity;
                   return (
                     <Grid
                       container
@@ -143,7 +149,7 @@ export default function Review({
                             ? "Pickup Date: " +
                               pickUpDates[index].toLocaleDateString()
                             : "Expected Delivery : " +
-                              new Date().toLocaleDateString()}{" "}
+                              date.toLocaleDateString()}{" "}
                         </Typography>
                         <Typography align="left"></Typography>
                       </Grid>
@@ -151,19 +157,24 @@ export default function Review({
                       <List className={classes.list} disablePadding>
                         <ListItem
                           className={classes.listItem}
-                          key={cartItem.item.productName}
+                          key={cartItem.item.id}
                         >
                           <ListItemText
-                            primary={cartItem.item.productName}
+                            primary={cartItem.item.retailProductName}
                             secondary={
                               cartItem.item.quantity +
                               " " +
-                              cartItem.item.productId.unit
+                              cartItem.item.retailProductId.productId.unit
                             }
                           />
                           <Typography variant="body2">
-                            {cartItem.item.productPrice *
-                              cartItem.item.quantity}
+                            {user_type === "1"
+                              ? cartItem.item.productPrice *
+                                cartItem.item.quantity
+                              : cartItem.item.retailProductPrice *
+                                cartItem.item.quantity}
+                            {/* {cartItem.item.productPrice *
+                              cartItem.item.quantity} */}
                           </Typography>
                         </ListItem>
                       </List>{" "}

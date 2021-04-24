@@ -93,15 +93,27 @@ const Orders = () => {
 
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  const user_type = localStorage.getItem("usertype");
 
   const getTransactions = () => {
-    var config = {
-      method: "get",
-      url: serverUrl + "/transactions/?b=" + username,
-      headers: {
-        Authorization: "JWT " + token,
-      },
-    };
+    var config = {};
+    if (user_type === "1") {
+      config = {
+        method: "get",
+        url: serverUrl + "/transactions/?b=" + username,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    } else {
+      config = {
+        method: "get",
+        url: serverUrl + "/retail_transactions/?b=" + username,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    }
 
     axios(config)
       .then(function (response) {
@@ -200,15 +212,25 @@ const Orders = () => {
               </Grid>
               <Grid container className={classes.orderItems} direction="column">
                 <Grid item>
-                  {order.item.cartItems.map((item) => (
-                    <Typography align="left">
-                      {item.productName +
-                        " - " +
-                        item.quantity +
-                        " " +
-                        item.productId.unit}
-                    </Typography>
-                  ))}
+                  {user_type === "1"
+                    ? order.item.cartItems.map((item) => (
+                        <Typography align="left">
+                          {item.productName +
+                            " - " +
+                            item.quantity +
+                            " " +
+                            item.productId.unit}
+                        </Typography>
+                      ))
+                    : order.item.retailCartItems.map((item) => (
+                        <Typography align="left">
+                          {item.retailProductName +
+                            " - " +
+                            item.quantity +
+                            " " +
+                            item.retailProductId.productId.unit}
+                        </Typography>
+                      ))}
                 </Grid>
               </Grid>
               <Grid container direction="row" alignItems="center">

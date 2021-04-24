@@ -98,13 +98,19 @@ const Reviews = (props) => {
   const token = localStorage.getItem("token");
   const productName = localStorage.getItem("productName");
   const name = localStorage.getItem("name");
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  //const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [wholesaler, setWholesaler] = React.useState({});
+  const [retailer, setRetailer] = React.useState({});
+  const user_type = localStorage.getItem("usertype");
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
     setShopIndex(index);
-    setWholesaler(shops[index]);
+    if (user_type === "1") {
+      setWholesaler(shops[index]);
+    } else {
+      setRetailer(shops[index]);
+    }
+    console.log(retailer);
   };
 
   const setProductReview = (e) => {
@@ -112,22 +118,39 @@ const Reviews = (props) => {
   };
 
   const handlePostReview = () => {
-    var data = JSON.stringify({
-      productId: wholesaler.url,
-      stars: rating,
-      review: review,
-    });
-
-    var config = {
-      method: "post",
-      url: serverUrl + "/reviews/",
-      headers: {
-        Authorization: "JWT " + token,
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-
+    var data = JSON.stringify({});
+    var config = {};
+    if (user_type === "1") {
+      data = JSON.stringify({
+        productId: wholesaler.url,
+        stars: rating,
+        review: review,
+      });
+      config = {
+        method: "post",
+        url: serverUrl + "/reviews/",
+        headers: {
+          Authorization: "JWT " + token,
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    } else {
+      data = JSON.stringify({
+        retailProductId: retailer.url,
+        stars: rating,
+        review: review,
+      });
+      config = {
+        method: "post",
+        url: serverUrl + "/retail_reviews/",
+        headers: {
+          Authorization: "JWT " + token,
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
+    }
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
@@ -138,13 +161,24 @@ const Reviews = (props) => {
   };
 
   const getReviews = () => {
-    var config = {
-      method: "get",
-      url: serverUrl + "/reviews/?p=" + productName,
-      headers: {
-        Authorization: "JWT " + token,
-      },
-    };
+    var config = {};
+    if (user_type == "1") {
+      config = {
+        method: "get",
+        url: serverUrl + "/reviews/?p=" + productName,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    } else {
+      config = {
+        method: "get",
+        url: serverUrl + "/retail_reviews/?p=" + productName,
+        headers: {
+          Authorization: "JWT " + token,
+        },
+      };
+    }
 
     axios(config)
       .then(function (response) {
@@ -273,36 +307,69 @@ const Reviews = (props) => {
                     {name}
                   </Typography>
                 </Box>
-                <Grid container item xs={6}>
-                  <TextField
-                    id="wholesaler"
-                    fullWidth
-                    select
-                    label="Select Wholesaler"
-                    onClick={() => setShops(props.shops)}
-                    InputLabelProps={{
-                      className: classes.floatingLabelFocusStyle,
-                    }}
-                    variant="outlined"
-                  >
-                    {shops.length > 0
-                      ? shops.map((option, index) => {
-                          return (
-                            <MenuItem
-                              key={option.id}
-                              value={option.shopName}
-                              selected={index === shopIndex}
-                              onClick={(event) =>
-                                handleMenuItemClick(event, index)
-                              }
-                            >
-                              {option.shopName}
-                            </MenuItem>
-                          );
-                        })
-                      : null}
-                  </TextField>
-                </Grid>
+                {user_type === "1" ? (
+                  <Grid container item xs={6}>
+                    <TextField
+                      id="wholesaler"
+                      fullWidth
+                      select
+                      label="Select Wholesaler"
+                      onClick={() => setShops(props.shops)}
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                      }}
+                      variant="outlined"
+                    >
+                      {shops.length > 0
+                        ? shops.map((option, index) => {
+                            return (
+                              <MenuItem
+                                key={option.id}
+                                value={option.shopName}
+                                selected={index === shopIndex}
+                                onClick={(event) =>
+                                  handleMenuItemClick(event, index)
+                                }
+                              >
+                                {option.shopName}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
+                    </TextField>
+                  </Grid>
+                ) : (
+                  <Grid container item xs={6}>
+                    <TextField
+                      id="retailer"
+                      fullWidth
+                      select
+                      label="Select Retailer"
+                      onClick={() => setShops(props.shops)}
+                      InputLabelProps={{
+                        className: classes.floatingLabelFocusStyle,
+                      }}
+                      variant="outlined"
+                    >
+                      {shops.length > 0
+                        ? shops.map((option, index) => {
+                            return (
+                              <MenuItem
+                                key={option.id}
+                                value={option.shopName}
+                                selected={index === shopIndex}
+                                onClick={(event) =>
+                                  handleMenuItemClick(event, index)
+                                }
+                              >
+                                {option.shopName}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
+                    </TextField>
+                  </Grid>
+                )}
                 <Box className={classes.new_postButtonBox}>
                   <Grid container direction="row-reverse">
                     <Button variant="outlined" onClick={handlePostReview}>

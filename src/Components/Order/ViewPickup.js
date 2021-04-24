@@ -79,6 +79,7 @@ const ViewPickup = (props) => {
   const order = props.location.order;
   const address = order.shopId.address;
   const shopName = order.shopId.name;
+  const user_type = localStorage.getItem("usertype");
 
   return (
     <Grid
@@ -149,24 +150,51 @@ const ViewPickup = (props) => {
                 </Typography>
                 <Divider></Divider>
                 <List className={classes.list} disablePadding>
-                  {order.cartItems.map((cartItem) => (
-                    <ListItem className={classes.listItem} key={cartItem.id}>
-                      <ListItemText
-                        primary={
-                          cartItem.productName +
-                          " (" +
-                          cartItem.quantity +
-                          " " +
-                          cartItem.productId.unit +
-                          " )"
-                        }
-                        // secondary={product.quantity + " Nos."}
-                      />
-                      <Typography variant="body2">
-                        $ {cartItem.productPrice * cartItem.quantity}
-                      </Typography>
-                    </ListItem>
-                  ))}
+                  {user_type === "1"
+                    ? order.cartItems.map((cartItem) => (
+                        <ListItem
+                          className={classes.listItem}
+                          key={cartItem.id}
+                        >
+                          <ListItemText
+                            primary={
+                              cartItem.productName +
+                              " (" +
+                              cartItem.quantity +
+                              " " +
+                              cartItem.productId.unit +
+                              " )"
+                            }
+                            // secondary={product.quantity + " Nos."}
+                          />
+                          <Typography variant="body2">
+                            $ {cartItem.productPrice * cartItem.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))
+                    : order.retailCartItems.map((retailCartItem) => (
+                        <ListItem
+                          className={classes.listItem}
+                          key={retailCartItem.id}
+                        >
+                          <ListItemText
+                            primary={
+                              retailCartItem.retailProductName +
+                              " (" +
+                              retailCartItem.quantity +
+                              " " +
+                              retailCartItem.retailProductId.productId.unit +
+                              " )"
+                            }
+                            // secondary={product.quantity + " Nos."}
+                          />
+                          <Typography variant="body2">
+                            ${" "}
+                            {retailCartItem.retailProductPrice *
+                              retailCartItem.quantity}
+                          </Typography>
+                        </ListItem>
+                      ))}
                 </List>
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />

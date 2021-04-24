@@ -13,6 +13,7 @@ import {
   Button,
   DialogActions,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import Order from "../../img/order.jfif";
 import Review from "../../img/review.jfif";
@@ -73,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Profile(props) {
   const classes = useStyles();
   const history = useHistory();
-  const [wallet, setWallet] = React.useState(300);
+  const [wallet, setWallet] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [add, setAdd] = React.useState(false);
   const [amount, setAmount] = React.useState("");
@@ -196,7 +197,8 @@ export default function Profile(props) {
                   component="h1"
                   variant="h4"
                 >
-                  Wallet Balance: ${wallet}
+                  Wallet Balance: $
+                  {wallet === "" ? <CircularProgress /> : wallet}
                 </Typography>
               </Grid>
               <Grid item xs={12}>
