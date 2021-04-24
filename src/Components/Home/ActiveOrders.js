@@ -7,7 +7,6 @@ import deliveryBoyAvatar from '../../img/deliveryBoyAvatar.svg'
 import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
-
     root: {
         margin: theme.spacing(1, 0, 1),
         padding: theme.spacing(2, 2, 2),
