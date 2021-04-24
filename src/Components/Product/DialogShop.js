@@ -40,6 +40,11 @@ const useStyles = makeStyles({
   shopName: {
     fontWeight: 700,
   },
+  wholesale_price:{
+    fontWeight:600,
+    fontSize:18,
+    margin:theme.spacing(1,0,1)
+  }
 });
 
 export default function DialogShop(props) {
@@ -181,10 +186,10 @@ export default function DialogShop(props) {
                             }}
                         />
                       </Box> */}
-                      <Grid container direction="row">
-                        <Box display="flex" width="100%" alignItems="center">
-                          <Box flexGrow={1}>
-                            <Grid container direction="column">
+                      <Grid container direction="row" spacing={2}>
+                        <Grid item>
+                          <Grid container direction="column">
+                            <Grid item>
                               <Typography
                                 align="left"
                                 variant="subtitle1"
@@ -192,6 +197,8 @@ export default function DialogShop(props) {
                               >
                                 {wholesaler.shopName}
                               </Typography>
+                            </Grid>
+                            <Grid item>
                               <Typography
                                 align="left"
                                 variant="body2"
@@ -199,68 +206,69 @@ export default function DialogShop(props) {
                               >
                                 {wholesaler.shopId.address}
                               </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                {wholesaler.shopLong}
-                              </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                $ {wholesaler.wholesale_price}
-                              </Typography>
-                              <Rating
-                                name="read-only"
-                                readOnly
-                                value={wholesaler.rating}
-                                //className={classes.rating}
-                              />
                             </Grid>
-                          </Box>
-                          <Box>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.distance}
+                            >
+                              {wholesaler.shopLong}
+                            </Typography>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.wholesale_price}
+                            >
+                              ₹ {wholesaler.wholesale_price}
+                            </Typography>
+                            <Rating
+                              name="read-only"
+                              readOnly
+                              value={wholesaler.rating}
+                            //className={classes.rating}
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid item>
                             <Fab
+                              padding={2}
                               onClick={() => handleAddtoCart(wholesaler.id)}
                               variant="contained"
                               size="medium"
                               color="secondary"
                             >
                               <AddShoppingCartOutlined></AddShoppingCartOutlined>
-                              Add to Cart
+                              <Typography>Add to Cart</Typography>
                             </Fab>
-                          </Box>
-                        </Box>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Card>
                 </Grid>
               ))
             ) : (
-              <Typography
-                align="center"
-                variant="body2"
-                className={classes.distance}
-              >
-                No available shops :(
-              </Typography>
-            )}
+                <Typography
+                  align="center"
+                  variant="body2"
+                  className={classes.distance}
+                >
+                  No available shops :(
+                </Typography>
+              )}
           </DialogContent>
         ) : (
-          <DialogContent dividers={scroll === "paper"}>
-            {props.retailers.length > 0 ? (
-              props.retailers.map((retailer, index) => (
-                <Grid item key={retailer.id} className={classes.item}>
-                  <Card variant="outlined" className={classes.card}>
-                    <Grid
-                      container
-                      justify="center"
-                      direction="column"
-                      alignItems="flex-start"
-                    >
-                      {/* <Box className={classes.itemImage}>
+            <DialogContent dividers={scroll === "paper"}>
+              {props.retailers.length > 0 ? (
+                props.retailers.map((retailer, index) => (
+                  <Grid item key={retailer.id} className={classes.item}>
+                    <Card variant="outlined" className={classes.card}>
+                      <Grid
+                        container
+                        justify="center"
+                        direction="column"
+                        alignItems="flex-start"
+                      >
+                        {/* <Box className={classes.itemImage}>
                         <Imgix
                             src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
                             width='30%'
@@ -270,47 +278,39 @@ export default function DialogShop(props) {
                             }}
                         />
                       </Box> */}
-                      <Grid container direction="row">
-                        <Box display="flex" width="100%" alignItems="center">
-                          <Box flexGrow={1}>
+                        <Grid container direction="row" spacing={2}>
+                          <Grid item>
                             <Grid container direction="column">
-                              <Typography
-                                align="left"
-                                variant="subtitle1"
-                                className={classes.shopName}
-                              >
-                                {retailer.shopName}
-                              </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.location}
-                              >
-                                {retailer.shopId.address}
-                              </Typography>
-                              {/* <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                {retailer.shopId.shop_long}
-                              </Typography> */}
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                $ {retailer.retail_price}
-                              </Typography>
-                              <Rating
-                                name="read-only"
-                                readOnly
-                                value={retailer.rating}
+                                <Typography
+                                  align="left"
+                                  variant="subtitle1"
+                                  className={classes.shopName}
+                                >
+                                  {retailer.shopName}
+                                </Typography>
+                                <Typography
+                                  align="left"
+                                  variant="body2"
+                                  className={classes.location}
+                                >
+                                  {retailer.shopId.address}
+                                </Typography>
+                                <Typography
+                                  align="left"
+                                  variant="body2"
+                                  className={classes.wholesale_price}
+                                >
+                                  ₹ {retailer.retail_price}
+                                </Typography>
+                                <Rating
+                                  name="read-only"
+                                  readOnly
+                                  value={retailer.rating}
                                 //className={classes.rating}
-                              />
-                            </Grid>
-                          </Box>
-                          <Box>
+                                />
+                              </Grid>
+                          </Grid>
+                          <Grid item>
                             <Fab
                               onClick={() => handleAddtoCart(retailer.id)}
                               variant="contained"
@@ -320,24 +320,23 @@ export default function DialogShop(props) {
                               <AddShoppingCartOutlined></AddShoppingCartOutlined>
                               Add to Cart
                             </Fab>
-                          </Box>
-                        </Box>
+                          </Grid>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <Typography
-                align="center"
-                variant="body2"
-                className={classes.distance}
-              >
-                No available shops :(
-              </Typography>
-            )}
-          </DialogContent>
-        )}
+                    </Card>
+                  </Grid>
+                ))
+              ) : (
+                  <Typography
+                    align="center"
+                    variant="body2"
+                    className={classes.distance}
+                  >
+                    No available shops :(
+                  </Typography>
+                )}
+            </DialogContent>
+          )}
         <DialogActions>
           <Button onClick={handleCancel} color="primary">
             Cancel
