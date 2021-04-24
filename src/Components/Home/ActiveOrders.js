@@ -85,6 +85,7 @@ const ActiveOrders = () => {
     } else {
       config = {
         method: "get",
+
         url: serverUrl + "/retail_transactions/?b=" + username,
         headers: {
           Authorization: "JWT " + token,
@@ -145,7 +146,7 @@ const ActiveOrders = () => {
         align="left"
         className={classes.title}
       >
-        YOUR RECENT PURCHASES
+        YOUR ACTIVE PURCHASES
       </Typography>
       <Grid container direction="row">
         {activeOrders.map((order) => (

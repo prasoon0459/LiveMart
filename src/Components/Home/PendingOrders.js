@@ -112,9 +112,15 @@ const PendingOrders = () => {
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          var temp = [...new_items];
-          temp = [...temp, { item: response.data[i] }];
-          new_items = temp;
+          if (
+            response.data[i].delStatus === "Order Placed" ||
+            response.data[i].delStatus === "Packed" ||
+            response.data[i].delStatus === "Out for Delivery"
+          ) {
+            var temp = [...new_items];
+            temp = [...temp, { item: response.data[i] }];
+            new_items = temp;
+          }
         }
         setTransactions(new_items);
       })
