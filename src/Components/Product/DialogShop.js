@@ -187,7 +187,7 @@ export default function DialogShop(props) {
                         />
                       </Box> */}
                       <Grid container direction="row" spacing={2}>
-                        <Grid item>
+                        <Grid item xs={9}>
                           <Grid container direction="column">
                             <Grid item>
                               <Typography
@@ -235,28 +235,19 @@ export default function DialogShop(props) {
                             >
                               {wholesaler.shopLong}
                             </Typography>
-                            <Typography
-                              align="left"
-                              variant="body2"
-                              className={classes.wholesale_price}
-                            >
-                              ₹ {wholesaler.wholesale_price}
-                            </Typography>
-                            <Rating
-                              name="read-only"
-                              readOnly
-                              value={wholesaler.rating}
-                              //className={classes.rating}
-                            />
                           </Grid>
+                          {wholesaler.quantity <= 0 && (
+                            <Typography color="red">Out of stock</Typography>
+                          )}
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={3}>
                           <Fab
                             padding={2}
                             onClick={() => handleAddtoCart(wholesaler.id)}
                             variant="contained"
                             size="medium"
                             color="secondary"
+                            disabled={wholesaler.quantity <= 0}
                           >
                             <AddShoppingCartOutlined></AddShoppingCartOutlined>
                             <Typography>Add to Cart</Typography>

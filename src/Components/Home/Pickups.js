@@ -207,7 +207,7 @@ const Pickups = () => {
         align="left"
         className={classes.title}
       >
-        Pickups Scheduled for Today
+        Pickups Scheduled
       </Typography>
       <Grid container direction="row">
         {transactions.length > 0 ? (

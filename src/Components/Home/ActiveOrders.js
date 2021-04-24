@@ -137,7 +137,7 @@ const ActiveOrders = () => {
         align="left"
         className={classes.title}
       >
-        YOUR RECENT PURCHASES
+        YOUR ACTIVE PURCHASES
       </Typography>
       <Grid container direction="row">
         {activeOrders.map((order) => (

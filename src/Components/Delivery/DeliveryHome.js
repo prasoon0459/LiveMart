@@ -20,6 +20,8 @@ import { CheckSharp } from "@material-ui/icons";
 import Imgix from "react-imgix";
 import no_orders from "../../img/no_orders.svg";
 import no_data from "../../img/no_data.svg";
+import axios from "axios";
+import serverUrl from "../../serverURL";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -95,11 +97,12 @@ const DeliveryHome = () => {
   const classes = useStyles({ mobile: mobile, sm: sm });
   const history = useHistory();
   const [transactions, setTransactions] = React.useState([]);
+  const [retailTransactions, setRetailTransactions] = React.useState([]);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   const [tab_value, setTabValue] = React.useState(0);
-  const [orders, setOrders] = React.useState(dummy_orders);
-  const [delivered_orders, setDeliveredOrders] = React.useState([]);
+  //const [orders, setOrders] = React.useState(dummy_orders);
+  // const [delivered_orders, setDeliveredOrders] = React.useState([]);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -109,15 +112,120 @@ const DeliveryHome = () => {
     setTabValue(index);
   };
 
-  const handleDeliveredClick = (index1) => {
-    const deliveredOrder = orders[index1];
-    const newOrders = orders.filter(function (value, index, arr) {
-      return index1 !== index;
+  // const handleDeliveredClick = (index1) => {
+  //   const deliveredOrder = orders[index1];
+  //   const newOrders = orders.filter(function (value, index, arr) {
+  //     return index1 !== index;
+  //   });
+  //   setOrders(newOrders);
+  //   deliveredOrder.status = 3;
+  //   setDeliveredOrders([...delivered_orders, deliveredOrder]);
+  // };
+
+  const handleTransactionClick = (order) => {
+    var data = JSON.stringify({
+      id: order.item.id,
     });
-    setOrders(newOrders);
-    deliveredOrder.status = 3;
-    setDeliveredOrders([...delivered_orders, deliveredOrder]);
+    var config = {
+      method: "post",
+      url: serverUrl + "/delivered_transaction/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
+
+  const handleRetailTransactionClick = (order) => {
+    var data = JSON.stringify({
+      id: order.item.id,
+    });
+    var config = {
+      method: "post",
+      url: serverUrl + "/delivered_retail_transaction/",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getRetailTransactionDetails = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/retail_transactions/?d=" + username,
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        const len = response.data.length;
+        var new_items = [];
+        for (var i = 0; i < len; i++) {
+          var temp = [...new_items];
+          temp = [...temp, { item: response.data[i] }];
+          new_items = temp;
+        }
+        setRetailTransactions(new_items);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const getTransactionDetails = () => {
+    var config = {
+      method: "get",
+      url: serverUrl + "/transactions/?d=" + username,
+      headers: {
+        Authorization: "JWT " + token,
+      },
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        const len = response.data.length;
+        var new_items = [];
+        for (var i = 0; i < len; i++) {
+          var temp = [...new_items];
+          temp = [...temp, { item: response.data[i] }];
+          new_items = temp;
+        }
+        setTransactions(new_items);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  React.useEffect(() => {
+    try {
+      getTransactionDetails();
+      getRetailTransactionDetails();
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
 
   return (
     <Grid
@@ -126,6 +234,7 @@ const DeliveryHome = () => {
       alignItems="center"
       className={classes.root}
     >
+      {console.log(transactions)}
       {/* <Paper className={classes.paper}> */}
       <Grid container direction="column" className={classes.paper}>
         <AppBar position="static">
@@ -151,61 +260,68 @@ const DeliveryHome = () => {
               alignItems="center"
               className={classes.toDeliverRoot}
             >
-              {orders.map(
-                (order, index) =>
-                  order.status === 2 && (
-                    <Paper className={classes.itemPaper}>
-                      <Grid container direction="column">
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.flexGrow}>
-                            <Typography
-                              align="left"
-                              className={classes.customerName}
-                            >
-                              {order.customer_name}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleDeliveredClick(index)}
-                              endIcon={<CheckSharp></CheckSharp>}
-                            >
-                              Mark Delivered
-                            </Button>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Typography align="left">
-                            {order.delivery_address}
-                          </Typography>
-                          <Typography align="left" className={classes.mobileNo}>
-                            {"Mobile No. : " + order.customer_mobile}
+              <Typography align="center" className={classes.customerName}>
+                Wholesale Orders
+              </Typography>
+              {transactions
+                .filter(
+                  (transaction) =>
+                    transaction.item.delStatus === "Out for Delivery"
+                )
+                .map((order, index) => (
+                  <Paper className={classes.itemPaper}>
+                    <Grid container direction="column">
+                      <Grid container direction="row" alignItems="center">
+                        <Grid item className={classes.flexGrow}>
+                          <Typography
+                            align="left"
+                            className={classes.customerName}
+                          >
+                            {order.item.name}
                           </Typography>
                         </Grid>
-                        <Grid
-                          container
-                          direction="row"
-                          className={classes.orderIDcontainer}
-                        >
-                          <Grid item>
-                            <Typography
-                              align="left"
-                              className={classes.orderID}
-                            >
-                              Order ID :{" "}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Typography align="left">{order.id}</Typography>
-                          </Grid>
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleTransactionClick(order)}
+                            endIcon={<CheckSharp></CheckSharp>}
+                          >
+                            Mark Delivered
+                          </Button>
                         </Grid>
                       </Grid>
-                    </Paper>
-                  )
-              )}
-              {orders.length === 0 && (
+                      <Grid item xs={4}>
+                        <Typography align="left">
+                          {order.item.deliveryAddress}
+                        </Typography>
+                        <Typography align="left" className={classes.mobileNo}>
+                          {"Mobile No. : +91" + order.item.phno}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        className={classes.orderIDcontainer}
+                      >
+                        <Grid item>
+                          <Typography align="left" className={classes.orderID}>
+                            Order ID :{" "}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography align="left">
+                            {"#" + order.item.id}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))}
+              {transactions.filter(
+                (transaction) =>
+                  transaction.item.delStatus === "Out for Delivery"
+              ).length === 0 && (
                 <Grid container direction="column" alignItems="center">
                   <Imgix
                     src={no_orders}
@@ -217,7 +333,84 @@ const DeliveryHome = () => {
                     }}
                   />
                   <Typography className={classes.emptyOrdersText} variant="h5">
-                    Your don't have any orders to Deliver.{" "}
+                    You don't have any wholesale orders to Deliver.{" "}
+                  </Typography>
+                </Grid>
+              )}
+              <Typography align="center" className={classes.customerName}>
+                Retail Orders
+              </Typography>
+              {retailTransactions
+                .filter(
+                  (transaction) =>
+                    transaction.item.delStatus === "Out for Delivery"
+                )
+                .map((order, index) => (
+                  <Paper className={classes.itemPaper}>
+                    <Grid container direction="column">
+                      <Grid container direction="row" alignItems="center">
+                        <Grid item className={classes.flexGrow}>
+                          <Typography
+                            align="left"
+                            className={classes.customerName}
+                          >
+                            {order.item.name}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleRetailTransactionClick(order)}
+                            endIcon={<CheckSharp></CheckSharp>}
+                          >
+                            Mark Delivered
+                          </Button>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography align="left">
+                          {order.item.deliveryAddress}
+                        </Typography>
+                        <Typography align="left" className={classes.mobileNo}>
+                          {"Mobile No. : +91" + order.item.phno}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        className={classes.orderIDcontainer}
+                      >
+                        <Grid item>
+                          <Typography align="left" className={classes.orderID}>
+                            Order ID :{" "}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography align="left">
+                            {"#" + order.item.id}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))}
+              {retailTransactions.filter(
+                (transaction) =>
+                  transaction.item.delStatus === "Out for Delivery"
+              ).length === 0 && (
+                <Grid container direction="column" alignItems="center">
+                  <Imgix
+                    src={no_orders}
+                    width="400"
+                    height="400"
+                    imgixParams={{
+                      fit: "fit",
+                      fm: "svg",
+                    }}
+                  />
+                  <Typography className={classes.emptyOrdersText} variant="h5">
+                    You don't have any retail orders to Deliver.{" "}
                   </Typography>
                 </Grid>
               )}
@@ -230,62 +423,65 @@ const DeliveryHome = () => {
               alignItems="center"
               className={classes.toDeliverRoot}
             >
-              {delivered_orders.map(
-                (order, index) =>
-                  order.status === 3 && (
-                    <Paper className={classes.itemPaper}>
-                      <Grid container direction="column">
-                        <Grid container direction="row" alignItems="center">
-                          <Grid item className={classes.flexGrow}>
-                            <Typography
-                              align="left"
-                              className={classes.customerName}
-                            >
-                              {order.customer_name}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Button
-                              variant="outlined"
-                              disabled
-                              color="primary"
-                              onClick={() => handleDeliveredClick(index)}
-                              endIcon={<CheckSharp></CheckSharp>}
-                            >
-                              Delivered
-                            </Button>
-                          </Grid>
-                        </Grid>
-                        <Grid item xs={4}>
-                          <Typography align="left">
-                            {order.delivery_address}
-                          </Typography>
-                          <Typography align="left" className={classes.mobileNo}>
-                            {"Mobile No. : " + order.customer_mobile}
+              <Typography align="center" className={classes.customerName}>
+                Wholesale Orders
+              </Typography>
+              {transactions
+                .filter(
+                  (transaction) => transaction.item.delStatus === "Delivered"
+                )
+                .map((order, index) => (
+                  <Paper className={classes.itemPaper}>
+                    <Grid container direction="column">
+                      <Grid container direction="row" alignItems="center">
+                        <Grid item className={classes.flexGrow}>
+                          <Typography
+                            align="left"
+                            className={classes.customerName}
+                          >
+                            {order.item.name}
                           </Typography>
                         </Grid>
-                        <Grid
-                          container
-                          direction="row"
-                          className={classes.orderIDcontainer}
-                        >
-                          <Grid item>
-                            <Typography
-                              align="left"
-                              className={classes.orderID}
-                            >
-                              Order ID :{" "}
-                            </Typography>
-                          </Grid>
-                          <Grid item>
-                            <Typography align="left">{order.id}</Typography>
-                          </Grid>
+                        <Grid item>
+                          <Button
+                            variant="outlined"
+                            disabled
+                            color="primary"
+                            // onClick={() => handleDeliveredClick(index)}
+                            endIcon={<CheckSharp></CheckSharp>}
+                          >
+                            Delivered
+                          </Button>
                         </Grid>
                       </Grid>
-                    </Paper>
-                  )
-              )}
-              {delivered_orders.length === 0 && (
+                      <Grid item xs={4}>
+                        <Typography align="left">
+                          {order.item.deliveryAddress}
+                        </Typography>
+                        <Typography align="left" className={classes.mobileNo}>
+                          {"Mobile No. : +91" + order.item.phno}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        className={classes.orderIDcontainer}
+                      >
+                        <Grid item>
+                          <Typography align="left" className={classes.orderID}>
+                            Order ID :{" "}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography align="left">{order.item.id}</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))}
+              {transactions.filter(
+                (transaction) => transaction.item.delStatus === "Delivered"
+              ).length === 0 && (
                 <Grid container direction="column" alignItems="center">
                   <Imgix
                     src={no_data}
@@ -298,6 +494,80 @@ const DeliveryHome = () => {
                   />
                   <Typography className={classes.emptyOrdersText} variant="h5">
                     Your have no deliveries to show.{" "}
+                  </Typography>
+                </Grid>
+              )}
+              <Typography align="center" className={classes.customerName}>
+                Retail Orders
+              </Typography>
+              {retailTransactions
+                .filter(
+                  (transaction) => transaction.item.delStatus === "Delivered"
+                )
+                .map((order, index) => (
+                  <Paper className={classes.itemPaper}>
+                    <Grid container direction="column">
+                      <Grid container direction="row" alignItems="center">
+                        <Grid item className={classes.flexGrow}>
+                          <Typography
+                            align="left"
+                            className={classes.customerName}
+                          >
+                            {order.item.name}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            variant="outlined"
+                            disabled
+                            color="primary"
+                            // onClick={() => handleDeliveredClick(index)}
+                            endIcon={<CheckSharp></CheckSharp>}
+                          >
+                            Delivered
+                          </Button>
+                        </Grid>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography align="left">
+                          {order.item.deliveryAddress}
+                        </Typography>
+                        <Typography align="left" className={classes.mobileNo}>
+                          {"Mobile No. : +91" + order.item.phno}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        className={classes.orderIDcontainer}
+                      >
+                        <Grid item>
+                          <Typography align="left" className={classes.orderID}>
+                            Order ID :{" "}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography align="left">{order.item.id}</Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))}
+              {retailTransactions.filter(
+                (transaction) => transaction.item.delStatus === "Delivered"
+              ).length === 0 && (
+                <Grid container direction="column" alignItems="center">
+                  <Imgix
+                    src={no_data}
+                    width="300"
+                    height="300"
+                    imgixParams={{
+                      fit: "fit",
+                      fm: "svg",
+                    }}
+                  />
+                  <Typography className={classes.emptyOrdersText} variant="h5">
+                    Your have no retail deliveries to show.{" "}
                   </Typography>
                 </Grid>
               )}

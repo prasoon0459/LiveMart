@@ -118,10 +118,10 @@ const SellerViewOrder = (props) => {
     new Date(order.expectedDate)
   );
   const [orderStatus, setOrderStatus] = React.useState(
-    order.delStatus === "Packed"
-      ? 2
-      : order.delStatus === "Out for Delivery"
+    (order.delStatus === "Packed" ? 2 : order.delStatus === "Out for Delivery")
       ? 3
+      : order.delStatus === "Delivered"
+      ? 4
       : 1
   );
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -449,7 +449,7 @@ const SellerViewOrder = (props) => {
               <Typography variant="h6" className={classes.trackingHead}>
                 Tracking Details
               </Typography>
-              <Grid item className={classes.dateMargin}>
+              {/* <Grid item className={classes.dateMargin}>
                 <Grid container direction="row" alignItems="center">
                   <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -470,7 +470,7 @@ const SellerViewOrder = (props) => {
                     </MuiPickersUtilsProvider>
                   </Grid>
                 </Grid>
-              </Grid>
+              </Grid> */}
               <Grid container direction="row" justify="center">
                 <Grid item xs={12}>
                   <Stepper
