@@ -41,7 +41,7 @@ const MainSlider = (props) => {
                     <div className={classes.image} >
                         <Imgix
                             // sizes="(min-width: 960px) 33vw, (min-width: 640px) 50vw, 100vw"
-                            src={image}
+                            src={image.image}
                             imgixParams={{
                                 fit: "crop",
                                 fm: "jpg"
