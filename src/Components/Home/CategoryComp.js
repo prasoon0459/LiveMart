@@ -43,11 +43,10 @@ const useStyles = makeStyles({
   },
 });
 
-const CategoryComp = (props) => {
+const CategoryComp = () => {
   const screen = UseWindowDimensions().screen;
   const mobile = screen === "xs";
   const sm = screen === "sm";
-  console.log(mobile);
   const history = useHistory();
   const token = localStorage.getItem("token");
   const [categories, setCategories] = React.useState([]);
@@ -64,7 +63,6 @@ const CategoryComp = (props) => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         setCategories(response.data);
       })
       .catch(function (error) {

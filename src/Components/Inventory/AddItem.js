@@ -21,9 +21,7 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  TextField,
 } from "@material-ui/core";
-import { AddSharp, RemoveSharp } from "@material-ui/icons";
 import React from "react";
 import theme from "../../theme";
 import axios from "axios";
@@ -90,99 +88,6 @@ const columns = [
   },
 ];
 
-// const rows = [
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-//   {
-//     name: "Lifeboy Soap",
-//     brand: "Lifeboy",
-//     unit: "1 unit",
-//     category: "Personal Care",
-//   },
-//   { name: "Banana", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Apple", brand: "NA", unit: "1 unit", category: "Fruits" },
-//   { name: "Amul Milk", brand: "Amul", unit: "0.5lr", category: "Dairy" },
-//   {
-//     name: "Kurkure Masala Munch",
-//     brand: "Kurkure",
-//     unit: "100gm",
-//     category: "Snacks and Beverages",
-//   },
-// ];
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -197,7 +102,6 @@ const AddItem = () => {
   const [price, setPrice] = React.useState();
   const token = localStorage.getItem("token");
   const [rows, setRows] = React.useState([]);
-  //const username = localStorage.getItem("username");
 
   const getDefaultProducts = () => {
     var config = {
@@ -332,7 +236,7 @@ const AddItem = () => {
                             <TableCell key={column.id} align={column.align}>
                               {index === 3 && (
                                 <Button
-                                  onClick={() => handleItemAdd(index_item)}
+                                  onClick={() => handleItemAdd(page*rowsPerPage+index_item)}
                                   variant="outlined"
                                   color="secondary"
                                 >
@@ -383,7 +287,6 @@ const AddItem = () => {
           </Typography>
           <DialogContent>
             <Grid container direction="column">
-              <Typography>Quantity:</Typography>
               <Grid
                 className={classes.qtyroot}
                 container
@@ -411,16 +314,13 @@ const AddItem = () => {
                         position="end"
                       >
                         <div style={{ color: theme.palette.text.primary }}>
-                          {rows.length > 0 ? rows[selectedItem].unit : null}
+                          {rows.length > 0 ? 'x '+rows[selectedItem].unit : null}
                         </div>
                       </InputAdornment>
                     }
-                    labelWidth={140}
+                    labelWidth={80}
                   />
                 </FormControl>
-                <Typography className={classes.unitText}>
-                  {rows.length > 0 ? rows[selectedItem].unit : null}
-                </Typography>
               </Grid>
               <FormControl
                 className={classes.form}

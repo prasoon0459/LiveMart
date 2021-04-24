@@ -23,6 +23,7 @@ import {
   LocationOnOutlined,
   Notifications,
   Person,
+  PostAdd,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@material-ui/icons";
@@ -137,6 +138,7 @@ const Header = ({handleLogout}) => {
   const isMenuOpen = Boolean(anchorEl);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
+  const user_type = localStorage.getItem('usertype');
   
   const [cartNo, setCartNo] = React.useState(0);
 
@@ -196,7 +198,8 @@ const Header = ({handleLogout}) => {
   };
 
   React.useEffect(() => {
-    getCartItems();
+    if(user_type==='0' ||user_type==='1')
+      getCartItems();
   }, []);
 
   const menuId = "primary-search-account-menu";
@@ -216,18 +219,22 @@ const Header = ({handleLogout}) => {
         <Person className={classes.menuIcon} />
         <Typography>My Profile</Typography>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
+      {(user_type==='0'||user_type==='1')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/orders">
         <Folder className={classes.menuIcon}></Folder>
         <Typography>My Orders</Typography>
-      </MenuItem>
-      <MenuItem
-        onClick={handleMenuClose}
-        component={NavLink}
-        to="/my_inventory"
-      >
+      </MenuItem>}
+      {(user_type==='1'||user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/orders_from_me">
+        <Folder className={classes.menuIcon}></Folder>
+        <Typography>Orders from Me</Typography>
+      </MenuItem>}
+      {(user_type==='1'||user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/my_inventory" >
         <Assignment className={classes.menuIcon} />
         <Typography>My Inventory</Typography>
-      </MenuItem>
+      </MenuItem>}
+      {(user_type==='2')&&<MenuItem onClick={handleMenuClose} component={NavLink} to="/add_item" >
+        <PostAdd className={classes.menuIcon} />
+        <Typography>Add to Inventory</Typography>
+      </MenuItem>}
       <MenuItem onClick={() => handleLogout(history)}>
         <ExitToApp className={classes.menuIcon}></ExitToApp>
         <Typography>Logout</Typography>
@@ -267,12 +274,12 @@ const Header = ({handleLogout}) => {
                 <Grid item className={classes.headerLinks}>
                   <Button
                     component={NavLink}
-                    to="/categories"
+                    to={user_type==='0'||user_type==='1'?"/categories":user_type==='2'?'/my_inventory':'/'}
                     color="inherit"
                     paddingLeft={3}
                   >
                     <Typography className={classes.navButton}>
-                      Categories
+                      {user_type==='0'||user_type==='1'?'Categories':user_type==='2'?'My Inventory':'/'}
                     </Typography>
                   </Button>
                 </Grid>
@@ -286,7 +293,7 @@ const Header = ({handleLogout}) => {
                 direction="row"
                 className={classes.container}
               >
-                <Grid item className={classes.bar}>
+                {(user_type==='0'||user_type==='1')&&<Grid item className={classes.bar}>
                   <Grid
                     container
                     alignItems="center"
@@ -305,22 +312,9 @@ const Header = ({handleLogout}) => {
                       onKeyPress={handleSearchSubmit}
                     />
                   </Grid>
-                </Grid>
-
-                <Grid item className={classes.headerLinks}>
-                  <IconButton
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                    component={NavLink}
-                    to="/notifs"
-                    paddingLeft={3}
-                  >
-                    <Badge badgeContent={17} color="secondary">
-                      <Notifications />
-                    </Badge>
-                  </IconButton>
-                </Grid>
-                <Grid item className={classes.headerLinks}>
+                </Grid>}
+                
+                {(user_type==='0'||user_type==='1')&&<Grid item className={classes.headerLinks}>
                   <IconButton
                     component={NavLink}
                     to="/mycart"
@@ -335,7 +329,7 @@ const Header = ({handleLogout}) => {
                       <ShoppingCartOutlined />
                     </Badge>
                   </IconButton>
-                </Grid>
+                </Grid>}
                 <Grid item className={classes.headerLinks}>
                   <IconButton
                     edge="end"

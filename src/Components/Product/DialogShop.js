@@ -40,6 +40,11 @@ const useStyles = makeStyles({
   shopName: {
     fontWeight: 700,
   },
+  wholesale_price:{
+    fontWeight:600,
+    fontSize:18,
+    margin:theme.spacing(1,0,1)
+  }
 });
 
 export default function DialogShop(props) {
@@ -180,10 +185,10 @@ export default function DialogShop(props) {
                             }}
                         />
                       </Box> */}
-                      <Grid container direction="row">
-                        <Box display="flex" width="100%" alignItems="center">
-                          <Box flexGrow={1}>
-                            <Grid container direction="column">
+                      <Grid container direction="row" spacing={2}>
+                        <Grid item>
+                          <Grid container direction="column">
+                            <Grid item>
                               <Typography
                                 align="left"
                                 variant="subtitle1"
@@ -191,6 +196,8 @@ export default function DialogShop(props) {
                               >
                                 {wholesaler.shopName}
                               </Typography>
+                            </Grid>
+                            <Grid item>
                               <Typography
                                 align="left"
                                 variant="body2"
@@ -220,19 +227,40 @@ export default function DialogShop(props) {
                                 //className={classes.rating}
                               />
                             </Grid>
-                          </Box>
-                          <Box>
-                            <Fab
-                              onClick={() => handleAddtoCart(wholesaler.id)}
-                              variant="contained"
-                              size="medium"
-                              color="secondary"
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.distance}
                             >
-                              <AddShoppingCartOutlined></AddShoppingCartOutlined>
-                              Add to Cart
-                            </Fab>
-                          </Box>
-                        </Box>
+                              {wholesaler.shopLong}
+                            </Typography>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.wholesale_price}
+                            >
+                              ₹ {wholesaler.wholesale_price}
+                            </Typography>
+                            <Rating
+                              name="read-only"
+                              readOnly
+                              value={wholesaler.rating}
+                              //className={classes.rating}
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Fab
+                            padding={2}
+                            onClick={() => handleAddtoCart(wholesaler.id)}
+                            variant="contained"
+                            size="medium"
+                            color="secondary"
+                          >
+                            <AddShoppingCartOutlined></AddShoppingCartOutlined>
+                            <Typography>Add to Cart</Typography>
+                          </Fab>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Card>
@@ -270,59 +298,50 @@ export default function DialogShop(props) {
                             }}
                         />
                       </Box> */}
-                      <Grid container direction="row">
-                        <Box display="flex" width="100%" alignItems="center">
-                          <Box flexGrow={1}>
-                            <Grid container direction="column">
-                              <Typography
-                                align="left"
-                                variant="subtitle1"
-                                className={classes.shopName}
-                              >
-                                {retailer.shopName}
-                              </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.location}
-                              >
-                                {retailer.shopId.address}
-                              </Typography>
-                              {/* <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                {retailer.shopId.shop_long}
-                              </Typography> */}
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                $ {retailer.retail_price}
-                              </Typography>
-                              <Rating
-                                name="read-only"
-                                readOnly
-                                value={retailer.rating}
-                                precision={0.1}
-                                //className={classes.rating}
-                              />
-                            </Grid>
-                          </Box>
-                          <Box>
-                            <Fab
-                              onClick={() => handleAddtoCart(retailer.id)}
-                              variant="contained"
-                              size="medium"
-                              color="secondary"
+                      <Grid container direction="row" spacing={2}>
+                        <Grid item>
+                          <Grid container direction="column">
+                            <Typography
+                              align="left"
+                              variant="subtitle1"
+                              className={classes.shopName}
                             >
-                              <AddShoppingCartOutlined></AddShoppingCartOutlined>
-                              Add to Cart
-                            </Fab>
-                          </Box>
-                        </Box>
+                              {retailer.shopName}
+                            </Typography>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.location}
+                            >
+                              {retailer.shopId.address}
+                            </Typography>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.wholesale_price}
+                            >
+                              ₹ {retailer.retail_price}
+                            </Typography>
+                            <Rating
+                              name="read-only"
+                              readOnly
+                              value={retailer.rating}
+                              precision={0.1}
+                              //className={classes.rating}
+                            />
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <Fab
+                            onClick={() => handleAddtoCart(retailer.id)}
+                            variant="contained"
+                            size="medium"
+                            color="secondary"
+                          >
+                            <AddShoppingCartOutlined></AddShoppingCartOutlined>
+                            Add to Cart
+                          </Fab>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Card>

@@ -43,7 +43,6 @@ const App = () => {
   const handleToken = (props) => {
     setToken(props);
     setUser(props);
-    console.log(props);
   };
 
   function getHeader() {
@@ -124,7 +123,6 @@ const App = () => {
             {AuthenticatedComponent(<Profile token={token} />)}
           </Route>
           <Route path="/mycart">
-            {/* components={(getHeader(), AuthenticatedComponent(Cart))} */}
             {getHeader()}
             {AuthenticatedComponent(<Cart></Cart>)}
           </Route>
@@ -132,17 +130,13 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Notifs></Notifs>)}
           </Route>
-          <Route
-            path="/track"
-            component={(getHeader(), AuthenticatedComponent(TrackOrder))}
-          />
+          <Route path="/track">
+            {getHeader()}
+            {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
+          </Route>
           {/* {getHeader()}
             {AuthenticatedComponent(<TrackOrder></TrackOrder>)}
           </Route> */}
-          <Route path="/track" component={(getHeader(), TrackOrder)} />
-          {/* {getHeader()} */}
-          {/* <TrackOrder></TrackOrder> */}
-          {/* </Route> */}
           <Route
             path="/pickup"
             component={(getHeader(), AuthenticatedComponent(ViewPickup))}
