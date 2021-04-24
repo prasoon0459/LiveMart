@@ -44,9 +44,18 @@ const Home = () => {
   const user_type = localStorage.getItem("usertype");
   const classes = useStyles();
   const images = [
-    "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/3/20/70b0cd7c-1f13-4d91-9bac-ac6ba1a6963e1616251205883-desktop-banner-2.jpg",
-    "https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/3/17/d5db02ca-8ca7-4258-a4e7-ee5f6b3a357b1615966448151-holi-desktop-banner.jpg",
-    "https://www.grocerysumo.com/media/slider/home/fsfhjllz_vegetables-banner.png",
+    {
+      image:'https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,h=560/layout-engine/2021-04/Daily-Essentials-Store_web_0.jpg',
+      route:''
+    },
+    {
+      image:'https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,w=1908,h=954/layout-engine/2021-04/Home-Page-Banner_1320x660_Personal-Care-Products-1.jpg',
+      route:''
+    },
+    {
+      image:'https://www.bigbasket.com/media/uploads/banner_images/Green_Banganapilli_DT_5_1130x400_9th-24th.jpg',
+      route:''
+    }
   ];
 
   const settings = {
