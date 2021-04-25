@@ -94,18 +94,23 @@ const useStyles = makeStyles({
     color: theme.palette.text.hint,
   },
   cartItemPrice: {
-    fontWeight: 600,
-    margin: theme.spacing(2, 0, 2),
-    fontSize: "16",
+    // fontWeight: 600,
+    fontSize:18,
+    margin: theme.spacing(1, 2,0),
   },
   cartitemQty: {
-    margin: (props) =>
-      props.mobile ? theme.spacing(1, 1, 0) : theme.spacing(1, 1, 1),
+    fontSize:18,
+    margin: theme.spacing(0, 2,0),
   },
   cartItemQtyInfo: {
     color: theme.palette.text.hint,
     fontSize: 12,
     margin: theme.spacing(0, 1, 0),
+  },
+  cartItemTotalCost:{
+    fontSize:18,
+    fontWeight:600,
+    margin:theme.spacing(1,0,0)
   },
   billCostInfo: {
     color: theme.palette.text.hint,
@@ -385,13 +390,13 @@ const Cart = () => {
                               </Typography>
                               <Typography
                                 variant="body2"
-                                className={classes.cartItemPrice}
+                                className={classes.cartitemQty}
                               >
                                 Quantity: {product.item.quantity}
                               </Typography>
                               <Typography
-                                variant="body2"
-                                className={classes.cartItemPrice}
+                                variant="subtitle1"
+                                className={classes.cartItemTotalCost}
                               >
                                 Total Product Cost: ${" "}
                                 {user_type === "1"

@@ -217,7 +217,7 @@ const Orders = () => {
                           {item.productName +
                             " - " +
                             item.quantity +
-                            " " +
+                            " x " +
                             item.productId.unit}
                         </Typography>
                       ))
@@ -226,7 +226,7 @@ const Orders = () => {
                           {item.retailProductName +
                             " - " +
                             item.quantity +
-                            " " +
+                            " x " +
                             item.retailProductId.productId.unit}
                         </Typography>
                       ))}

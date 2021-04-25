@@ -267,7 +267,7 @@ export default function Inventory() {
 
     axios(config)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log('inventory',JSON.stringify(response.data));
         var result = [];
         if (user_type === "2") {
           result = response.data[0].products;

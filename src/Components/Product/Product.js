@@ -166,7 +166,7 @@ const Product = (props) => {
       >
         <Grid item>
           <Typography variant="subtitle1" className={classes.itemNavigation}>
-            Home / Products / Milk / Amul Milk
+            Home / Products / {product.name}
           </Typography>
         </Grid>
       </Grid>
@@ -178,7 +178,7 @@ const Product = (props) => {
         alignItems="flex-start"
         className={classes.mainContainer}
       >
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} lg={5}>
           <Grid
             container
             direction={
@@ -225,7 +225,7 @@ const Product = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} lg={5}>
           <Grid
             container
             direction="column"
@@ -326,7 +326,7 @@ const Product = (props) => {
                     className={classes.cartItemQtyInfo}
                     variant="body2"
                   >
-                    Note - ({quantity} {product.unit})
+                    Note - ({quantity} x {product.unit})
                   </Typography>
                 </Grid>
               </Grid>

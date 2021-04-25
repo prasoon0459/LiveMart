@@ -223,7 +223,7 @@ const TrackOrder = (props) => {
                             primary={retailCartItem.retailProductName}
                             secondary={
                               retailCartItem.quantity +
-                              " " +
+                              " x " +
                               retailCartItem.retailProductId.productId.unit
                             }
                           />
@@ -239,7 +239,7 @@ const TrackOrder = (props) => {
                           <ListItemText
                             primary={product.productName}
                             secondary={
-                              product.quantity + " " + product.productId.unit
+                              product.quantity + " x " + product.productId.unit
                             }
                           />
                           <Typography variant="body2">
