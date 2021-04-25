@@ -167,7 +167,7 @@ const ViewPickup = (props) => {
                         fm: "gif",
                       }}
                     ></Imgix>
-                    <Typography>Order Placed</Typography>
+                    <Typography>{order.delStatus}</Typography>
                     {order.delStatus === "Order Placed" && (
                       <Button
                         variant="contained"
@@ -222,7 +222,7 @@ const ViewPickup = (props) => {
                             // secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            $ {cartItem.productPrice * cartItem.quantity}
+                            ₹ {cartItem.productPrice * cartItem.quantity}
                           </Typography>
                         </ListItem>
                       ))
@@ -243,7 +243,7 @@ const ViewPickup = (props) => {
                             // secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            ${" "}
+                            ₹{" "}
                             {retailCartItem.retailProductPrice *
                               retailCartItem.quantity}
                           </Typography>
@@ -253,7 +253,7 @@ const ViewPickup = (props) => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_amount}
+                    ₹ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>

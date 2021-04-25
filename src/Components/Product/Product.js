@@ -266,27 +266,6 @@ const Product = (props) => {
               justify="flex-start"
               alignItems="flex-start"
             >
-              {/* <Grid item xs ={12} sm={6}>
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        fullWidth
-                                        label="Variant"
-                                        value={variant}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                            style: { color: theme.palette.text.primary},
-                                        }}
-                                        className={classes.variantTextField}
-                                        onChange={handleProductVariantChange}
-                                        >
-                                        {variants.map((option) => (
-                                            <MenuItem key={option} value={option}>
-                                            {option}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid> */}
               <Grid item xs={12} sm={6}>
                 <Grid
                   container

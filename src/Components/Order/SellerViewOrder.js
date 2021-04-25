@@ -390,7 +390,7 @@ const SellerViewOrder = (props) => {
                             secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            $ {product.retailProductPrice * product.quantity}
+                            ₹ {product.retailProductPrice * product.quantity}
                           </Typography>
                         </ListItem>
                       ))
@@ -401,7 +401,7 @@ const SellerViewOrder = (props) => {
                             secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            $ {product.productPrice * product.quantity}
+                            ₹ {product.productPrice * product.quantity}
                           </Typography>
                         </ListItem>
                       ))}
@@ -409,7 +409,7 @@ const SellerViewOrder = (props) => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_amount}
+                    ₹ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>

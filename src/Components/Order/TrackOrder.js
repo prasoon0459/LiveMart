@@ -228,7 +228,7 @@ const TrackOrder = (props) => {
                             }
                           />
                           <Typography variant="body2">
-                            ${" "}
+                            ₹{" "}
                             {retailCartItem.retailProductPrice *
                               retailCartItem.quantity}
                           </Typography>
@@ -243,7 +243,7 @@ const TrackOrder = (props) => {
                             }
                           />
                           <Typography variant="body2">
-                            $ {product.productPrice * product.quantity}
+                            ₹ {product.productPrice * product.quantity}
                           </Typography>
                         </ListItem>
                       ))}
@@ -251,7 +251,7 @@ const TrackOrder = (props) => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_amount}
+                    ₹ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>

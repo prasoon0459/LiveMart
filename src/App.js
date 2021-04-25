@@ -34,6 +34,7 @@ import AddItem from "./Components/Inventory/AddItem";
 import DeliveryHome from "./Components/Delivery/DeliveryHome";
 import Filter from "./Components/Search/Filter";
 import MyPickups from "./Components/Order/MyPickups";
+import OrdersFromMe from "./Components/Order/OrdersFromMe";
 
 const App = () => {
   const screen = UseWindowDimensions().screen;
@@ -149,6 +150,10 @@ const App = () => {
           <Route path="/orders">
             {getHeader()}
             {AuthenticatedComponent(<Orders></Orders>)}
+          </Route>
+          <Route path="/orders_from_me">
+            {getHeader()}
+            {AuthenticatedComponent(<OrdersFromMe></OrdersFromMe>)}
           </Route>
           <Route path="/reviews">
             {getHeader()}
