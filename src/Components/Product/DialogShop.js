@@ -14,6 +14,7 @@ import {
   Menu,
   MenuItem,
   Fab,
+  Paper,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { AddShoppingCartOutlined } from "@material-ui/icons";
@@ -35,10 +36,15 @@ const useStyles = makeStyles({
     padding: theme.spacing(1, 1, 1),
   },
   price: {
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
+    fontSize:18,
+    fontWeight:600
   },
   shopName: {
     fontWeight: 700,
+  },
+  flexGrow:{
+    flexGrow:1
   },
   wholesale_price: {
     fontWeight: 600,
@@ -168,26 +174,10 @@ export default function DialogShop(props) {
           <DialogContent dividers={scroll === "paper"}>
             {props.wholesellers.length > 0 ? (
               props.wholesellers.map((wholesaler, index) => (
-                <Grid item key={wholesaler.id} className={classes.item}>
-                  <Card variant="outlined" className={classes.card}>
-                    <Grid
-                      container
-                      justify="center"
-                      direction="column"
-                      alignItems="flex-start"
-                    >
-                      {/* <Box className={classes.itemImage}>
-                        <Imgix
-                            src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
-                            width='30%'
-                            imgixParams={{
-                            fit: "fit",
-                            fm: "jpg",
-                            }}
-                        />
-                      </Box> */}
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item xs={9}>
+                <Grid container direction='column' key={wholesaler.id} className={classes.item}>
+                  <Paper variant="outlined" className={classes.card}>
+                      <Grid container direction="column" >
+                        <Grid item >
                           <Grid container direction="column">
                             <Grid item>
                               <Typography
@@ -204,7 +194,8 @@ export default function DialogShop(props) {
                                 variant="body2"
                                 className={classes.location}
                               >
-                                {wholesaler.shopId.address}
+                                {/* {wholesaler.shopId.address} */}
+                                D1103, Daljit Vihar, Vrindawan Awas Yojna Sector 6A Telibagh Lucknow, Uttar Pradesh India 226029
                               </Typography>
                               <Typography
                                 align="left"
@@ -216,7 +207,7 @@ export default function DialogShop(props) {
                               <Typography
                                 align="left"
                                 variant="body2"
-                                className={classes.distance}
+                                className={classes.price}
                               >
                                 $ {wholesaler.wholesale_price}
                               </Typography>
@@ -240,7 +231,7 @@ export default function DialogShop(props) {
                             <Typography color="red">Out of stock</Typography>
                           )}
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item className={classes.flexGrow}>
                           <Fab
                             padding={2}
                             onClick={() => handleAddtoCart(wholesaler.id)}
@@ -254,8 +245,7 @@ export default function DialogShop(props) {
                           </Fab>
                         </Grid>
                       </Grid>
-                    </Grid>
-                  </Card>
+                  </Paper>
                 </Grid>
               ))
             ) : (
@@ -272,26 +262,10 @@ export default function DialogShop(props) {
           <DialogContent dividers={scroll === "paper"}>
             {props.retailers.length > 0 ? (
               props.retailers.map((retailer, index) => (
-                <Grid item key={retailer.id} className={classes.item}>
-                  <Card variant="outlined" className={classes.card}>
-                    <Grid
-                      container
-                      justify="center"
-                      direction="column"
-                      alignItems="flex-start"
-                    >
-                      {/* <Box className={classes.itemImage}>
-                        <Imgix
-                            src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
-                            width='30%'
-                            imgixParams={{
-                            fit: "fit",
-                            fm: "jpg",
-                            }}
-                        />
-                      </Box> */}
+                <Grid container direction='column' key={retailer.id} className={classes.item}>
+                  <Paper variant="outlined" className={classes.card}>
                       <Grid container direction="row" spacing={2}>
-                        <Grid item>
+                        <Grid item className={classes.flexGrow}>
                           <Grid container direction="column">
                             <Typography
                               align="left"
@@ -319,7 +293,6 @@ export default function DialogShop(props) {
                               readOnly
                               value={retailer.rating}
                               precision={0.1}
-                              //className={classes.rating}
                             />
                           </Grid>
                         </Grid>
@@ -335,8 +308,7 @@ export default function DialogShop(props) {
                           </Fab>
                         </Grid>
                       </Grid>
-                    </Grid>
-                  </Card>
+                  </Paper>
                 </Grid>
               ))
             ) : (
