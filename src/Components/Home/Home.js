@@ -46,7 +46,6 @@ const useStyles = makeStyles({
 const Home = () => {
   const user_type = localStorage.getItem("usertype");
   const classes = useStyles();
-  const history = useHistory();
   const images = [
     {
       image:

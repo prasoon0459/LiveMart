@@ -16,6 +16,7 @@ import {
   Menu,
   MenuItem,
   Fab,
+  Paper,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { AddShoppingCartOutlined } from "@material-ui/icons";
@@ -37,10 +38,15 @@ const useStyles = makeStyles({
     padding: theme.spacing(1, 1, 1),
   },
   price: {
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
+    fontSize: 18,
+    fontWeight: 600,
   },
   shopName: {
     fontWeight: 700,
+  },
+  flexGrow: {
+    flexGrow: 1,
   },
   wholesale_price: {
     fontWeight: 600,
@@ -170,66 +176,35 @@ export default function DialogShop(props) {
           <DialogContent dividers={scroll === "paper"}>
             {props.wholesellers.length > 0 ? (
               props.wholesellers.map((wholesaler, index) => (
-                <Grid item key={wholesaler.id} className={classes.item}>
-                  <Card variant="outlined" className={classes.card}>
-                    <Grid
-                      container
-                      justify="center"
-                      direction="column"
-                      alignItems="flex-start"
-                    >
-                      {/* <Box className={classes.itemImage}>
-                        <Imgix
-                            src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
-                            width='30%'
-                            imgixParams={{
-                            fit: "fit",
-                            fm: "jpg",
-                            }}
-                        />
-                      </Box> */}
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item>
-                          <Grid container direction="column">
-                            <Grid item>
-                              <Typography
-                                align="left"
-                                variant="subtitle1"
-                                className={classes.shopName}
-                              >
-                                {wholesaler.shopName}
-                              </Typography>
-                            </Grid>
-                            <Grid item>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.location}
-                              >
-                                {wholesaler.shopId.address}
-                              </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                {wholesaler.shopLong}
-                              </Typography>
-                              <Typography
-                                align="left"
-                                variant="body2"
-                                className={classes.distance}
-                              >
-                                $ {wholesaler.wholesale_price}
-                              </Typography>
-                              <Rating
-                                name="read-only"
-                                readOnly
-                                value={wholesaler.rating}
-                                precision={0.1}
-                                //className={classes.rating}
-                              />
-                            </Grid>
+                <Grid
+                  container
+                  direction="column"
+                  key={wholesaler.id}
+                  className={classes.item}
+                >
+                  <Paper variant="outlined" className={classes.card}>
+                    <Grid container direction="column">
+                      <Grid item>
+                        <Grid container direction="column">
+                          <Grid item>
+                            <Typography
+                              align="left"
+                              variant="subtitle1"
+                              className={classes.shopName}
+                            >
+                              {wholesaler.shopName}
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.location}
+                            >
+                              {/* {wholesaler.shopId.address} */}
+                              D1103, Daljit Vihar, Vrindawan Awas Yojna Sector
+                              6A Telibagh Lucknow, Uttar Pradesh India 226029
+                            </Typography>
                             <Typography
                               align="left"
                               variant="body2"
@@ -237,34 +212,55 @@ export default function DialogShop(props) {
                             >
                               {wholesaler.shopLong}
                             </Typography>
+                            <Typography
+                              align="left"
+                              variant="body2"
+                              className={classes.price}
+                            >
+                              $ {wholesaler.wholesale_price}
+                            </Typography>
+                            <Rating
+                              name="read-only"
+                              readOnly
+                              value={wholesaler.rating}
+                              precision={0.1}
+                              //className={classes.rating}
+                            />
                           </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Fab
-                            padding={2}
-                            onClick={() => handleAddtoCart(wholesaler.id)}
-                            variant="contained"
-                            size="medium"
-                            color="secondary"
-                            disabled={wholesaler.quantity <= 0}
+                          <Typography
+                            align="left"
+                            variant="body2"
+                            className={classes.distance}
                           >
-                            <AddShoppingCartOutlined></AddShoppingCartOutlined>
-                            <Typography>Add to Cart</Typography>
-                          </Fab>
-                          {wholesaler.quantity < props.qty && (
-                            <Typography color="secondary">
-                              Dont have that much
-                            </Typography>
-                          )}
-                          {wholesaler.quantity <= 0 && (
-                            <Typography color="secondary">
-                              Out of stock
-                            </Typography>
-                          )}
+                            {wholesaler.shopLong}
+                          </Typography>
                         </Grid>
                       </Grid>
+                      <Grid item className={classes.flexGrow}>
+                        <Fab
+                          padding={2}
+                          onClick={() => handleAddtoCart(wholesaler.id)}
+                          variant="contained"
+                          size="medium"
+                          color="secondary"
+                          disabled={wholesaler.quantity <= 0}
+                        >
+                          <AddShoppingCartOutlined></AddShoppingCartOutlined>
+                          <Typography>Add to Cart</Typography>
+                        </Fab>
+                        {wholesaler.quantity < props.qty && (
+                          <Typography color="secondary">
+                            Dont have that much
+                          </Typography>
+                        )}
+                        {wholesaler.quantity <= 0 && (
+                          <Typography color="secondary">
+                            Out of stock
+                          </Typography>
+                        )}
+                      </Grid>
                     </Grid>
-                  </Card>
+                  </Paper>
                 </Grid>
               ))
             ) : (
@@ -281,85 +277,72 @@ export default function DialogShop(props) {
           <DialogContent dividers={scroll === "paper"}>
             {props.retailers.length > 0 ? (
               props.retailers.map((retailer, index) => (
-                <Grid item key={retailer.id} className={classes.item}>
-                  <Card variant="outlined" className={classes.card}>
-                    <Grid
-                      container
-                      justify="center"
-                      direction="column"
-                      alignItems="flex-start"
-                    >
-                      {/* <Box className={classes.itemImage}>
-                        <Imgix
-                            src='https://www.supermarketdisplayracks.com/assets/img/gallery-page/2.jpg'
-                            width='30%'
-                            imgixParams={{
-                            fit: "fit",
-                            fm: "jpg",
-                            }}
-                        />
-                      </Box> */}
-                      <Grid container direction="row" spacing={2}>
-                        <Grid item>
-                          <Grid container direction="column">
-                            <Typography
-                              align="left"
-                              variant="subtitle1"
-                              className={classes.shopName}
-                            >
-                              {retailer.shopName}
-                            </Typography>
-                            <Typography
-                              align="left"
-                              variant="body2"
-                              className={classes.location}
-                            >
-                              {retailer.shopId.address}
-                            </Typography>
-                            <Typography
-                              align="left"
-                              variant="body2"
-                              className={classes.wholesale_price}
-                            >
-                              ₹ {retailer.retail_price}
-                            </Typography>
-                            <Rating
-                              name="read-only"
-                              readOnly
-                              value={retailer.rating}
-                              precision={0.1}
-                              //className={classes.rating}
-                            />
-                          </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Fab
-                            onClick={() => handleAddtoCart(retailer.id)}
-                            variant="contained"
-                            size="medium"
-                            color="secondary"
-                            disabled={
-                              retailer.quantity <= 0 ||
-                              props.qty > retailer.quantity
-                            }
+                <Grid
+                  container
+                  direction="column"
+                  key={retailer.id}
+                  className={classes.item}
+                >
+                  <Paper variant="outlined" className={classes.card}>
+                    <Grid container direction="row" spacing={2}>
+                      <Grid item className={classes.flexGrow}>
+                        <Grid container direction="column">
+                          <Typography
+                            align="left"
+                            variant="subtitle1"
+                            className={classes.shopName}
                           >
-                            <AddShoppingCartOutlined></AddShoppingCartOutlined>
-                            Add to Cart
-                          </Fab>
-                          {retailer.quantity <= 0 && (
-                            <Typography color="secondary">
-                              Out of stock
-                            </Typography>
-                          )}
-                          {retailer.quantity < props.qty && (
-                            <Typography color="secondary">
-                              Dont have that much
-                            </Typography>
-                          )}
+                            {retailer.shopName}
+                          </Typography>
+                          <Typography
+                            align="left"
+                            variant="body2"
+                            className={classes.location}
+                          >
+                            {retailer.shopId.address}
+                          </Typography>
+                          <Typography
+                            align="left"
+                            variant="body2"
+                            className={classes.wholesale_price}
+                          >
+                            ₹ {retailer.retail_price}
+                          </Typography>
+                          <Rating
+                            name="read-only"
+                            readOnly
+                            value={retailer.rating}
+                            precision={0.1}
+                          />
                         </Grid>
                       </Grid>
+                      <Grid item>
+                        <Fab
+                          onClick={() => handleAddtoCart(retailer.id)}
+                          variant="contained"
+                          size="medium"
+                          color="secondary"
+                          disabled={
+                            retailer.quantity <= 0 ||
+                            props.qty > retailer.quantity
+                          }
+                        >
+                          <AddShoppingCartOutlined></AddShoppingCartOutlined>
+                          Add to Cart
+                        </Fab>
+                        {retailer.quantity <= 0 && (
+                          <Typography color="secondary">
+                            Out of stock
+                          </Typography>
+                        )}
+                        {retailer.quantity < props.qty && (
+                          <Typography color="secondary">
+                            Dont have that much
+                          </Typography>
+                        )}
+                      </Grid>
                     </Grid>
-                  </Card>
+                  </Paper>
                 </Grid>
               ))
             ) : (
