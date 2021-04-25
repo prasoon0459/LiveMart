@@ -12,7 +12,6 @@ import { useHistory } from "react-router-dom";
 import ActiveOrders from "./ActiveOrders";
 import PendingOrders from "./PendingOrders";
 import Pickups from "./Pickups";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -46,7 +45,6 @@ const Home = () => {
   const user_type = localStorage.getItem("usertype");
   const history=useHistory()
   const classes = useStyles();
-  const history = useHistory();
   const images = [
     {
       image:
