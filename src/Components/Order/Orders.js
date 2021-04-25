@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Grid, makeStyles, Paper, Typography, Button } from "@material-ui/core";
 import { ChevronRight, LocationOn, StoreOutlined } from "@material-ui/icons";
 import theme from "../../theme";
@@ -68,20 +70,20 @@ const useStyles = makeStyles({
   },
 });
 
-function getStatus(status) {
-  switch (status) {
-    case 0:
-      return "Order Placed";
-    case 1:
-      return "Order Packed";
-    case 2:
-      return "Out for Delivery";
-    case 3:
-      return "Delivered";
-    default:
-      return "UNKNOWN_STATUS";
-  }
-}
+// function getStatus(status) {
+//   switch (status) {
+//     case 0:
+//       return "Order Placed";
+//     case 1:
+//       return "Order Packed";
+//     case 2:
+//       return "Out for Delivery";
+//     case 3:
+//       return "Delivered";
+//     default:
+//       return "UNKNOWN_STATUS";
+//   }
+// }
 
 const Orders = () => {
   const screen = UseWindowDimensions().screen;
@@ -140,16 +142,16 @@ const Orders = () => {
   }, []);
 
   const handleTrackClick = (order) => {
-      history.push({
-        pathname: "/track",
-        order: order.item,
-      })
+    history.push({
+      pathname: "/track",
+      order: order.item,
+    });
   };
   const handleViewClick = (order) => {
-      history.push({
-        pathname: "/my_pickup",
-        order: order.item,
-      });
+    history.push({
+      pathname: "/my_pickup",
+      order: order.item,
+    });
   };
 
   return (
@@ -186,7 +188,11 @@ const Orders = () => {
                 </Grid>
                 <Button
                   color="secondary"
-                  onClick={order.mode==='Online'? () => handleTrackClick(order) : ()=> handleViewClick(order)}
+                  onClick={
+                    order.mode === "Online"
+                      ? () => handleTrackClick(order)
+                      : () => handleViewClick(order)
+                  }
                   endIcon={
                     order.item.mode === "Online" ? (
                       <LocationOn></LocationOn>
@@ -243,9 +249,11 @@ const Orders = () => {
                       {new Date(order.item.expectedDate).toLocaleDateString()}
                     </Typography>
                   </Grid>
-                ) : <Grid item xs={6}>
-                  <div></div>
-                  </Grid>}
+                ) : (
+                  <Grid item xs={6}>
+                    <div></div>
+                  </Grid>
+                )}
                 <Grid item xs={12} sm={6}>
                   <Typography className={classes.orderTotalPrice} align="right">
                     Total Price: $ {order.item.total_amount}

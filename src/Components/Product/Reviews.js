@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Divider,
@@ -13,7 +15,7 @@ import { AccountCircle } from "@material-ui/icons";
 import Rating from "@material-ui/lab/Rating";
 import theme from "../../theme";
 import React from "react";
-import LinearWithValueLabel from "../../utils/LinearProgressWithLabel";
+// import LinearWithValueLabel from "../../utils/LinearProgressWithLabel";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import axios from "axios";
 import serverUrl from "../../serverURL";
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
       props ? theme.spacing(2, 1, 2) : theme.spacing(0, 4, 0),
   },
   customerRvwPaper: {
-    borderRadius:10,
+    borderRadius: 10,
     margin: (props) =>
       props ? theme.spacing(1, 0, 1) : theme.spacing(1, 0, 1),
     padding: (props) =>
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
   },
   reviewHead: {
     width: "100%",
-    margin:theme.spacing(2,0,0)
+    margin: theme.spacing(2, 0, 0),
   },
   divider: {
     width: "100%",
@@ -82,9 +84,9 @@ const useStyles = makeStyles({
   new_userNameText: {
     fontWeight: 600,
   },
-  rvwCont:{
-    padding:theme.spacing(0,2,0)
-  }
+  rvwCont: {
+    padding: theme.spacing(0, 2, 0),
+  },
 });
 
 const Reviews = (props) => {
@@ -167,7 +169,7 @@ const Reviews = (props) => {
 
   const getReviews = () => {
     var config = {};
-    if (user_type ==="1") {
+    if (user_type === "1") {
       config = {
         method: "get",
         url: serverUrl + "/reviews/?p=" + productName,
@@ -204,7 +206,7 @@ const Reviews = (props) => {
 
   React.useEffect(() => {
     try {
-      setShops(props.shops)
+      setShops(props.shops);
       getReviews();
     } catch (e) {
       console.log(e);
@@ -214,7 +216,12 @@ const Reviews = (props) => {
   return (
     <div className={classes.root}>
       {console.log(rating)}
-      <Grid container direction="column" alignItems="flex-start" className={classes.rvwCont}>
+      <Grid
+        container
+        direction="column"
+        alignItems="flex-start"
+        className={classes.rvwCont}
+      >
         <Grid item className={classes.reviewHead}>
           <Grid container direction="column" alignItems="flex-start">
             <Typography variant="h6">Customer Reviews</Typography>
@@ -251,22 +258,22 @@ const Reviews = (props) => {
                       }}
                       variant="outlined"
                     >
-                      {(shops&&shops.length > 0)
-                        && shops.map((option, index) => {
-                            return (
-                              <MenuItem
-                                key={option.id}
-                                value={option.shopName}
-                                selected={index === shopIndex}
-                                onClick={(event) =>
-                                  handleMenuItemClick(event, index)
-                                }
-                              >
-                                {option.shopName}
-                              </MenuItem>
-                            );
-                          })
-                        }
+                      {shops &&
+                        shops.length > 0 &&
+                        shops.map((option, index) => {
+                          return (
+                            <MenuItem
+                              key={option.id}
+                              value={option.shopName}
+                              selected={index === shopIndex}
+                              onClick={(event) =>
+                                handleMenuItemClick(event, index)
+                              }
+                            >
+                              {option.shopName}
+                            </MenuItem>
+                          );
+                        })}
                     </TextField>
                   </Grid>
                 ) : (

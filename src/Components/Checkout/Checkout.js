@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -208,7 +210,7 @@ function Checkout(props) {
   const handleOptionChanged = (event) => {
     setOption(event.target.value);
     for (var i = 0; i < orders.length; i++) {
-      if (option === 0) setMode("Online");
+      if (option === "0") setMode("Online");
       else setMode("Offline");
     }
   };
@@ -230,13 +232,13 @@ function Checkout(props) {
     console.log(address);
   };
 
-  const handlePickupDateChange = (index, event) => {
-    var newOrders = orders;
-    console.log(index + " " + event);
-    newOrders[index].expected_delivery = event.target.value;
-    console.log(newOrders[index].expected_delivery);
-    setOrders(newOrders);
-  };
+  // const handlePickupDateChange = (index, event) => {
+  //   var newOrders = orders;
+  //   console.log(index + " " + event);
+  //   newOrders[index].expected_delivery = event.target.value;
+  //   console.log(newOrders[index].expected_delivery);
+  //   setOrders(newOrders);
+  // };
   const handleLastNameError = () => {
     if (minMaxLength(address["lastName"], 3)) {
       setError({ ...error, lastName: "Must be greater than 3 character" });
@@ -626,7 +628,7 @@ function Checkout(props) {
   };
 
   const handleNext = () => {
-    if (option == 0) {
+    if (option === "0") {
       setMode("Online");
     } else {
       setMode("Offline");
@@ -670,7 +672,7 @@ function Checkout(props) {
         address["country"] === null ||
         address["phone"] === null) &&
       activeStep === 1 &&
-      mode == "Online"
+      mode === "Online"
     )
       return true;
     else if (activeStep === 2 && wallet === false) return true;
@@ -759,4 +761,4 @@ function Checkout(props) {
     </React.Fragment>
   );
 }
-export default withRouter(Checkout)
+export default withRouter(Checkout);

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Button,
   Grid,
@@ -6,7 +8,7 @@ import {
   Typography,
   CircularProgress,
 } from "@material-ui/core";
-import { ChevronRight, LocationOn } from "@material-ui/icons";
+import { ChevronRight } from "@material-ui/icons";
 import ReactRoundedImage from "react-rounded-image";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
@@ -36,7 +38,7 @@ const useStyles = makeStyles({
   },
   itemTitle: {
     fontWeight: 600,
-    fontSize:18
+    fontSize: 18,
   },
   itemOrderedDate: {
     color: theme.palette.text.hint,
@@ -56,13 +58,13 @@ const useStyles = makeStyles({
   deliveryPersonContact: {
     margin: theme.spacing(0, 1, 0),
   },
-  btn:{
-    margin:theme.spacing(2,0,0)
+  btn: {
+    margin: theme.spacing(2, 0, 0),
   },
-  itemOrderedID:{
-    fontSize:16,
-    margin:theme.spacing(0,1,0)
-  }
+  itemOrderedID: {
+    fontSize: 16,
+    margin: theme.spacing(0, 1, 0),
+  },
 });
 
 const PendingOrders = () => {
@@ -83,7 +85,7 @@ const PendingOrders = () => {
     //   cartItems: items,
     //   totalPrice: total_cost + 50,
     // });
-    console.log('order',order)
+    console.log("order", order);
     history.push({ pathname: "/seller_view_order", order: order.item });
   };
   const getPendingTransactions = () => {
@@ -136,7 +138,7 @@ const PendingOrders = () => {
     }
   }, []);
 
-  return transactions.length>0? (
+  return transactions.length > 0 ? (
     <div className={classes.root}>
       {console.log(transactions)}
       <Typography
@@ -257,6 +259,8 @@ const PendingOrders = () => {
         )}
       </Grid>
     </div>
-  ):(<div></div>);
+  ) : (
+    <div></div>
+  );
 };
 export default PendingOrders;

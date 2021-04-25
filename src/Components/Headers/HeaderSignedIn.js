@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   AppBar,
   Toolbar,
@@ -21,7 +23,7 @@ import {
   ExitToApp,
   Folder,
   LocationOnOutlined,
-  Notifications,
+  // Notifications,
   Person,
   PostAdd,
   SearchOutlined,

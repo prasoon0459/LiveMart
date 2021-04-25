@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Button,
   Grid,
@@ -7,10 +9,10 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { ChevronRight } from "@material-ui/icons";
-import ReactRoundedImage from "react-rounded-image";
+// import ReactRoundedImage from "react-rounded-image";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import Avatar from "../../img/deliveryBoyAvatar.svg";
+// import Avatar from "../../img/deliveryBoyAvatar.svg";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";

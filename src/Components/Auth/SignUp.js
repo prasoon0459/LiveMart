@@ -101,10 +101,6 @@ export default function SignUp() {
     JSON.stringify(payload);
     var data = new FormData();
     data.append("username", username);
-    const handleMenuItemClick = (event, index) => {
-      setSelectedIndex(index);
-      setRole(index);
-    };
     data.append("password", password);
     data.append("password2", password2);
     var config = {
@@ -132,6 +128,8 @@ export default function SignUp() {
               name: name,
               address: address,
               username: username,
+              lat: lat,
+              long: long,
             };
             if (role === 1 || role === 2) {
               var config3 = {

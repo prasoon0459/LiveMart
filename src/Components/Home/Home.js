@@ -8,6 +8,7 @@ import FeatureItem from "./FeatureItem";
 import MainSlider from "./MainSlider";
 import CategoryComp from "./CategoryComp";
 import TopBrand from "./TopBrands";
+import { useHistory } from "react-router-dom";
 import ActiveOrders from "./ActiveOrders";
 import PendingOrders from "./PendingOrders";
 import Pickups from "./Pickups";
@@ -45,19 +46,23 @@ const Home = () => {
   const user_type = localStorage.getItem("usertype");
   const history=useHistory()
   const classes = useStyles();
+  const history = useHistory();
   const images = [
     {
-      image:'https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,h=560/layout-engine/2021-04/Daily-Essentials-Store_web_0.jpg',
-      route:''
+      image:
+        "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,h=560/layout-engine/2021-04/Daily-Essentials-Store_web_0.jpg",
+      route: "",
     },
     {
-      image:'https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,w=1908,h=954/layout-engine/2021-04/Home-Page-Banner_1320x660_Personal-Care-Products-1.jpg',
-      route:''
+      image:
+        "https://cdn.grofers.com/cdn-cgi/image/f=auto,fit=scale-down,q=50,w=1908,h=954/layout-engine/2021-04/Home-Page-Banner_1320x660_Personal-Care-Products-1.jpg",
+      route: "",
     },
     {
-      image:'https://www.bigbasket.com/media/uploads/banner_images/Green_Banganapilli_DT_5_1130x400_9th-24th.jpg',
-      route:''
-    }
+      image:
+        "https://www.bigbasket.com/media/uploads/banner_images/Green_Banganapilli_DT_5_1130x400_9th-24th.jpg",
+      route: "",
+    },
   ];
 
   React.useEffect(()=>{ 
@@ -75,13 +80,21 @@ const Home = () => {
     initialSlide: true,
   };
 
+  React.useEffect(() => {
+    if (user_type === "3") {
+      history.push({ pathname: "/delivery_home" });
+    }
+  }, []);
+
   return (
     <div className={classes.root}>
-      {(user_type==='0'||user_type==='1') && <MainSlider images={images} settings={settings}></MainSlider>}
+      {(user_type === "0" || user_type === "1") && (
+        <MainSlider images={images} settings={settings}></MainSlider>
+      )}
       {user_type === "0" ? (
         <div>
           <ActiveOrders></ActiveOrders>
-          <CategoryComp ></CategoryComp>
+          <CategoryComp></CategoryComp>
           <TopBrand></TopBrand>
         </div>
       ) : user_type === "1" ? (
@@ -89,8 +102,8 @@ const Home = () => {
           <Pickups></Pickups>
           <PendingOrders></PendingOrders>
           <ActiveOrders></ActiveOrders>
-          <CategoryComp ></CategoryComp>
-          <TopBrand ></TopBrand>
+          <CategoryComp></CategoryComp>
+          <TopBrand></TopBrand>
         </div>
       ) : (
         <div>

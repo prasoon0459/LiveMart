@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Grid,
   makeStyles,
@@ -15,11 +17,11 @@ import {
 import theme from "../../theme";
 import SwipeableViews from "react-swipeable-views";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
-import { dummy_orders } from "../Order/dummyorders";
-import { CheckSharp, ExitToApp, PowerOff } from "@material-ui/icons";
+// import { dummy_orders } from "../Order/dummyorders";
+import { CheckSharp } from "@material-ui/icons";
 import Imgix from "react-imgix";
 import no_orders from "../../img/no_orders.svg";
 import no_data from "../../img/no_data.svg";
@@ -61,13 +63,13 @@ function a11yProps(index) {
 
 const useStyles = makeStyles({
   paper: {
-    margin: theme.spacing(0, 0, ),
+    margin: theme.spacing(0, 0),
     // maxWidth: "992px",
     width: "100%",
   },
   itemPaper: {
     width: "100%",
-    maxWidth: '992px',
+    maxWidth: "992px",
     margin: theme.spacing(1, 0, 1),
     padding: theme.spacing(2, 2, 2),
   },
@@ -77,8 +79,8 @@ const useStyles = makeStyles({
   customerName: {
     fontWeight: 600,
   },
-  fullWidth:{
-    width:'100%'
+  fullWidth: {
+    width: "100%",
   },
   orderID: {
     fontWeight: 600,
@@ -97,12 +99,12 @@ const useStyles = makeStyles({
   },
 });
 
-const DeliveryHome = ({handleLogout}) => {
+const DeliveryHome = ({ handleLogout }) => {
   const screen = UseWindowDimensions().screen;
   const mobile = screen === "xs";
   const sm = screen === "sm";
   const classes = useStyles({ mobile: mobile, sm: sm });
-  const history = useHistory();
+  // const history = useHistory();
   const [transactions, setTransactions] = React.useState([]);
   const [retailTransactions, setRetailTransactions] = React.useState([]);
   const token = localStorage.getItem("token");
@@ -119,9 +121,9 @@ const DeliveryHome = ({handleLogout}) => {
     setTabValue(index);
   };
 
-  const handleLogoutClick = () =>{
-    handleLogout(history)
-  }
+  const handleLogoutClick = () => {
+    handleLogout(history);
+  };
 
   const handleTransactionClick = (order) => {
     var data = JSON.stringify({
@@ -182,7 +184,10 @@ const DeliveryHome = ({handleLogout}) => {
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          if(response.data[i].delStatus==='Out for Delivery'||response.data[i].delStatus==='Delivered'){
+          if (
+            response.data[i].delStatus === "Out for Delivery" ||
+            response.data[i].delStatus === "Delivered"
+          ) {
             var temp = [...new_items];
             temp = [...temp, { item: response.data[i] }];
             new_items = temp;
@@ -210,7 +215,10 @@ const DeliveryHome = ({handleLogout}) => {
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          if(response.data[i].delStatus==='Out for Delivery'||response.data[i].delStatus==='Delivered'){
+          if (
+            response.data[i].delStatus === "Out for Delivery" ||
+            response.data[i].delStatus === "Delivered"
+          ) {
             var temp = [...new_items];
             temp = [...temp, { item: response.data[i] }];
             new_items = temp;
@@ -239,16 +247,23 @@ const DeliveryHome = ({handleLogout}) => {
       alignItems="center"
       className={classes.root}
     >
-      <AppBar elevation={0}  position="static">
+      <AppBar elevation={0} position="static">
         <Toolbar className={classes.toolbar}>
-          <Grid container fullWidth className={classes.fullWidth} direction='row-reverse'>
+          <Grid
+            container
+            fullWidth
+            className={classes.fullWidth}
+            direction="row-reverse"
+          >
             <Grid item className={classes.flexGrow}>
-              <Grid container  direction='row-reverse' >
-                <Button onClick={handleLogoutClick} color='inherit'>Logout</Button>
+              <Grid container direction="row-reverse">
+                <Button onClick={handleLogoutClick} color="inherit">
+                  Logout
+                </Button>
               </Grid>
             </Grid>
             <Grid item>
-            <Typography variant='h5'>LiveMart</Typography>
+              <Typography variant="h5">LiveMart</Typography>
             </Grid>
           </Grid>
         </Toolbar>
@@ -282,10 +297,11 @@ const DeliveryHome = ({handleLogout}) => {
               {transactions.filter(
                 (transaction) =>
                   transaction.item.delStatus === "Out for Delivery"
-              ).length!==0&&
-              <Typography align="center" className={classes.customerName}>
-                Wholesale Orders
-              </Typography>}
+              ).length !== 0 && (
+                <Typography align="center" className={classes.customerName}>
+                  Wholesale Orders
+                </Typography>
+              )}
               {transactions
                 .filter(
                   (transaction) =>
@@ -344,10 +360,11 @@ const DeliveryHome = ({handleLogout}) => {
               {retailTransactions.filter(
                 (transaction) =>
                   transaction.item.delStatus === "Out for Delivery"
-              ).length!==0&&
-              <Typography align="center" className={classes.customerName}>
-                Retail Orders
-              </Typography>}
+              ).length !== 0 && (
+                <Typography align="center" className={classes.customerName}>
+                  Retail Orders
+                </Typography>
+              )}
               {retailTransactions
                 .filter(
                   (transaction) =>
@@ -406,10 +423,12 @@ const DeliveryHome = ({handleLogout}) => {
               {transactions.filter(
                 (transaction) =>
                   transaction.item.delStatus === "Out for Delivery"
-              ).length + retailTransactions.filter(
-                (transaction) =>
-                  transaction.item.delStatus === "Out for Delivery"
-              ).length === 0  && (
+              ).length +
+                retailTransactions.filter(
+                  (transaction) =>
+                    transaction.item.delStatus === "Out for Delivery"
+                ).length ===
+                0 && (
                 <Grid container direction="column" alignItems="center">
                   <Imgix
                     src={no_orders}
@@ -436,10 +455,11 @@ const DeliveryHome = ({handleLogout}) => {
             >
               {transactions.filter(
                 (transaction) => transaction.item.delStatus === "Delivered"
-              ).length !== 0&&
-              <Typography align="center" className={classes.customerName}>
-                Wholesale Orders
-              </Typography>}
+              ).length !== 0 && (
+                <Typography align="center" className={classes.customerName}>
+                  Wholesale Orders
+                </Typography>
+              )}
               {transactions
                 .filter(
                   (transaction) => transaction.item.delStatus === "Delivered"
@@ -493,13 +513,14 @@ const DeliveryHome = ({handleLogout}) => {
                     </Grid>
                   </Paper>
                 ))}
-              
+
               {retailTransactions.filter(
                 (transaction) => transaction.item.delStatus === "Delivered"
-              ).length !== 0&&
-              <Typography align="center" className={classes.customerName}>
-                Retail Orders
-              </Typography>}
+              ).length !== 0 && (
+                <Typography align="center" className={classes.customerName}>
+                  Retail Orders
+                </Typography>
+              )}
               {retailTransactions
                 .filter(
                   (transaction) => transaction.item.delStatus === "Delivered"
@@ -555,9 +576,11 @@ const DeliveryHome = ({handleLogout}) => {
                 ))}
               {retailTransactions.filter(
                 (transaction) => transaction.item.delStatus === "Delivered"
-              ).length + transactions.filter(
-                (transaction) => transaction.item.delStatus === "Delivered"
-              ).length === 0 && (
+              ).length +
+                transactions.filter(
+                  (transaction) => transaction.item.delStatus === "Delivered"
+                ).length ===
+                0 && (
                 <Grid container direction="column" alignItems="center">
                   <Imgix
                     src={no_data}

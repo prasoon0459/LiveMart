@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Button,
@@ -17,7 +19,7 @@ import React from "react";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import { DeleteOutlined, ExpandMoreOutlined } from "@material-ui/icons";
-import kurkure from "../../img/kurkure.jpeg";
+// import kurkure from "../../img/kurkure.jpeg";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import { useHistory } from "react-router-dom";
@@ -161,18 +163,19 @@ const Cart = () => {
   const user_type = localStorage.getItem("usertype");
 
   const [items, setItems] = React.useState([]);
-  const [products, setProducts] = React.useState([]);
+  // const [products, setProducts] = React.useState([]);
   const [status, setStatus] = React.useState(false);
   const [total_cost, setTotalCost] = React.useState(0.0);
-  const [click, setClick] = React.useState(false);
+  // const [click, setClick] = React.useState(false);
 
   const handleCouponExpandClick = () => {
     setCouponExpanded(!couponExpanded);
   };
 
   const handleDelete = (id) => {
+    var config = {};
     if (user_type === "1") {
-      var config = {
+      config = {
         method: "delete",
         url: serverUrl + "/cart/" + id + "/",
         headers: {
@@ -180,7 +183,7 @@ const Cart = () => {
         },
       };
     } else {
-      var config = {
+      config = {
         method: "delete",
         url: serverUrl + "/retail_cart/" + id + "/",
         headers: {
@@ -212,8 +215,9 @@ const Cart = () => {
   };
 
   const getCartItems = () => {
+    var config = {};
     if (user_type === "1") {
-      var config = {
+      config = {
         method: "get",
         url: serverUrl + "/cart/?u=" + username + "&a=Active",
         headers: {
@@ -221,7 +225,7 @@ const Cart = () => {
         },
       };
     } else {
-      var config = {
+      config = {
         method: "get",
         url: serverUrl + "/retail_cart/?u=" + username + "&a=Active",
         headers: {
@@ -257,7 +261,6 @@ const Cart = () => {
         console.log(error);
       });
   };
-
   React.useEffect(() => {
     try {
       getCartItems();
