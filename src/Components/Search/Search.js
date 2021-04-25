@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import {
-  ArrowBackIos,
+  // ArrowBackIos,
   ArrowDropDown,
-  ArrowForwardIos,
+  // ArrowForwardIos,
   ChevronRight,
   FilterList,
 } from "@material-ui/icons";
@@ -26,7 +28,7 @@ const {
   Card,
   Dialog,
   Slide,
-  CircularProgress,
+  // CircularProgress,
 } = require("@material-ui/core");
 const { default: Filter } = require("./Filter");
 

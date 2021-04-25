@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Divider,
@@ -13,7 +15,7 @@ import { AccountCircle } from "@material-ui/icons";
 import Rating from "@material-ui/lab/Rating";
 import theme from "../../theme";
 import React from "react";
-import LinearWithValueLabel from "../../utils/LinearProgressWithLabel";
+// import LinearWithValueLabel from "../../utils/LinearProgressWithLabel";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
 import axios from "axios";
 import serverUrl from "../../serverURL";
@@ -162,7 +164,7 @@ const Reviews = (props) => {
 
   const getReviews = () => {
     var config = {};
-    if (user_type == "1") {
+    if (user_type === "1") {
       config = {
         method: "get",
         url: serverUrl + "/reviews/?p=" + productName,

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Grid,
   makeStyles,
@@ -12,10 +14,10 @@ import {
 import theme from "../../theme";
 import SwipeableViews from "react-swipeable-views";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
-import { dummy_orders } from "../Order/dummyorders";
+// import { dummy_orders } from "../Order/dummyorders";
 import { CheckSharp } from "@material-ui/icons";
 import Imgix from "react-imgix";
 import no_orders from "../../img/no_orders.svg";
@@ -95,7 +97,7 @@ const DeliveryHome = () => {
   const mobile = screen === "xs";
   const sm = screen === "sm";
   const classes = useStyles({ mobile: mobile, sm: sm });
-  const history = useHistory();
+  // const history = useHistory();
   const [transactions, setTransactions] = React.useState([]);
   const [retailTransactions, setRetailTransactions] = React.useState([]);
   const token = localStorage.getItem("token");

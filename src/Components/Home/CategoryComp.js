@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   CardActionArea,
@@ -8,7 +10,7 @@ import {
 import theme from "../../theme";
 import ReactRoundedImage from "react-rounded-image";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import fruits from "../../img/fruits.jpg";
+// import fruits from "../../img/fruits.jpg";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import { useHistory } from "react-router-dom";

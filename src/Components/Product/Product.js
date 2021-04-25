@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Box,
   Button,
@@ -9,11 +11,11 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { AddSharp, LocalMall, RemoveSharp } from "@material-ui/icons";
-import Rating from "@material-ui/lab/Rating";
+// import Rating from "@material-ui/lab/Rating";
 import theme from "../../theme";
 import React from "react";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import kurkure from "../../img/kurkure.jpeg";
+// import kurkure from "../../img/kurkure.jpeg";
 import Imgix from "react-imgix";
 import Reviews from "./Reviews";
 import DialogShop from "./DialogShop";

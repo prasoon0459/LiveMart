@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 import {
   Button,
   Dialog,
   DialogContent,
   DialogActions,
-  DialogContentText,
-  DialogTitle,
+  // DialogContentText,
+  // DialogTitle,
   Grid,
   makeStyles,
   Paper,
@@ -236,7 +238,11 @@ const AddItem = () => {
                             <TableCell key={column.id} align={column.align}>
                               {index === 3 && (
                                 <Button
-                                  onClick={() => handleItemAdd(page*rowsPerPage+index_item)}
+                                  onClick={() =>
+                                    handleItemAdd(
+                                      page * rowsPerPage + index_item
+                                    )
+                                  }
                                   variant="outlined"
                                   color="secondary"
                                 >
@@ -314,7 +320,9 @@ const AddItem = () => {
                         position="end"
                       >
                         <div style={{ color: theme.palette.text.primary }}>
-                          {rows.length > 0 ? 'x '+rows[selectedItem].unit : null}
+                          {rows.length > 0
+                            ? "x " + rows[selectedItem].unit
+                            : null}
                         </div>
                       </InputAdornment>
                     }

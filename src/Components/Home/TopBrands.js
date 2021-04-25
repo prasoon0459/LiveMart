@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import { Box, Grid, makeStyles, Typography } from "@material-ui/core";
 import theme from "../../theme";
 import UseWindowDimensions from "../../utils/UseWindowDimensions";
-import amul from "../../img/amul.jpg";
+// import amul from "../../img/amul.jpg";
 import Imgix from "react-imgix";
 import axios from "axios";
 import serverUrl from "../../serverURL";

@@ -4,7 +4,7 @@ import {
   Link,
   Route,
   Switch,
-  useHistory,
+  // useHistory,
 } from "react-router-dom";
 import Header from "./Components/Headers/HeaderSignedIn";
 import Home from "./Components/Home/Home";
@@ -32,7 +32,7 @@ import ViewPickup from "./Components/Order/ViewPickup";
 import Inventory from "./Components/Inventory/Inventory";
 import AddItem from "./Components/Inventory/AddItem";
 import DeliveryHome from "./Components/Delivery/DeliveryHome";
-import Filter from "./Components/Search/Filter";
+// import Filter from "./Components/Search/Filter";
 import MyPickups from "./Components/Order/MyPickups";
 
 const App = () => {
@@ -132,17 +132,17 @@ const App = () => {
           </Route>
           <Route path="/track">
             {getHeader()}
-            {AuthenticatedComponent(<TrackOrder/>)}
+            {AuthenticatedComponent(<TrackOrder />)}
           </Route>
           <Route path="/pickup">
-            {getHeader()} 
+            {getHeader()}
             {AuthenticatedComponent(<ViewPickup></ViewPickup>)}
           </Route>
           <Route path="/my_pickup">
-            {getHeader()} 
+            {getHeader()}
             {AuthenticatedComponent(<MyPickups></MyPickups>)}
           </Route>
-          <Route path="/seller_view_order" >
+          <Route path="/seller_view_order">
             {getHeader()}
             {AuthenticatedComponent(<SellerViewOrder></SellerViewOrder>)}
           </Route>
@@ -166,7 +166,7 @@ const App = () => {
             {getHeader()}
             {AuthenticatedComponent(<Categories />)}
           </Route>
-          <Route path="/checkout" >
+          <Route path="/checkout">
             {getHeader()}
             {AuthenticatedComponent(<Checkout></Checkout>)}
           </Route>

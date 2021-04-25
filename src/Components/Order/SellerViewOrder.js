@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Button,
   Divider,
@@ -19,11 +21,11 @@ import React, { useState } from "react";
 import theme from "../../theme";
 import ReactRoundedImage from "react-rounded-image";
 import deliveryBoyAvatar from "../../img/deliveryBoyAvatar.svg";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+// import DateFnsUtils from "@date-io/date-fns";
+// import {
+//   MuiPickersUtilsProvider,
+//   KeyboardDatePicker,
+// } from "@material-ui/pickers";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import { withRouter } from "react-router-dom";
@@ -116,9 +118,9 @@ const SellerViewOrder = (props) => {
 
   const order = props.location.order;
   // console.log(order)
-  const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState(
-    new Date(order.expectedDate)
-  );
+  // const [expectedDeliveryDate, setExpectedDeliveryDate] = React.useState(
+  //   new Date(order.expectedDate)
+  // );
   const [orderStatus, setOrderStatus] = React.useState(
     (order.delStatus === "Packed" ? 2 : order.delStatus === "Out for Delivery")
       ? 3
@@ -129,12 +131,11 @@ const SellerViewOrder = (props) => {
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [delId, setDelId] = useState(0);
   const user_type = localStorage.getItem("usertype");
-  const [selectedId, setSelectedId] = useState(0);
+  // const [selectedId, setSelectedId] = useState(0);
 
   const handleMenuItemClick = (event, order_id) => {
     setDelId(order_id);
   };
-  
 
   const handlePackedClicked = () => {
     setOrderStatus(orderStatus + 1);
@@ -207,9 +208,9 @@ const SellerViewOrder = (props) => {
       });
   };
 
-  const handleExpectedDeliveryDateChange = (date) => {
-    setExpectedDeliveryDate(date);
-  };
+  // const handleExpectedDeliveryDateChange = (date) => {
+  //   setExpectedDeliveryDate(date);
+  // };
 
   const getStepContent = (step) => {
     if (order.delStatus === "Packed") {

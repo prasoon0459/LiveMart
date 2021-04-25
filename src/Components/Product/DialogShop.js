@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 import React from "react";
 import theme from "../../theme";
 import {
-  Box,
+  // Box,
   Card,
   Grid,
   makeStyles,
@@ -63,14 +65,14 @@ export default function DialogShop(props) {
   const handleAddtoCart = (id) => {
     var data = JSON.stringify({});
     var address = "";
-    if (user_type == "1") {
+    if (user_type === "1") {
       address = serverUrl + "/cart/";
       data = JSON.stringify({
         product_id: id,
         quantity: props.qty,
         shopId: {},
       });
-    } else if (user_type == "0") {
+    } else if (user_type === "0") {
       address = serverUrl + "/retail_cart/";
       data = JSON.stringify({
         retail_product_id: id,

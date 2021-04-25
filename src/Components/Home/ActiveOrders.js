@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Button, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import { ChevronRight, LocationOn } from "@material-ui/icons";
 import ReactRoundedImage from "react-rounded-image";
@@ -23,7 +25,7 @@ const useStyles = makeStyles({
   title: {
     fontWeight: 800,
     margin: (props) =>
-      props.mobile ? theme.spacing(1,0,1) : theme.spacing(1,0,1),
+      props.mobile ? theme.spacing(1, 0, 1) : theme.spacing(1, 0, 1),
     padding: (props) =>
       props.mobile ? theme.spacing(0, 0, 0) : theme.spacing(1, 0, 1),
   },
@@ -54,7 +56,7 @@ const useStyles = makeStyles({
   },
   itemDeliveryDetails: {
     fontWeight: 600,
-    margin:theme.spacing(1,0,0)
+    margin: theme.spacing(1, 0, 0),
   },
   trackBtn: {
     margin: theme.spacing(2, 0, 0),
@@ -132,14 +134,14 @@ const ActiveOrders = () => {
       pathname: "/my_pickup",
       order: order,
     });
-  }
+  };
 
   const getFormattedDate = (date) => {
     var d = new Date(date);
     return d.toDateString();
   };
 
-  return activeOrders.length>0?(
+  return activeOrders.length > 0 ? (
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -181,12 +183,14 @@ const ActiveOrders = () => {
                 <Typography align="left" className={classes.itemOrderedStatus}>
                   Order Status : {order.delStatus}
                 </Typography>
-                {order.mode==='Online'&&<Typography
-                  align="left"
-                  className={classes.itemExpectedDelivery}
-                >
-                  Expected Delivery: {getFormattedDate(order.expectedDate)}
-                </Typography>}
+                {order.mode === "Online" && (
+                  <Typography
+                    align="left"
+                    className={classes.itemExpectedDelivery}
+                  >
+                    Expected Delivery: {getFormattedDate(order.expectedDate)}
+                  </Typography>
+                )}
                 {order.delStatus === "Out for Delivery" && (
                   <Grid container direction="column">
                     <Typography
@@ -213,10 +217,16 @@ const ActiveOrders = () => {
                           direction="column"
                           className={classes.deliveryPersonContact}
                         >
-                          <Typography align='left' className={classes.DeliveryBoyName}>
+                          <Typography
+                            align="left"
+                            className={classes.DeliveryBoyName}
+                          >
                             {order.delName}
                           </Typography>
-                          <Typography align='left' className={classes.DeliveryBoyMobile}>
+                          <Typography
+                            align="left"
+                            className={classes.DeliveryBoyMobile}
+                          >
                             +91{order.delPhno}
                           </Typography>
                         </Grid>
@@ -224,31 +234,37 @@ const ActiveOrders = () => {
                     </Grid>
                   </Grid>
                 )}
-                {order.mode==='Online'?<Button
-                  variant="outlined"
-                  className={classes.trackBtn}
-                  onClick={() => handleTrackClick(order)}
-                  color="secondary"
-                  fullWidth
-                  endIcon={<LocationOn></LocationOn>}
-                >
-                  Track Order
-                </Button>:<Button
-                  variant="outlined"
-                  className={classes.trackBtn}
-                  onClick={() => handleViewPickup(order)}
-                  color="secondary"
-                  fullWidth
-                  endIcon={<ChevronRight></ChevronRight>}
-                >
-                  View Order
-                </Button>}
+                {order.mode === "Online" ? (
+                  <Button
+                    variant="outlined"
+                    className={classes.trackBtn}
+                    onClick={() => handleTrackClick(order)}
+                    color="secondary"
+                    fullWidth
+                    endIcon={<LocationOn></LocationOn>}
+                  >
+                    Track Order
+                  </Button>
+                ) : (
+                  <Button
+                    variant="outlined"
+                    className={classes.trackBtn}
+                    onClick={() => handleViewPickup(order)}
+                    color="secondary"
+                    fullWidth
+                    endIcon={<ChevronRight></ChevronRight>}
+                  >
+                    View Order
+                  </Button>
+                )}
               </Grid>
             </Paper>
           </Grid>
         ))}
       </Grid>
     </div>
-  ):(<div></div>);
+  ) : (
+    <div></div>
+  );
 };
 export default ActiveOrders;
