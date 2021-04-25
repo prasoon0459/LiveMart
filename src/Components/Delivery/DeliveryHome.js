@@ -8,6 +8,9 @@ import {
   Tabs,
   Tab,
   Box,
+  Toolbar,
+  Icon,
+  IconButton,
 } from "@material-ui/core";
 import theme from "../../theme";
 import SwipeableViews from "react-swipeable-views";
@@ -16,7 +19,7 @@ import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import React from "react";
 import { dummy_orders } from "../Order/dummyorders";
-import { CheckSharp } from "@material-ui/icons";
+import { CheckSharp, ExitToApp, PowerOff } from "@material-ui/icons";
 import Imgix from "react-imgix";
 import no_orders from "../../img/no_orders.svg";
 import no_data from "../../img/no_data.svg";
@@ -58,12 +61,13 @@ function a11yProps(index) {
 
 const useStyles = makeStyles({
   paper: {
-    margin: theme.spacing(2, 2, 2),
-    maxWidth: "992px",
+    margin: theme.spacing(0, 0, ),
+    // maxWidth: "992px",
     width: "100%",
   },
   itemPaper: {
     width: "100%",
+    maxWidth: '992px',
     margin: theme.spacing(1, 0, 1),
     padding: theme.spacing(2, 2, 2),
   },
@@ -72,6 +76,9 @@ const useStyles = makeStyles({
   },
   customerName: {
     fontWeight: 600,
+  },
+  fullWidth:{
+    width:'100%'
   },
   orderID: {
     fontWeight: 600,
@@ -90,7 +97,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DeliveryHome = () => {
+const DeliveryHome = ({handleLogout}) => {
   const screen = UseWindowDimensions().screen;
   const mobile = screen === "xs";
   const sm = screen === "sm";
@@ -112,15 +119,9 @@ const DeliveryHome = () => {
     setTabValue(index);
   };
 
-  // const handleDeliveredClick = (index1) => {
-  //   const deliveredOrder = orders[index1];
-  //   const newOrders = orders.filter(function (value, index, arr) {
-  //     return index1 !== index;
-  //   });
-  //   setOrders(newOrders);
-  //   deliveredOrder.status = 3;
-  //   setDeliveredOrders([...delivered_orders, deliveredOrder]);
-  // };
+  const handleLogoutClick = () =>{
+    handleLogout(history)
+  }
 
   const handleTransactionClick = (order) => {
     var data = JSON.stringify({
@@ -181,9 +182,11 @@ const DeliveryHome = () => {
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          var temp = [...new_items];
-          temp = [...temp, { item: response.data[i] }];
-          new_items = temp;
+          if(response.data[i].delStatus==='Out for Delivery'||response.data[i].delStatus==='Delivered'){
+            var temp = [...new_items];
+            temp = [...temp, { item: response.data[i] }];
+            new_items = temp;
+          }
         }
         setRetailTransactions(new_items);
       })
@@ -203,13 +206,15 @@ const DeliveryHome = () => {
 
     axios(config)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data));
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
-          var temp = [...new_items];
-          temp = [...temp, { item: response.data[i] }];
-          new_items = temp;
+          if(response.data[i].delStatus==='Out for Delivery'||response.data[i].delStatus==='Delivered'){
+            var temp = [...new_items];
+            temp = [...temp, { item: response.data[i] }];
+            new_items = temp;
+          }
         }
         setTransactions(new_items);
       })
@@ -234,10 +239,24 @@ const DeliveryHome = () => {
       alignItems="center"
       className={classes.root}
     >
+      <AppBar elevation={0}  position="static">
+        <Toolbar className={classes.toolbar}>
+          <Grid container fullWidth className={classes.fullWidth} direction='row-reverse'>
+            <Grid item className={classes.flexGrow}>
+              <Grid container  direction='row-reverse' >
+                <Button onClick={handleLogoutClick} color='inherit'>Logout</Button>
+              </Grid>
+            </Grid>
+            <Grid item>
+            <Typography variant='h5'>LiveMart</Typography>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
       {console.log(transactions)}
       {/* <Paper className={classes.paper}> */}
       <Grid container direction="column" className={classes.paper}>
-        <AppBar position="static">
+        <AppBar elevation={0} position="static">
           <Tabs
             value={tab_value}
             onChange={handleChange}
@@ -260,9 +279,13 @@ const DeliveryHome = () => {
               alignItems="center"
               className={classes.toDeliverRoot}
             >
+              {transactions.filter(
+                (transaction) =>
+                  transaction.item.delStatus === "Out for Delivery"
+              ).length!==0&&
               <Typography align="center" className={classes.customerName}>
                 Wholesale Orders
-              </Typography>
+              </Typography>}
               {transactions
                 .filter(
                   (transaction) =>
@@ -318,28 +341,13 @@ const DeliveryHome = () => {
                     </Grid>
                   </Paper>
                 ))}
-              {transactions.filter(
+              {retailTransactions.filter(
                 (transaction) =>
                   transaction.item.delStatus === "Out for Delivery"
-              ).length === 0 && (
-                <Grid container direction="column" alignItems="center">
-                  <Imgix
-                    src={no_orders}
-                    width="400"
-                    height="400"
-                    imgixParams={{
-                      fit: "fit",
-                      fm: "svg",
-                    }}
-                  />
-                  <Typography className={classes.emptyOrdersText} variant="h5">
-                    You don't have any wholesale orders to Deliver.{" "}
-                  </Typography>
-                </Grid>
-              )}
+              ).length!==0&&
               <Typography align="center" className={classes.customerName}>
                 Retail Orders
-              </Typography>
+              </Typography>}
               {retailTransactions
                 .filter(
                   (transaction) =>
@@ -395,10 +403,13 @@ const DeliveryHome = () => {
                     </Grid>
                   </Paper>
                 ))}
-              {retailTransactions.filter(
+              {transactions.filter(
                 (transaction) =>
                   transaction.item.delStatus === "Out for Delivery"
-              ).length === 0 && (
+              ).length + retailTransactions.filter(
+                (transaction) =>
+                  transaction.item.delStatus === "Out for Delivery"
+              ).length === 0  && (
                 <Grid container direction="column" alignItems="center">
                   <Imgix
                     src={no_orders}
@@ -410,7 +421,7 @@ const DeliveryHome = () => {
                     }}
                   />
                   <Typography className={classes.emptyOrdersText} variant="h5">
-                    You don't have any retail orders to Deliver.{" "}
+                    You don't have any orders to Deliver.{" "}
                   </Typography>
                 </Grid>
               )}
@@ -423,9 +434,12 @@ const DeliveryHome = () => {
               alignItems="center"
               className={classes.toDeliverRoot}
             >
+              {transactions.filter(
+                (transaction) => transaction.item.delStatus === "Delivered"
+              ).length !== 0&&
               <Typography align="center" className={classes.customerName}>
                 Wholesale Orders
-              </Typography>
+              </Typography>}
               {transactions
                 .filter(
                   (transaction) => transaction.item.delStatus === "Delivered"
@@ -479,27 +493,13 @@ const DeliveryHome = () => {
                     </Grid>
                   </Paper>
                 ))}
-              {transactions.filter(
+              
+              {retailTransactions.filter(
                 (transaction) => transaction.item.delStatus === "Delivered"
-              ).length === 0 && (
-                <Grid container direction="column" alignItems="center">
-                  <Imgix
-                    src={no_data}
-                    width="300"
-                    height="300"
-                    imgixParams={{
-                      fit: "fit",
-                      fm: "svg",
-                    }}
-                  />
-                  <Typography className={classes.emptyOrdersText} variant="h5">
-                    Your have no deliveries to show.{" "}
-                  </Typography>
-                </Grid>
-              )}
+              ).length !== 0&&
               <Typography align="center" className={classes.customerName}>
                 Retail Orders
-              </Typography>
+              </Typography>}
               {retailTransactions
                 .filter(
                   (transaction) => transaction.item.delStatus === "Delivered"
@@ -554,6 +554,8 @@ const DeliveryHome = () => {
                   </Paper>
                 ))}
               {retailTransactions.filter(
+                (transaction) => transaction.item.delStatus === "Delivered"
+              ).length + transactions.filter(
                 (transaction) => transaction.item.delStatus === "Delivered"
               ).length === 0 && (
                 <Grid container direction="column" alignItems="center">

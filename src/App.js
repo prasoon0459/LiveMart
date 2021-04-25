@@ -109,7 +109,7 @@ const App = () => {
             {UnauthenticatedComponent(<ChangePwd />)}
           </Route>
           <Route path="/delivery_home">
-            {AuthenticatedComponent(<DeliveryHome></DeliveryHome>)}
+            {AuthenticatedComponent(<DeliveryHome handleLogout={handleLogout}></DeliveryHome>)}
           </Route>
           <Route path="/add_item">
             {getHeader()}

@@ -11,6 +11,7 @@ import TopBrand from "./TopBrands";
 import ActiveOrders from "./ActiveOrders";
 import PendingOrders from "./PendingOrders";
 import Pickups from "./Pickups";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles({
 
 const Home = () => {
   const user_type = localStorage.getItem("usertype");
+  const history=useHistory()
   const classes = useStyles();
   const images = [
     {
@@ -57,6 +59,12 @@ const Home = () => {
       route:''
     }
   ];
+
+  React.useEffect(()=>{ 
+    if(user_type==='3'){
+      history.push('/delivery_home')
+    }
+  },[])
 
   const settings = {
     arrows: false,
