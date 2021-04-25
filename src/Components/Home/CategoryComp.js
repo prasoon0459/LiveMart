@@ -94,7 +94,7 @@ const CategoryComp = () => {
         </Typography>
         <Grid container className={classes.itemsContainer}>
           {categories.slice(0, 8).map((category) => (
-            <Grid item key={category.id} xs={6} sm={4} md={3} xl={6}>
+            <Grid item key={category.id} xs={6} sm={4} md={4} lg={4}>
               <CardActionArea onClick={() => handleClick(category.name)}>
                 <Grid
                   container

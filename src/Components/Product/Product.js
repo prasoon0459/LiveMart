@@ -168,7 +168,7 @@ const Product = (props) => {
       >
         <Grid item>
           <Typography variant="subtitle1" className={classes.itemNavigation}>
-            Home / Products / Milk / Amul Milk
+            Home / Products / {product.name}
           </Typography>
         </Grid>
       </Grid>
@@ -180,7 +180,7 @@ const Product = (props) => {
         alignItems="flex-start"
         className={classes.mainContainer}
       >
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} lg={5}>
           <Grid
             container
             direction={
@@ -227,7 +227,7 @@ const Product = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} lg={5}>
           <Grid
             container
             direction="column"
@@ -268,27 +268,6 @@ const Product = (props) => {
               justify="flex-start"
               alignItems="flex-start"
             >
-              {/* <Grid item xs ={12} sm={6}>
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        fullWidth
-                                        label="Variant"
-                                        value={variant}
-                                        variant='outlined'
-                                        InputLabelProps={{
-                                            style: { color: theme.palette.text.primary},
-                                        }}
-                                        className={classes.variantTextField}
-                                        onChange={handleProductVariantChange}
-                                        >
-                                        {variants.map((option) => (
-                                            <MenuItem key={option} value={option}>
-                                            {option}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid> */}
               <Grid item xs={12} sm={6}>
                 <Grid
                   container
@@ -328,7 +307,7 @@ const Product = (props) => {
                     className={classes.cartItemQtyInfo}
                     variant="body2"
                   >
-                    Note - ({quantity} {product.unit})
+                    Note - ({quantity} x {product.unit})
                   </Typography>
                 </Grid>
               </Grid>

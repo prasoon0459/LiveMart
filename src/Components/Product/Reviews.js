@@ -26,8 +26,9 @@ const useStyles = makeStyles({
       props ? theme.spacing(2, 1, 2) : theme.spacing(0, 4, 0),
   },
   customerRvwPaper: {
+    borderRadius: 10,
     margin: (props) =>
-      props ? theme.spacing(1, 0, 1) : theme.spacing(1, 1, 1),
+      props ? theme.spacing(1, 0, 1) : theme.spacing(1, 0, 1),
     padding: (props) =>
       props ? theme.spacing(2, 1, 2) : theme.spacing(1, 1, 1),
     width: "100%",
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
   },
   reviewHead: {
     width: "100%",
+    margin: theme.spacing(2, 0, 0),
   },
   divider: {
     width: "100%",
@@ -81,6 +83,9 @@ const useStyles = makeStyles({
   },
   new_userNameText: {
     fontWeight: 600,
+  },
+  rvwCont: {
+    padding: theme.spacing(0, 2, 0),
   },
 });
 
@@ -201,6 +206,7 @@ const Reviews = (props) => {
 
   React.useEffect(() => {
     try {
+      setShops(props.shops);
       getReviews();
     } catch (e) {
       console.log(e);
@@ -210,88 +216,18 @@ const Reviews = (props) => {
   return (
     <div className={classes.root}>
       {console.log(rating)}
-      <Grid container direction="column" alignItems="flex-start">
+      <Grid
+        container
+        direction="column"
+        alignItems="flex-start"
+        className={classes.rvwCont}
+      >
         <Grid item className={classes.reviewHead}>
           <Grid container direction="column" alignItems="flex-start">
             <Typography variant="h6">Customer Reviews</Typography>
             <Divider className={classes.divider}></Divider>
           </Grid>
         </Grid>
-        {/* <Grid item className={classes.rating}>
-          <Grid container direction="column" alignItems="flex-start">
-            <Rating
-              name="simple-controlled"
-              value={rating}
-              readOnly
-              className={classes.rating}
-            />
-            <Box
-              width="200px"
-              alignItems="center"
-              flexDirection="row"
-              className={classes.indStars}
-            >
-              <Box>
-                <Typography align="left">5 star</Typography>
-              </Box>
-              <Box>
-                <LinearWithValueLabel variant="determinate" progress={50} />
-              </Box>
-            </Box>
-            <Box
-              width="200px"
-              alignItems="center"
-              flexDirection="row"
-              className={classes.indStars}
-            >
-              <Box>
-                <Typography align="left">4 star</Typography>
-              </Box>
-              <Box>
-                <LinearWithValueLabel variant="determinate" progress={30} />
-              </Box>
-            </Box>
-            <Box
-              width="200px"
-              alignItems="center"
-              flexDirection="row"
-              className={classes.indStars}
-            >
-              <Box>
-                <Typography align="left">3 star</Typography>
-              </Box>
-              <Box>
-                <LinearWithValueLabel variant="determinate" progress={10} />
-              </Box>
-            </Box>
-            <Box
-              width="200px"
-              alignItems="center"
-              flexDirection="row"
-              className={classes.indStars}
-            >
-              <Box>
-                <Typography align="left">2 star</Typography>
-              </Box>
-              <Box>
-                <LinearWithValueLabel variant="determinate" progress={8} />
-              </Box>
-            </Box>
-            <Box
-              width="200px"
-              alignItems="center"
-              flexDirection="row"
-              className={classes.indStars}
-            >
-              <Box>
-                <Typography align="left">1 star</Typography>
-              </Box>
-              <Box>
-                <LinearWithValueLabel variant="determinate" progress={2} />
-              </Box>
-            </Box>
-          </Grid>
-        </Grid> */}
         <Paper elevation={3} className={classes.customerRvwPaper}>
           <Grid
             container
@@ -316,28 +252,28 @@ const Reviews = (props) => {
                       fullWidth
                       select
                       label="Select Wholesaler"
-                      onClick={() => setShops(props.shops)}
+                      // onClick={() => setShops(props.shops)}
                       InputLabelProps={{
                         className: classes.floatingLabelFocusStyle,
                       }}
                       variant="outlined"
                     >
-                      {shops.length > 0
-                        ? shops.map((option, index) => {
-                            return (
-                              <MenuItem
-                                key={option.id}
-                                value={option.shopName}
-                                selected={index === shopIndex}
-                                onClick={(event) =>
-                                  handleMenuItemClick(event, index)
-                                }
-                              >
-                                {option.shopName}
-                              </MenuItem>
-                            );
-                          })
-                        : null}
+                      {shops &&
+                        shops.length > 0 &&
+                        shops.map((option, index) => {
+                          return (
+                            <MenuItem
+                              key={option.id}
+                              value={option.shopName}
+                              selected={index === shopIndex}
+                              onClick={(event) =>
+                                handleMenuItemClick(event, index)
+                              }
+                            >
+                              {option.shopName}
+                            </MenuItem>
+                          );
+                        })}
                     </TextField>
                   </Grid>
                 ) : (

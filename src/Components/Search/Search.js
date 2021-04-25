@@ -423,7 +423,6 @@ const Search = () => {
                                 horizontal: "right",
                               }}
                               overlap="rectangle"
-                              badgeContent="40%"
                               color="secondary"
                             >
                               <Imgix

@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import { Grid, makeStyles, Paper, Typography, Button } from "@material-ui/core";
 import { ChevronRight, LocationOn, StoreOutlined } from "@material-ui/icons";
 import theme from "../../theme";
@@ -24,6 +22,7 @@ const useStyles = makeStyles({
   },
   orderPaper: {
     width: "100%",
+    borderRadius:10,
     margin: theme.spacing(1, 1, 1),
     padding: theme.spacing(2, 2, 2),
     maxWidth: "992px",
@@ -70,22 +69,22 @@ const useStyles = makeStyles({
   },
 });
 
-// function getStatus(status) {
-//   switch (status) {
-//     case 0:
-//       return "Order Placed";
-//     case 1:
-//       return "Order Packed";
-//     case 2:
-//       return "Out for Delivery";
-//     case 3:
-//       return "Delivered";
-//     default:
-//       return "UNKNOWN_STATUS";
-//   }
-// }
+function getStatus(status) {
+  switch (status) {
+    case 0:
+      return "Order Placed";
+    case 1:
+      return "Order Packed";
+    case 2:
+      return "Out for Delivery";
+    case 3:
+      return "Delivered";
+    default:
+      return "UNKNOWN_STATUS";
+  }
+}
 
-const Orders = () => {
+const OrdersFromMe = () => {
   const screen = UseWindowDimensions().screen;
   const mobile = screen === "xs";
   const sm = screen === "sm";
@@ -99,10 +98,10 @@ const Orders = () => {
 
   const getTransactions = () => {
     var config = {};
-    if (user_type === "1") {
+    if (user_type === "2") {
       config = {
         method: "get",
-        url: serverUrl + "/transactions/?b=" + username,
+        url: serverUrl + "/transactions/?s=" + username,
         headers: {
           Authorization: "JWT " + token,
         },
@@ -110,7 +109,7 @@ const Orders = () => {
     } else {
       config = {
         method: "get",
-        url: serverUrl + "/retail_transactions/?b=" + username,
+        url: serverUrl + "/retail_transactions/?s=" + username,
         headers: {
           Authorization: "JWT " + token,
         },
@@ -119,7 +118,7 @@ const Orders = () => {
 
     axios(config)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log('ordersfromme',JSON.stringify(response.data));
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {
@@ -142,16 +141,16 @@ const Orders = () => {
   }, []);
 
   const handleTrackClick = (order) => {
-    history.push({
-      pathname: "/track",
-      order: order.item,
-    });
+      history.push({
+        pathname: "/seller_view_order",
+        order: order.item,
+      })
   };
   const handleViewClick = (order) => {
-    history.push({
-      pathname: "/my_pickup",
-      order: order.item,
-    });
+      history.push({
+        pathname: "/pickup",
+        order: order.item,
+      });
   };
 
   return (
@@ -168,7 +167,7 @@ const Orders = () => {
           align="left"
           className={classes.title}
         >
-          My Orders
+          Orders From Me
         </Typography>
         <Grid
           container
@@ -181,18 +180,12 @@ const Orders = () => {
               <Grid container alignItems="center" direction="row">
                 <Grid item className={classes.orderStatusItem}>
                   <Typography className={classes.orderStatus} align="left">
-                    {order.item.mode === "Online"
-                      ? order.item.delStatus // getStatus
-                      : "Offline Pickup"}
+                      {order.item.delStatus }
                   </Typography>
                 </Grid>
                 <Button
                   color="secondary"
-                  onClick={
-                    order.mode === "Online"
-                      ? () => handleTrackClick(order)
-                      : () => handleViewClick(order)
-                  }
+                  onClick={order.item.mode==='Online'? () => handleTrackClick(order) : ()=> handleViewClick(order)}
                   endIcon={
                     order.item.mode === "Online" ? (
                       <LocationOn></LocationOn>
@@ -217,7 +210,7 @@ const Orders = () => {
               </Grid>
               <Grid container className={classes.orderItems} direction="column">
                 <Grid item>
-                  {user_type === "1"
+                  {user_type === "2"
                     ? order.item.cartItems.map((item) => (
                         <Typography align="left">
                           {item.productName +
@@ -249,14 +242,12 @@ const Orders = () => {
                       {new Date(order.item.expectedDate).toLocaleDateString()}
                     </Typography>
                   </Grid>
-                ) : (
-                  <Grid item xs={6}>
-                    <div></div>
-                  </Grid>
-                )}
+                ) : <Grid item xs={6}>
+                  <div></div>
+                  </Grid>}
                 <Grid item xs={12} sm={6}>
                   <Typography className={classes.orderTotalPrice} align="right">
-                    Total Price: $ {order.item.total_amount}
+                    Total Price: ₹ {order.item.total_amount}
                   </Typography>
                 </Grid>
               </Grid>
@@ -284,4 +275,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default OrdersFromMe;

@@ -69,6 +69,7 @@ const Categories = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        // console.log('cat', response.data)
         setCategories(response.data);
       })
       .catch(function (error) {
@@ -112,7 +113,7 @@ const Categories = () => {
                 >
                   <Grid item>
                     <ReactRoundedImage
-                      image={fruits}
+                      image={category.image}
                       imageWidth="160"
                       imageHeight="160"
                       roundedColor={theme.palette.primary.main}
