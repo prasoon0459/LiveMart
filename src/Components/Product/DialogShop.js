@@ -129,7 +129,7 @@ export default function DialogShop(props) {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Nearest</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem> */}
     </Menu>
   );
   return (
@@ -189,7 +189,7 @@ export default function DialogShop(props) {
                         />
                       </Box> */}
                       <Grid container direction="row" spacing={2}>
-                        <Grid item xs={9}>
+                        <Grid item>
                           <Grid container direction="column">
                             <Grid item>
                               <Typography
@@ -238,11 +238,8 @@ export default function DialogShop(props) {
                               {wholesaler.shopLong}
                             </Typography>
                           </Grid>
-                          {wholesaler.quantity <= 0 && (
-                            <Typography color="red">Out of stock</Typography>
-                          )}
                         </Grid>
-                        <Grid item xs={3}>
+                        <Grid item>
                           <Fab
                             padding={2}
                             onClick={() => handleAddtoCart(wholesaler.id)}
@@ -254,6 +251,16 @@ export default function DialogShop(props) {
                             <AddShoppingCartOutlined></AddShoppingCartOutlined>
                             <Typography>Add to Cart</Typography>
                           </Fab>
+                          {wholesaler.quantity < props.qty && (
+                            <Typography color="secondary">
+                              Dont have that much
+                            </Typography>
+                          )}
+                          {wholesaler.quantity <= 0 && (
+                            <Typography color="secondary">
+                              Out of stock
+                            </Typography>
+                          )}
                         </Grid>
                       </Grid>
                     </Grid>
@@ -331,10 +338,24 @@ export default function DialogShop(props) {
                             variant="contained"
                             size="medium"
                             color="secondary"
+                            disabled={
+                              retailer.quantity <= 0 ||
+                              props.qty > retailer.quantity
+                            }
                           >
                             <AddShoppingCartOutlined></AddShoppingCartOutlined>
                             Add to Cart
                           </Fab>
+                          {retailer.quantity <= 0 && (
+                            <Typography color="secondary">
+                              Out of stock
+                            </Typography>
+                          )}
+                          {retailer.quantity < props.qty && (
+                            <Typography color="secondary">
+                              Dont have that much
+                            </Typography>
+                          )}
                         </Grid>
                       </Grid>
                     </Grid>

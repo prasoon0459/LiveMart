@@ -122,12 +122,15 @@ const SellerViewOrder = (props) => {
   //   new Date(order.expectedDate)
   // );
   const [orderStatus, setOrderStatus] = React.useState(
-    (order.delStatus === "Packed" ? 2 : order.delStatus === "Out for Delivery")
+    order.delStatus === "Packed"
+      ? 2
+      : order.delStatus === "Out for Delivery"
       ? 3
       : order.delStatus === "Delivered"
       ? 4
       : 1
   );
+  console.log(orderStatus);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [delId, setDelId] = useState(0);
   const user_type = localStorage.getItem("usertype");
@@ -138,7 +141,6 @@ const SellerViewOrder = (props) => {
   };
 
   const handlePackedClicked = () => {
-    setOrderStatus(orderStatus + 1);
     var data = JSON.stringify({
       id: order.id,
     });
@@ -201,7 +203,6 @@ const SellerViewOrder = (props) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        setOrderStatus(orderStatus + 1);
       })
       .catch(function (error) {
         console.log(error);
@@ -215,8 +216,7 @@ const SellerViewOrder = (props) => {
   const getStepContent = (step) => {
     if (order.delStatus === "Packed") {
       step = 2;
-    }
-    if (order.delStatus === "Out for Delivery") {
+    } else if (order.delStatus === "Out for Delivery") {
       step = 3;
     }
     console.log(order);

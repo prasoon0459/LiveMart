@@ -106,14 +106,7 @@ const TrackOrder = (props) => {
       case "Order Placed":
         return <Typography>{order.date.slice(0, 10)}</Typography>;
       case "Packed":
-        return (
-          <div>
-            <Typography className={classes.statusDate}>
-              on 18th April 2021{" "}
-            </Typography>
-            <Typography className={classes.statusTime}>03:36 PM</Typography>
-          </div>
-        );
+        return <div></div>;
       case "Out for Delivery":
         return (
           <div>

@@ -145,10 +145,10 @@ const ActiveOrders = () => {
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
-        align="left"
+        align="center"
         className={classes.title}
       >
-        YOUR ACTIVE PURCHASES
+        Your Active Purchases
       </Typography>
       <Grid container direction="row">
         {activeOrders.map((order) => (

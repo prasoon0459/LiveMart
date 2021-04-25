@@ -206,7 +206,7 @@ const Reviews = (props) => {
 
   React.useEffect(() => {
     try {
-      setShops(props.shops);
+      // setShops(props.shops);
       getReviews();
     } catch (e) {
       console.log(e);
@@ -252,7 +252,7 @@ const Reviews = (props) => {
                       fullWidth
                       select
                       label="Select Wholesaler"
-                      // onClick={() => setShops(props.shops)}
+                      onClick={() => setShops(props.shops)}
                       InputLabelProps={{
                         className: classes.floatingLabelFocusStyle,
                       }}

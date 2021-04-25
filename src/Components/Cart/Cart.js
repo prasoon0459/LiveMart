@@ -97,22 +97,22 @@ const useStyles = makeStyles({
   },
   cartItemPrice: {
     // fontWeight: 600,
-    fontSize:18,
-    margin: theme.spacing(1, 2,0),
+    fontSize: 18,
+    margin: theme.spacing(1, 2, 0),
   },
   cartitemQty: {
-    fontSize:18,
-    margin: theme.spacing(0, 2,0),
+    fontSize: 18,
+    margin: theme.spacing(0, 2, 0),
   },
   cartItemQtyInfo: {
     color: theme.palette.text.hint,
     fontSize: 12,
     margin: theme.spacing(0, 1, 0),
   },
-  cartItemTotalCost:{
-    fontSize:18,
-    fontWeight:600,
-    margin:theme.spacing(1,0,0)
+  cartItemTotalCost: {
+    fontSize: 18,
+    fontWeight: 600,
+    margin: theme.spacing(1, 0, 0),
   },
   billCostInfo: {
     color: theme.palette.text.hint,
@@ -305,23 +305,46 @@ const Cart = () => {
                     {items.map((product) => (
                       <Grid item className={classes.cartItem}>
                         <Grid container direction="row" alignItems="flex-start">
-                          <Grid
-                            item
-                            xs={12}
-                            sm={4}
-                            className={classes.itemCard}
-                          >
-                            <Card>
-                              <CardActionArea>
-                                <CardContent>
-                                  <CardMedia
-                                    className={classes.media}
-                                    image={product.item.image}
-                                  />
-                                </CardContent>
-                              </CardActionArea>
-                            </Card>
-                          </Grid>
+                          {user_type === "1" ? (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={4}
+                              className={classes.itemCard}
+                            >
+                              <Card>
+                                <CardActionArea>
+                                  <CardContent>
+                                    <CardMedia
+                                      className={classes.media}
+                                      image={product.item.productId.image}
+                                    />
+                                  </CardContent>
+                                </CardActionArea>
+                              </Card>
+                            </Grid>
+                          ) : (
+                            <Grid
+                              item
+                              xs={12}
+                              sm={4}
+                              className={classes.itemCard}
+                            >
+                              <Card>
+                                <CardActionArea>
+                                  <CardContent>
+                                    <CardMedia
+                                      className={classes.media}
+                                      image={
+                                        product.item.retailProductId.productId
+                                          .image
+                                      }
+                                    />
+                                  </CardContent>
+                                </CardActionArea>
+                              </Card>
+                            </Grid>
+                          )}
                           <Grid item xs={12} sm={8}>
                             <Grid
                               container
