@@ -17,6 +17,8 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import React from "react";
+import Imgix from "react-imgix";
+import no_orders from "../../img/no_orders.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -73,6 +75,11 @@ const useStyles = makeStyles({
   },
   CustomerDetailsHeading: {
     fontWeight: 500,
+  },
+  emptyOrdersText: {
+    letterSpacing: 2,
+    color: theme.palette.text.hint,
+    margin: theme.spacing(4, 2, 2),
   },
 });
 
@@ -140,7 +147,7 @@ const Pickups = () => {
     });
   };
 
-  return transactions.length > 0 ? (
+  return (
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -204,12 +211,23 @@ const Pickups = () => {
             </Grid>
           ))
         ) : (
-          <CircularProgress />
+          <Grid container direction="column" alignItems="center">
+            <Imgix
+              src={no_orders}
+              width="400"
+              height="400"
+              imgixParams={{
+                fit: "fit",
+                fm: "svg",
+              }}
+            />
+            <Typography className={classes.emptyOrdersText} variant="h5">
+              You don't have any pickups scheduled.{" "}
+            </Typography>
+          </Grid>
         )}
       </Grid>
     </div>
-  ) : (
-    <div></div>
   );
 };
 export default Pickups;

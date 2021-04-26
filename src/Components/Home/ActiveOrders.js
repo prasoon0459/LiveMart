@@ -10,6 +10,9 @@ import { useHistory } from "react-router-dom";
 import serverUrl from "../../serverURL";
 import React from "react";
 import axios from "axios";
+import Imgix from "react-imgix";
+import no_orders from "../../img/no_orders.svg";
+import no_data from "../../img/no_data.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -141,7 +144,7 @@ const ActiveOrders = () => {
     return d.toDateString();
   };
 
-  return activeOrders.length > 0 ? (
+  return (
     <div className={classes.root}>
       <Typography
         variant={mobile ? "h6" : "h5"}
@@ -151,120 +154,138 @@ const ActiveOrders = () => {
         Your Active Purchases
       </Typography>
       <Grid container direction="row">
-        {activeOrders.map((order) => (
-          <Grid item lg={3} md={4} sm={6} xs={12}>
-            <Paper elevation={3} className={classes.itemRoot}>
-              <Grid container direction="column">
-                {user_type === "1" ? (
-                  <Typography align="left" className={classes.itemTitle}>
-                    {order.cartItems.length > 1
-                      ? order.cartItems[0].productName +
-                        " + " +
-                        (order.cartItems.length - 1) +
-                        " more item(s)"
-                      : order.cartItems[0].productName}
+        {activeOrders.length > 0 ? (
+          activeOrders.map((order) => (
+            <Grid item lg={3} md={4} sm={6} xs={12}>
+              <Paper elevation={3} className={classes.itemRoot}>
+                <Grid container direction="column">
+                  {user_type === "1" ? (
+                    <Typography align="left" className={classes.itemTitle}>
+                      {order.cartItems.length > 1
+                        ? order.cartItems[0].productName +
+                          " + " +
+                          (order.cartItems.length - 1) +
+                          " more item(s)"
+                        : order.cartItems[0].productName}
+                    </Typography>
+                  ) : (
+                    <Typography align="left" className={classes.itemTitle}>
+                      {order.retailCartItems.length > 1
+                        ? order.retailCartItems[0].retailProductName +
+                          " + " +
+                          (order.retailCartItems.length - 1) +
+                          " more item(s)"
+                        : order.retailCartItems[0].retailProductName}
+                    </Typography>
+                  )}
+                  <Typography align="left" className={classes.shopName}>
+                    {order.shopName}
                   </Typography>
-                ) : (
-                  <Typography align="left" className={classes.itemTitle}>
-                    {order.retailCartItems.length > 1
-                      ? order.retailCartItems[0].retailProductName +
-                        " + " +
-                        (order.retailCartItems.length - 1) +
-                        " more item(s)"
-                      : order.retailCartItems[0].retailProductName}
+                  <Typography align="left" className={classes.itemOrderedDate}>
+                    Ordered on : {getFormattedDate(order.date)}
                   </Typography>
-                )}
-                <Typography align="left" className={classes.shopName}>
-                  {order.shopName}
-                </Typography>
-                <Typography align="left" className={classes.itemOrderedDate}>
-                  Ordered on : {getFormattedDate(order.date)}
-                </Typography>
-                <Typography align="left" className={classes.itemOrderedStatus}>
-                  Order Status : {order.delStatus}
-                </Typography>
-                {order.mode === "Online" && (
                   <Typography
                     align="left"
-                    className={classes.itemExpectedDelivery}
+                    className={classes.itemOrderedStatus}
                   >
-                    Expected Delivery: {getFormattedDate(order.expectedDate)}
+                    Order Status : {order.delStatus}
                   </Typography>
-                )}
-                {order.delStatus === "Out for Delivery" && (
-                  <Grid container direction="column">
+                  {order.mode === "Online" && (
                     <Typography
                       align="left"
-                      className={classes.itemDeliveryDetails}
+                      className={classes.itemExpectedDelivery}
                     >
-                      Delivery Details
+                      Expected Delivery: {getFormattedDate(order.expectedDate)}
                     </Typography>
-                    <Grid
-                      className={classes.deliveryPersonDetails}
-                      container
-                      direction="row"
-                      alignItems="center"
-                    >
-                      <ReactRoundedImage
-                        image={deliveryBoyAvatar}
-                        imageWidth="40"
-                        imageHeight="40"
-                        roundedSize={1}
-                      ></ReactRoundedImage>
-                      <Grid item>
-                        <Grid
-                          container
-                          direction="column"
-                          className={classes.deliveryPersonContact}
-                        >
-                          <Typography
-                            align="left"
-                            className={classes.DeliveryBoyName}
+                  )}
+                  {order.delStatus === "Out for Delivery" && (
+                    <Grid container direction="column">
+                      <Typography
+                        align="left"
+                        className={classes.itemDeliveryDetails}
+                      >
+                        Delivery Details
+                      </Typography>
+                      <Grid
+                        className={classes.deliveryPersonDetails}
+                        container
+                        direction="row"
+                        alignItems="center"
+                      >
+                        <ReactRoundedImage
+                          image={deliveryBoyAvatar}
+                          imageWidth="40"
+                          imageHeight="40"
+                          roundedSize={1}
+                        ></ReactRoundedImage>
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="column"
+                            className={classes.deliveryPersonContact}
                           >
-                            {order.delName}
-                          </Typography>
-                          <Typography
-                            align="left"
-                            className={classes.DeliveryBoyMobile}
-                          >
-                            +91{order.delPhno}
-                          </Typography>
+                            <Typography
+                              align="left"
+                              className={classes.DeliveryBoyName}
+                            >
+                              {order.delName}
+                            </Typography>
+                            <Typography
+                              align="left"
+                              className={classes.DeliveryBoyMobile}
+                            >
+                              +91{order.delPhno}
+                            </Typography>
+                          </Grid>
                         </Grid>
                       </Grid>
                     </Grid>
-                  </Grid>
-                )}
-                {order.mode === "Online" ? (
-                  <Button
-                    variant="outlined"
-                    className={classes.trackBtn}
-                    onClick={() => handleTrackClick(order)}
-                    color="secondary"
-                    fullWidth
-                    endIcon={<LocationOn></LocationOn>}
-                  >
-                    Track Order
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outlined"
-                    className={classes.trackBtn}
-                    onClick={() => handleViewPickup(order)}
-                    color="secondary"
-                    fullWidth
-                    endIcon={<ChevronRight></ChevronRight>}
-                  >
-                    View Order
-                  </Button>
-                )}
-              </Grid>
-            </Paper>
+                  )}
+                  {order.mode === "Online" ? (
+                    <Button
+                      variant="outlined"
+                      className={classes.trackBtn}
+                      onClick={() => handleTrackClick(order)}
+                      color="secondary"
+                      fullWidth
+                      endIcon={<LocationOn></LocationOn>}
+                    >
+                      Track Order
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      className={classes.trackBtn}
+                      onClick={() => handleViewPickup(order)}
+                      color="secondary"
+                      fullWidth
+                      endIcon={<ChevronRight></ChevronRight>}
+                    >
+                      View Order
+                    </Button>
+                  )}
+                </Grid>
+              </Paper>
+            </Grid>
+          ))
+        ) : (
+          <Grid container direction="column" alignItems="center">
+            <Imgix
+              src={no_data}
+              width="400"
+              height="400"
+              imgixParams={{
+                fit: "fit",
+                fm: "svg",
+              }}
+            />
+            <Typography className={classes.emptyOrdersText} variant="h5">
+              You don't have any active purchases.{" "}
+            </Typography>
           </Grid>
-        ))}
+        )}
       </Grid>
     </div>
-  ) : (
-    <div></div>
   );
 };
 export default ActiveOrders;

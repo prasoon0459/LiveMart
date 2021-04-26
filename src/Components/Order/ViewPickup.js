@@ -216,6 +216,7 @@ const ViewPickup = (props) => {
                               " (" +
                               cartItem.quantity +
                               " " +
+                              "x" +
                               cartItem.productId.unit +
                               " )"
                             }
@@ -237,6 +238,7 @@ const ViewPickup = (props) => {
                               " (" +
                               retailCartItem.quantity +
                               " " +
+                              "x" +
                               retailCartItem.retailProductId.productId.unit +
                               " )"
                             }

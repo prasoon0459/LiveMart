@@ -141,6 +141,11 @@ const DeliveryHome = ({ handleLogout }) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        var new_items = transactions.filter(
+          (product) => product.item.delStatus === "Out for Delivery"
+        );
+        setTransactions(new_items);
+        console.log(transactions);
       })
       .catch(function (error) {
         console.log(error);
@@ -162,7 +167,11 @@ const DeliveryHome = ({ handleLogout }) => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
+        var new_items = retailTransactions.filter(
+          (product) => product.item.delStatus === "Out for Delivery"
+        );
+        retailTransactions(new_items);
       })
       .catch(function (error) {
         console.log(error);
@@ -211,7 +220,7 @@ const DeliveryHome = ({ handleLogout }) => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        //console.log(JSON.stringify(response.data));
         const len = response.data.length;
         var new_items = [];
         for (var i = 0; i < len; i++) {

@@ -17,6 +17,8 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import serverUrl from "../../serverURL";
 import React from "react";
+import Imgix from "react-imgix";
+import no_orders from "../../img/no_orders.svg";
 
 const useStyles = makeStyles({
   root: {
@@ -64,6 +66,11 @@ const useStyles = makeStyles({
   itemOrderedID: {
     fontSize: 16,
     margin: theme.spacing(0, 1, 0),
+  },
+  emptyOrdersText: {
+    letterSpacing: 2,
+    color: theme.palette.text.hint,
+    margin: theme.spacing(4, 2, 2),
   },
 });
 
@@ -115,9 +122,10 @@ const PendingOrders = () => {
         var new_items = [];
         for (var i = 0; i < len; i++) {
           if (
-            response.data[i].delStatus === "Order Placed" ||
-            response.data[i].delStatus === "Packed" ||
-            response.data[i].delStatus === "Out for Delivery"
+            (response.data[i].delStatus === "Order Placed" ||
+              response.data[i].delStatus === "Packed" ||
+              response.data[i].delStatus === "Out for Delivery") &&
+            response.data[i].mode === "Online"
           ) {
             var temp = [...new_items];
             temp = [...temp, { item: response.data[i] }];
@@ -138,7 +146,7 @@ const PendingOrders = () => {
     }
   }, []);
 
-  return transactions.length > 0 ? (
+  return (
     <div className={classes.root}>
       {console.log(transactions)}
       <Typography
@@ -150,117 +158,123 @@ const PendingOrders = () => {
       </Typography>
       <Grid container direction="row">
         {transactions.length > 0 ? (
-          transactions
-            .filter((transaction) => "Online" === transaction.item.mode)
-            .map((order) => (
-              <Grid item lg={3} md={4} sm={6} xs={12}>
-                <Paper elevation={3} className={classes.itemRoot}>
-                  <Grid container direction="column">
-                    {user_type === "2" ? (
-                      <Typography
-                        variant="body1"
-                        align="left"
-                        className={classes.itemTitle}
-                      >
-                        {order.item.cartItems[0].productName}
-                        {order.item.cartItems.length - 1 !== 0
-                          ? " and " +
-                            (order.item.cartItems.length - 1).toString() +
-                            " more item(s)"
-                          : " "}
-                      </Typography>
-                    ) : (
-                      <Typography
-                        variant="body1"
-                        align="left"
-                        className={classes.itemTitle}
-                      >
-                        {order.item.retailCartItems[0].retailProductName}
-                        {order.item.retailCartItems.length - 1 !== 0
-                          ? " and " +
-                            (order.item.retailCartItems.length - 1).toString() +
-                            " more item(s)"
-                          : " "}
-                      </Typography>
-                    )}
+          transactions.map((order) => (
+            <Grid item lg={3} md={4} sm={6} xs={12}>
+              <Paper elevation={3} className={classes.itemRoot}>
+                <Grid container direction="column">
+                  {user_type === "2" ? (
                     <Typography
+                      variant="body1"
                       align="left"
-                      className={classes.itemOrderedDate}
+                      className={classes.itemTitle}
                     >
-                      Ordered on :{" "}
-                      {new Date(order.item.date).toLocaleDateString()}
+                      {order.item.cartItems[0].productName}
+                      {order.item.cartItems.length - 1 !== 0
+                        ? " and " +
+                          (order.item.cartItems.length - 1).toString() +
+                          " more item(s)"
+                        : " "}
                     </Typography>
+                  ) : (
                     <Typography
+                      variant="body1"
                       align="left"
-                      variant="caption"
-                      className={classes.itemOrderedID}
+                      className={classes.itemTitle}
                     >
-                      Order ID : {order.item.id}
+                      {order.item.retailCartItems[0].retailProductName}
+                      {order.item.retailCartItems.length - 1 !== 0
+                        ? " and " +
+                          (order.item.retailCartItems.length - 1).toString() +
+                          " more item(s)"
+                        : " "}
                     </Typography>
-                    <Typography
-                      align="left"
-                      className={classes.itemOrderedStatus}
+                  )}
+                  <Typography align="left" className={classes.itemOrderedDate}>
+                    Ordered on :{" "}
+                    {new Date(order.item.date).toLocaleDateString()}
+                  </Typography>
+                  <Typography
+                    align="left"
+                    variant="caption"
+                    className={classes.itemOrderedID}
+                  >
+                    Order ID : {order.item.id}
+                  </Typography>
+                  <Typography
+                    align="left"
+                    className={classes.itemOrderedStatus}
+                  >
+                    Order Status : {order.item.delStatus}
+                  </Typography>
+                  <Typography
+                    align="left"
+                    className={classes.itemExpectedDelivery}
+                  >
+                    Expected Delivery:{" "}
+                    {new Date(order.item.expectedDate).toLocaleDateString()}
+                  </Typography>
+                  {order.item.delStatus === "Out for Delivery" && (
+                    <Grid
+                      className={classes.deliveryPersonDetails}
+                      container
+                      direction="row"
+                      alignItems="center"
                     >
-                      Order Status : {order.item.delStatus}
-                    </Typography>
-                    <Typography
-                      align="left"
-                      className={classes.itemExpectedDelivery}
-                    >
-                      Expected Delivery:{" "}
-                      {new Date(order.item.expectedDate).toLocaleDateString()}
-                    </Typography>
-                    {order.item.delStatus === "Out for Delivery" && (
-                      <Grid
-                        className={classes.deliveryPersonDetails}
-                        container
-                        direction="row"
-                        alignItems="center"
-                      >
-                        {console.log("Asdasd")}
-                        <ReactRoundedImage
-                          image={deliveryBoyAvatar}
-                          imageWidth="40"
-                          imageHeight="40"
-                          roundedSize={1}
-                        ></ReactRoundedImage>
-                        <Grid item>
-                          <Grid
-                            container
-                            direction="column"
-                            className={classes.deliveryPersonContact}
-                          >
-                            <Typography className={classes.DeliveryBoyName}>
-                              {order.item.delName}
-                            </Typography>
-                            <Typography className={classes.DeliveryBoyMobile}>
-                              +91 {order.item.delPhno}
-                            </Typography>
-                          </Grid>
+                      {console.log("Asdasd")}
+                      <ReactRoundedImage
+                        image={deliveryBoyAvatar}
+                        imageWidth="40"
+                        imageHeight="40"
+                        roundedSize={1}
+                      ></ReactRoundedImage>
+                      <Grid item>
+                        <Grid
+                          container
+                          direction="column"
+                          className={classes.deliveryPersonContact}
+                        >
+                          <Typography className={classes.DeliveryBoyName}>
+                            {order.item.delName}
+                          </Typography>
+                          <Typography className={classes.DeliveryBoyMobile}>
+                            +91 {order.item.delPhno}
+                          </Typography>
                         </Grid>
                       </Grid>
-                    )}
-                    <Button
-                      variant="outlined"
-                      onClick={() => handleOrderOpen(order)}
-                      color="secondary"
-                      fullWidth
-                      className={classes.btn}
-                      endIcon={<ChevronRight></ChevronRight>}
-                    >
-                      View Order
-                    </Button>
-                  </Grid>
-                </Paper>
-              </Grid>
-            ))
+                    </Grid>
+                  )}
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleOrderOpen(order)}
+                    color="secondary"
+                    fullWidth
+                    className={classes.btn}
+                    endIcon={<ChevronRight></ChevronRight>}
+                  >
+                    View Order
+                  </Button>
+                </Grid>
+              </Paper>
+            </Grid>
+          ))
         ) : (
-          <CircularProgress />
+          <Grid container direction="column" alignItems="center">
+            <Imgix
+              src={no_orders}
+              width="400"
+              height="400"
+              imgixParams={{
+                fit: "fit",
+                fm: "svg",
+              }}
+            />
+            <Typography className={classes.emptyOrdersText} variant="h5">
+              You don't have any pending orders.{" "}
+            </Typography>
+          </Grid>
         )}
       </Grid>
     </div>
-  ) : (
-    <div></div>
   );
 };
 export default PendingOrders;
