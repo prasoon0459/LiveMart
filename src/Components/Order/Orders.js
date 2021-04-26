@@ -256,7 +256,7 @@ const Orders = () => {
                 )}
                 <Grid item xs={12} sm={6}>
                   <Typography className={classes.orderTotalPrice} align="right">
-                    Total Price: $ {order.item.total_amount}
+                    Total Price: ₹ {order.item.total_amount}
                   </Typography>
                 </Grid>
               </Grid>

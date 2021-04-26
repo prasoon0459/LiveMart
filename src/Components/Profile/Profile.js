@@ -199,7 +199,7 @@ export default function Profile(props) {
                   component="h1"
                   variant="h4"
                 >
-                  Wallet Balance: $
+                  Wallet Balance: ₹
                   {wallet === "" ? <CircularProgress /> : wallet}
                 </Typography>
               </Grid>

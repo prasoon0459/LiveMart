@@ -167,7 +167,7 @@ const MyPickup = (props) => {
                             // secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            $ {cartItem.productPrice * cartItem.quantity}
+                            ₹ {cartItem.productPrice * cartItem.quantity}
                           </Typography>
                         </ListItem>
                       ))
@@ -188,7 +188,7 @@ const MyPickup = (props) => {
                             // secondary={product.quantity + " Nos."}
                           />
                           <Typography variant="body2">
-                            $ {cartItem.retailProductPrice * cartItem.quantity}
+                            ₹ {cartItem.retailProductPrice * cartItem.quantity}
                           </Typography>
                         </ListItem>
                       ))}
@@ -196,7 +196,7 @@ const MyPickup = (props) => {
                 <ListItem className={classes.listItem}>
                   <ListItemText primary="Total" />
                   <Typography variant="subtitle1" className={classes.total}>
-                    $ {order.total_amount}
+                    ₹ {order.total_amount}
                   </Typography>
                 </ListItem>
               </Grid>
