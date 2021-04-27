@@ -569,9 +569,8 @@ function Checkout(props) {
         address["addressLine1"].toString() +
         ", " +
         (address["addressLine2"] !== null
-          ? address["addressLine2"].toString()
+          ? address["addressLine2"].toString() + ", "
           : "") +
-        ", " +
         address["city"].toString() +
         ", " +
         address["state"].toString() +

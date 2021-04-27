@@ -168,6 +168,7 @@ const SellerViewOrder = (props) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        setOrderStatus(orderStatus + 1);
       })
       .catch(function (error) {
         console.log(error);
@@ -203,6 +204,7 @@ const SellerViewOrder = (props) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        setOrderStatus(orderStatus + 1);
       })
       .catch(function (error) {
         console.log(error);
@@ -327,7 +329,7 @@ const SellerViewOrder = (props) => {
                       </Typography>
                     </Grid>
                   ) : (
-                    "Please Refresh"
+                    "Please go back to home and refresh"
                   )}
                 </Grid>
               </Grid>

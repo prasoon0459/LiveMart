@@ -217,7 +217,7 @@ export default function DialogShop(props) {
                               variant="body2"
                               className={classes.price}
                             >
-                              $ {wholesaler.wholesale_price}
+                              ₹ {wholesaler.wholesale_price}
                             </Typography>
                             <Rating
                               name="read-only"
@@ -243,7 +243,10 @@ export default function DialogShop(props) {
                           variant="contained"
                           size="medium"
                           color="secondary"
-                          disabled={wholesaler.quantity <= 0}
+                          disabled={
+                            wholesaler.quantity <= 0 ||
+                            props.qty > wholesaler.quantity
+                          }
                         >
                           <AddShoppingCartOutlined></AddShoppingCartOutlined>
                           <Typography>Add to Cart</Typography>

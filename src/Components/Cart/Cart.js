@@ -409,7 +409,7 @@ const Cart = () => {
                                 variant="body2"
                                 className={classes.cartItemPrice}
                               >
-                                Price: ${" "}
+                                Price: ₹{" "}
                                 {user_type === "1"
                                   ? product.item.productId.wholesale_price
                                   : product.item.retailProductId.retail_price}
@@ -424,7 +424,7 @@ const Cart = () => {
                                 variant="subtitle1"
                                 className={classes.cartItemTotalCost}
                               >
-                                Total Product Cost: ${" "}
+                                Total Product Cost: ₹{" "}
                                 {user_type === "1"
                                   ? product.item.quantity *
                                     product.item.productId.wholesale_price
@@ -468,7 +468,7 @@ const Cart = () => {
                       </Box>
                       <Box>
                         <Typography className={classes.billCostInfo}>
-                          $ {total_cost}
+                          ₹ {total_cost}
                         </Typography>
                       </Box>
                     </Grid>
@@ -488,7 +488,7 @@ const Cart = () => {
                       </Box>
                       <Box>
                         <Typography className={classes.billCostInfo}>
-                          $ 50.00
+                          ₹ 50.00
                         </Typography>
                       </Box>
                     </Grid>
@@ -505,7 +505,7 @@ const Cart = () => {
                         <Typography align="left">Total Amount:</Typography>
                       </Box>
                       <Box>
-                        <Typography>$ {total_cost + 50}</Typography>
+                        <Typography>₹ {total_cost + 50}</Typography>
                       </Box>
                     </Grid>
 

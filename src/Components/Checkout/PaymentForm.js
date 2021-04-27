@@ -102,7 +102,7 @@ export default function PaymentForm(props) {
                       LiveMART Wallet
                     </Typography>
                     <Typography align="left" variant="body1">
-                      Balance : $ {balance}
+                      Balance : ₹ {balance}
                     </Typography>
                   </Grid>
                 </Grid>
