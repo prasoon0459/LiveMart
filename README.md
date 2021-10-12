@@ -6,9 +6,9 @@ Grocery stores now need a user interface that is genuinely comfortable for their
 ## Hierarchy of Users
 #### Customers  ⇆  Retailers   ⇆   Wholesalers
 ### Roles of Users: 
- `Customers`: selection of items (by search, by using filters or by browsing), adding to cart, place order, payment of order, feedback/queries.
- `Retailers`: adding new items, deleting items, deciding the price of items while adding, maintaining record of each customer (items they have bought, transactions they have done till now etc..), update item quantities (after every order placed by customer), place order, order payment, feedback/queries, etc.
-`Wholesalers`: adding new items, deleting items, deciding the price of items while adding, adding or deleting retailers, maintaining record of each retailer (items they have bought, transactions they have done till now etc..), items that they supply to the retailers, update item quantities (after every order placed by retailer) etc.
+- `Customers`: selection of items (by search, by using filters or by browsing), adding to cart, place order, payment of order, feedback/queries.
+- `Retailers`: adding new items, deleting items, deciding the price of items while adding, maintaining record of each customer (items they have bought, transactions they have done till now etc..), update item quantities (after every order placed by customer), place order, order payment, feedback/queries, etc.
+- `Wholesalers`: adding new items, deleting items, deciding the price of items while adding, adding or deleting retailers, maintaining record of each retailer (items they have bought, transactions they have done till now etc..), items that they supply to the retailers, update item quantities (after every order placed by retailer) etc.
 
 
 ## Functionalities
@@ -58,10 +58,14 @@ The functionalities on the profile page include
 -  View customer reviews (Retailers)
 
 
+
+Proper documention can be found [here](https://drive.google.com/file/d/1AiyKzvcz1DfUJt31Vs2lB1bqrLGZ9bdo/view?usp=sharing).
+
+
 ## Contributors
-Prasoon Baghel [https://github.com/prasoon0459] 
-Harsh Heda [https://github.com/harsh-heda]
-Shaurya Vijayvargiya [https://github.com/CodeMonk263] 
+- [Prasoon Baghel](https://github.com/prasoon0459)
+- [Harsh Heda](https://github.com/harsh-heda)
+- [Shaurya Vijayvargiya](https://github.com/CodeMonk263)
 
 
 
