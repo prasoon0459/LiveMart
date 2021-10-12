@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# Live Mart
+LiveMart is a web application that allows consumers, sellers, and wholesalers to connect and engage in the online marketplace. Given the challenging circumstances of COVID-19, many people have taken to online alternatives for a variety of issues. Technology firms have seen significant increases in all internet-related acquisitions, and this trend is continuing.
+Grocery stores now need a user interface that is genuinely comfortable for their customers. Consumers expect category pages and search results to change based on their personal browsing and shopping experience, as well as the ability to quickly select products by dietary requirement. Our app connects customers (home delivery) to retailers (shopkeepers), and retailers are connected to wholesalers. This application has been developed towards a project component of the course CS F213 - Object Oriented Programming.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Hierarchy of Users
+#### Customers  ⇆  Retailers   ⇆   Wholesalers
+### Roles of Users: 
+ `Customers`: selection of items (by search, by using filters or by browsing), adding to cart, place order, payment of order, feedback/queries.
+ `Retailers`: adding new items, deleting items, deciding the price of items while adding, maintaining record of each customer (items they have bought, transactions they have done till now etc..), update item quantities (after every order placed by customer), place order, order payment, feedback/queries, etc.
+`Wholesalers`: adding new items, deleting items, deciding the price of items while adding, adding or deleting retailers, maintaining record of each retailer (items they have bought, transactions they have done till now etc..), items that they supply to the retailers, update item quantities (after every order placed by retailer) etc.
 
-In the project directory, you can run:
 
-### `npm start`
+## Functionalities
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### User Authentication
+- SignUp Page for 4 different users( Customers, Retailers, Wholesalers, Delivery Officials) automatically creates a shop for the user if the user is a retailer or wholesaler. New users must generate a password for potential login while attempting to SignUp. The database saves this email and password combination along with Number, address and type of user.
+- SignIn page helps the user to login with their email address and password. After entering the Email ID and Password, the user will get a verification email asking for confirmation.
+- In the event you forget a password for your LiveMart account, you can reset your password directly through the system or application you’re using. The reset of your password can be done by requesting an email that contains a password reset link
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Dashboards for all Users
+For Customers the dashboard shows the active orders and different categories from which the usr can choose to buy. For retailers it shows the active orders they did from the wholesaler as well as the pending orders which they have to fullfill for the customers. For wholesalers it just shows the pending orders from the retailers.
 
-### `npm test`
+### Inventory Management
+Adding Items has been made very easy and intuitive. One can select the name of the product, quantity in stock, price, Etc. All the changes are successfully updated immediately in our database.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Order Tracking 
+For Online orders, it tracks and displays the delivery status of the orders ordered from the user and for online orders it displays the pickup time schedule for the orders and also has an option for the seller to mark the item as collected. For online orders the delivery status can be changed by the assigned delivery person once the order is delivered.
 
-### `npm run build`
+### Search Items
+Customers can make an easy search for the product of their choice and also filter the results according to - 
+- `Categories` - by categories like personal care, kitchen essentials, etc 
+- `Price` - by price of the items 
+- `Brands` - by different brands for the product
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Reviews
+Ratings and feedback in an ecommerce industry contribute to improved revenue by
+providing consumers with insights about a product or service they are considering purchasing. People are more likely to buy a product or service based on other people's ratings and recommendations. Retailers/customers can easily visit the bottom of product page to checkout the reviews.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Shopping Cart
+After shopping, the final review of the products, their price & quantities, total cost and the delivery charges can be checked at shopping cart before proceeding to checkout. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Checkout
+Checkout can be done by choosing order mode 
+- Online orders(delivered)
+- Offline order(pick up)
 
-### `npm run eject`
+After which customers enter their shipping address, make their payment and have a final review of the transaction before placing order at LiveMart.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Profile Page
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Customers can edit their profile details, view their wallet balance and checkout their past shopping reviews. This page can be accessed by clicking on user icon on the top right and selecting ‘My Profile’.
+The functionalities on the profile page include
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+-  View wallet balance
+-  View and Edit Reviews
+-  View Orders
+-  View customer reviews (Retailers)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Contributors
+Prasoon Baghel [https://github.com/prasoon0459] 
+Harsh Heda [https://github.com/harsh-heda]
+Shaurya Vijayvargiya [https://github.com/CodeMonk263] 
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
